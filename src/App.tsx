@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import 'antd/dist/antd.css';
 import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import AuthView from './components/AuthView';
+import { get } from './utils/storage';
+interface IAppState {
+  loading: boolean,
+  token: string | null
+}
+class App extends Component<any, IAppState> {
+  state: IAppState = {
+    loading: true,
+    token: null
+  }
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        loading: false,
+        token: get('token')
+      })
+    }, 500)
+  }
+  render() {
+    if (this.state.loading) {
+      return (
+        <>
+          loading
+        </>
+      )
+    }
+    return (
+      <div>
+        <AuthView />
+      </div>
+    )
+  }
 }
 
 export default App;
