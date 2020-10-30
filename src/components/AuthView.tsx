@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { authRoutes } from '../router'
 import AdminLayout from './AdminLayout'
 class AuthView extends Component {
-    componentDidMount() {
-    }
     render() {
         return (
             <div>

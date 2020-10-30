@@ -2,29 +2,33 @@ import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import './App.css';
 import AuthView from './components/AuthView';
-import { get } from './utils/storage';
+import { Spin, Space } from 'antd';
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import { syncAdminInfo } from './store/actions/AdminAction';
+import { AdminState } from './store/states/AdminState';
 interface IAppState {
   loading: boolean,
   token: string | null
 }
-class App extends Component<any, IAppState> {
+interface IProps extends AdminState {
+  getAdminInfo: () => void
+}
+class App extends Component<IProps, IAppState> {
   state: IAppState = {
     loading: true,
     token: null
   }
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        loading: false,
-        token: get('token')
-      })
-    }, 500)
+    this.props.getAdminInfo()
   }
   render() {
-    if (this.state.loading) {
+    if (this.props.loading) {
       return (
         <>
-          loading
+          <Space size="large">
+            <Spin size="large" />
+          </Space>
         </>
       )
     }
@@ -36,4 +40,18 @@ class App extends Component<any, IAppState> {
   }
 }
 
-export default App;
+interface IStoreState {
+  admin: AdminState
+}
+
+const mapStateToProps = (state: IStoreState): AdminState => {
+  // console.log(state.admin)
+  return { ...state.admin };
+}
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  getAdminInfo: () => {
+    syncAdminInfo(dispatch)
+  }
+})
+export default connect(mapStateToProps, mapDispatchToProps)(App);

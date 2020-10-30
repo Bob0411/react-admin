@@ -6,3 +6,9 @@ export const login = (data: any) => {
         data: data
     })
 }
+export const getAdminInfo = () => {
+    return request({
+        url: '/admin/admin/info',
+        method: 'get'
+    })
+}

@@ -1,3 +1,4 @@
+import { getAdminInfo } from './../../api/index';
 import { rm, set } from './../../utils/storage';
 import { AdminType } from './../types/AdminType';
 import { Dispatch } from 'redux'
@@ -14,5 +15,18 @@ export const logout = (dispatch: Dispatch) => {
     rm('token')
     dispatch({
         type: AdminType.LOGOUT
+    })
+}
+export const syncAdminInfo = (dispatch: Dispatch) => {
+    dispatch({
+        type: AdminType.LOADING,
+        data: { loading: true }
+    })
+    getAdminInfo().then(response => {
+        const { admin } = response.data.data
+        dispatch({
+            type: AdminType.SET,
+            data: { ...admin, loading: false }
+        })
     })
 }
