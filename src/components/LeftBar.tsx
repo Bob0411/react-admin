@@ -16,11 +16,9 @@ class LeftBar extends Component<any, ILeftBarState>{
         }
     }
     componentDidMount() {
-        console.log(this.props.history.location.pathname)
         let path = this.props.history.location.pathname
         authRoutes.forEach((route) => {
             if (path === route.path) {
-                console.log(route.id)
                 this.setState({
                     defaultKeys: [route.id]
                 })
