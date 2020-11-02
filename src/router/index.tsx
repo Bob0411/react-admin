@@ -3,6 +3,7 @@ import AdminList from "../pages/AdminList"
 import Index from "../pages/Index"
 import Login from "../pages/Login"
 import Page404 from "../pages/Page404"
+import Page403 from "../pages/Page403"
 
 interface IRoute {
     id: string,
@@ -56,6 +57,12 @@ export const authRoutes: IRoute[] = [
                 component: <>/admin/list</>
             }
         ]
+    },
+    {
+        id: '55555555555555555-0',
+        path: '/403',
+        title: '403',
+        component: <Page403 />
     },
     {
         id: '6666666666666666-0',

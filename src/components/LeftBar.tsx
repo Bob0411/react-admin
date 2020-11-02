@@ -55,6 +55,7 @@ class LeftBar extends Component<any, ILeftBarState>{
                             {
                                 authRoutes.filter((route) => route.path !== '*')
                                     .filter((route) => route.path !== '/login')
+                                    .filter((route) => route.path !== '/403')
                                     .map((route) => (
                                         <Menu.Item key={route.id} icon={<UserOutlined />}>
                                             <NavLink to={route.path}>{route.title}</NavLink>

@@ -12,16 +12,21 @@ class AuthView extends Component {
                             authRoutes.map((route) => (
                                 <Route path={route.path} key={route.id} exact={route.exact}>
                                     <Switch>
-                                        <AdminLayout extend={route.extend}>
-                                            {route.component}
-                                            {
-                                                route.routes?.map((r) => {
-                                                    return (
-                                                        <Route path={r.path} key={r.id} children={r.component} />
-                                                    )
-                                                })
-                                            }
-                                        </AdminLayout>
+                                        {
+                                            route.extend ?
+                                                <AdminLayout>
+                                                    {route.component}
+                                                    {
+                                                        route.routes?.map((r) => {
+                                                            return (
+                                                                <Route path={r.path} key={r.id} children={r.component} />
+                                                            )
+                                                        })
+                                                    }
+                                                </AdminLayout>
+                                                :
+                                                route.component
+                                        }
                                     </Switch>
                                 </Route>
                             ))
