@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
 import { Menu } from 'antd';
+import { matchPath } from "react-router";
+
 import {
     UserOutlined
 } from '@ant-design/icons';
@@ -9,18 +11,36 @@ interface ILeftBarState {
     defaultKeys: string[]
 }
 class LeftBar extends Component<any, ILeftBarState>{
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            defaultKeys: []
-        }
+    state: ILeftBarState = {
+        defaultKeys: []
     }
     componentDidMount() {
         let path = this.props.history.location.pathname
         authRoutes.forEach((route) => {
-            if (path === route.path) {
+            let match = matchPath(path, {
+                path: route.path,
+                exact: true,
+                strict: false
+            })
+            if (route.path === '*') {
+                return
+            }
+            if (match !== null) {
                 this.setState({
                     defaultKeys: [route.id]
+                })
+            } else {
+                route.routes?.forEach((r) => {
+                    let match1 = matchPath(path, {
+                        path: r.path,
+                        exact: true,
+                        strict: false
+                    })
+                    if (match1 !== null) {
+                        this.setState({
+                            defaultKeys: [r.id]
+                        })
+                    }
                 })
             }
         })
@@ -45,7 +65,6 @@ class LeftBar extends Component<any, ILeftBarState>{
                         :
                         ''
                 }
-
             </div>
         )
     }
