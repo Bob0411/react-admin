@@ -7,12 +7,15 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { syncAdminInfo } from './store/actions/AdminAction';
 import { AdminState } from './store/states/AdminState';
+import { getPermissionList } from './store/actions/PermissionAction';
 interface IAppState {
   loading: boolean,
   token: string | null
 }
 interface IProps extends AdminState {
   getAdminInfo: () => void
+  getPermissionList: () => void
+
 }
 class App extends Component<IProps, IAppState> {
   state: IAppState = {
@@ -21,6 +24,7 @@ class App extends Component<IProps, IAppState> {
   }
   componentDidMount() {
     this.props.getAdminInfo()
+    this.props.getPermissionList()
   }
   render() {
     if (this.props.loading) {
@@ -52,6 +56,9 @@ const mapStateToProps = (state: IStoreState): AdminState => {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   getAdminInfo: () => {
     syncAdminInfo(dispatch)
+  },
+  getPermissionList: () => {
+    getPermissionList(dispatch)
   }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(App);

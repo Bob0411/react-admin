@@ -1,3 +1,4 @@
 import { combineReducers } from 'redux'
 import admin from './AdminReducer'
-export default combineReducers({ admin })
+import permission from './PermissionReducer'
+export default combineReducers({ admin, permission })
