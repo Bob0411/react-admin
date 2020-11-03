@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-interface IRoute {
+export interface IRoute {
     id: string,
     exact?: boolean
     path: string
