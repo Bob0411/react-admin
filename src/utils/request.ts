@@ -27,22 +27,12 @@ service.interceptors.response.use(
     response => {
         NProgress.done();
         if (response.status === 200) {
-            if (window.location.pathname !== '/login') {
-                if (response.data.code === 4003) {
-                    Modal.error({
-                        title: '你没有权限访问'
-                    })
-                    setTimeout(() => {
-                        window.location.href = '/login'
-                    }, 1000)
-                }
-            }
             return response;
         } else {
             Modal.error({
                 title: '网络请求错误'
             });
-            return Promise.reject(new Error('Error'))
+            return Promise.reject('网络请求错误')
         }
     },
     error => {

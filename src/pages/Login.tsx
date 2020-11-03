@@ -3,8 +3,9 @@ import { Form, Input, Button } from 'antd'
 import { login } from '../api';
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { doLogin } from '../store/actions/AdminAction';
+import { doLogin, syncAdminInfo } from '../store/actions/AdminAction';
 import { RouteComponentProps, withRouter } from "react-router";
+import { getPermissionList } from '../store/actions/PermissionAction';
 
 const layout = {
     labelCol: { span: 8 },
@@ -20,6 +21,8 @@ interface IState {
 }
 interface IProps extends RouteComponentProps {
     login: (data: any) => void
+    getAdminInfo: () => void
+    getPermissionList: () => void
 }
 class Login extends Component<IProps, IState> {
     state: IState = {
@@ -29,6 +32,8 @@ class Login extends Component<IProps, IState> {
     onFinish = (values: IState) => {
         login(values).then(response => {
             this.props.login(response.data.data)
+            this.props.getAdminInfo()
+            this.props.getPermissionList()
             this.props.history.replace('/')
         })
     };
@@ -74,6 +79,12 @@ class Login extends Component<IProps, IState> {
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     login: (data: any) => {
         doLogin(dispatch, data)
+    },
+    getAdminInfo: () => {
+        syncAdminInfo(dispatch)
+    },
+    getPermissionList: () => {
+        getPermissionList(dispatch)
     }
 })
 export default connect(null, mapDispatchToProps)(withRouter(Login))

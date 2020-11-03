@@ -26,6 +26,10 @@ class AdminLayout extends Component<any, IAdminLayoutState> {
     };
 
     shouldComponentUpdate(nextProps: Readonly<any>, nextState: Readonly<IAdminLayoutState>, nextContext: any): boolean {
+        if (nextProps.permissionList.length <= 0) {
+            this.props.history.push('/login')
+            return false
+        }
         // 请求的页面如果不在权限范围内就跳转到403页面 [403 forbidden]
         let path = this.props.location.pathname
         let res = nextProps.permissionList.filter((p: any) => {
@@ -83,6 +87,9 @@ interface IStoreState {
     permission: PermissionState
 }
 const mapStateToProps = (state: IStoreState): PermissionState => {
+    if (state.permission.permissionList === undefined) {
+        return { permissionList: [] }
+    }
     return { ...state.permission };
 }
 export default connect(mapStateToProps)(withRouter(AdminLayout))
