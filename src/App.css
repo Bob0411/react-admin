@@ -19,3 +19,8 @@
 .site-layout .site-layout-background {
     background: #fff;
 }
+
+.loading {
+    margin: 0 auto;
+    text-align: center;
+}

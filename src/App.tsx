@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import 'antd/dist/antd.css';
 import './App.css';
 import AuthView from './components/AuthView';
-import { Spin, Space } from 'antd';
+import { Spin } from 'antd';
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { syncAdminInfo } from './store/actions/AdminAction';
 import { AdminState } from './store/states/AdminState';
 import { getPermissionList } from './store/actions/PermissionAction';
 interface IAppState {
-  loading: boolean,
-  token: string | null
+  loading: boolean
 }
 interface IProps extends AdminState {
   getAdminInfo: () => void
@@ -19,8 +18,7 @@ interface IProps extends AdminState {
 }
 class App extends Component<IProps, IAppState> {
   state: IAppState = {
-    loading: true,
-    token: null
+    loading: true
   }
   componentDidMount() {
     this.props.getAdminInfo()
@@ -29,11 +27,9 @@ class App extends Component<IProps, IAppState> {
   render() {
     if (this.props.loading) {
       return (
-        <>
-          <Space size="large">
-            <Spin size="large" />
-          </Space>
-        </>
+        <div className='loading'>
+          <Spin tip='玩命加载中。。。' />
+        </div>
       )
     }
     return (
@@ -49,7 +45,6 @@ interface IStoreState {
 }
 
 const mapStateToProps = (state: IStoreState): AdminState => {
-  // console.log(state.admin)
   return { ...state.admin };
 }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Layout } from 'antd';
+import { Layout, Spin } from 'antd';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
@@ -48,9 +48,9 @@ class AdminLayout extends Component<any, IAdminLayoutState> {
     render() {
         if (this.props.permissionList.length <= 0) {
             return (
-                <>
-                    loading
-                </>
+                <div className='loading'>
+                    <Spin tip='玩命加载中。。。' />
+                </div>
             )
         }
         return (
