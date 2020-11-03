@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Space, Table, Popconfirm, message } from 'antd'
-import { deleteAdmin, getAdminList } from '../api/admin'
+import { Button, Space, Table, Popconfirm, message, Modal, Form, Input } from 'antd'
+import { deleteAdmin, getAdminList, updateAdmin } from '../api/admin'
 import Permission from '../components/Permission'
 interface IDeleteAdminPropos {
     admin: IAdmin
@@ -63,18 +63,27 @@ interface IAdminListState {
     page: number
     perPage: number
     total: number
-    visibleDelete: boolean
+    visible: boolean
 }
 interface IAdmin {
     id: number
+    name: string
+    password: string
 }
+const layout = {
+    labelCol: { span: 4 },
+    wrapperCol: { span: 16 },
+};
+const tailLayout = {
+    wrapperCol: { offset: 8, span: 16 },
+};
 class AdminList extends Component<any, IAdminListState> {
     state: IAdminListState = {
         adminList: [],
         page: 1,
         perPage: 15,
         total: 0,
-        visibleDelete: false
+        visible: false
     }
     componentDidMount() {
         getAdminList().then(response => {
@@ -92,9 +101,106 @@ class AdminList extends Component<any, IAdminListState> {
             adminList: this.state.adminList.filter(a => a.id !== admin.id)
         })
     }
+    handleOk = () => {
+        this.setState({
+            visible: false
+        })
+    }
+    editAdmin = (admin: IAdmin) => {
+        this.setState({
+            admin: admin
+        })
+        this.setState({
+            visible: true
+        })
+    }
+    handleCancel = () => {
+        this.setState({
+            visible: false
+        })
+    }
+    saveAdmin = (admin: IAdmin) => {
+        if (this.state.admin) {
+            updateAdmin(this.state.admin?.id, admin).then(response => {
+                const { code, msg } = response.data
+                if (code === 0) {
+                    message.success(msg)
+                } else {
+                    message.error(msg)
+                }
+            })
+        }
+        console.log(admin)
+    }
+    saveFailed = () => {
+    }
     render() {
         return (
             <div>
+                {
+                    this.state.visible && this.state.admin ?
+                        <Modal
+                            title="编辑管理员信息"
+                            visible={this.state.visible}
+                            onOk={this.handleOk}
+                            onCancel={this.handleCancel}
+                            cancelText='取消'
+                            okText='确认'
+                            footer={null}
+                        >
+                            <Form
+                                {...layout}
+                                name="basic"
+                                initialValues={{ name: this.state.admin?.name, password: '' }}
+                                onFinish={this.saveAdmin}
+                                onFinishFailed={this.saveFailed}
+                            >
+                                <Form.Item
+                                    label="管理员名称"
+                                    name="name"
+                                    rules={[{ required: true, message: '请输入管理员名称' }]}
+                                >
+                                    <Input />
+                                </Form.Item>
+
+                                <Form.Item
+                                    label="管理员密码"
+                                    name="password"
+                                    rules={[{
+                                        validator: (rules, value: string) => {
+                                            if (value === '') {
+                                                return Promise.resolve()
+                                            }
+
+                                            if (value.length < 6) {
+                                                return Promise.reject('密码长度不能小于6位')
+                                            } else if (value.length > 22) {
+                                                return Promise.reject('密码长度不能大于22位')
+                                            }
+                                            return Promise.resolve()
+                                        }
+                                    }]}
+                                >
+                                    <Input.Password />
+                                </Form.Item>
+                                <Form.Item {...tailLayout}>
+                                    <Space>
+                                        <Button type="primary" htmlType="submit">
+                                            提交
+                                </Button>
+                                        <Button type='dashed' htmlType="reset">
+                                            重置
+                                </Button>
+                                    </Space>
+                                </Form.Item>
+
+
+                            </Form>
+                        </Modal>
+                        :
+                        ''
+                }
+
                 <Table
                     dataSource={this.state.adminList}
                     rowKey='id'
@@ -112,7 +218,7 @@ class AdminList extends Component<any, IAdminListState> {
                         render={(admin: IAdmin) => (
                             <Space size="middle">
                                 <Permission path='editAdmin'
-                                    children={<Button type='primary'>编辑</Button>}
+                                    children={<Button onClick={() => { this.editAdmin(admin) }} type='primary'>编辑</Button>}
                                 />
                                 <Permission
                                     path='deleteAdmin'
