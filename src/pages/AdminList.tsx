@@ -86,15 +86,7 @@ class AdminList extends Component<any, IAdminListState> {
         visible: false
     }
     componentDidMount() {
-        getAdminList().then(response => {
-            const { data: { currentPage, data, total, perPage } } = response.data
-            this.setState({
-                page: currentPage,
-                adminList: data,
-                total: total,
-                perPage: perPage
-            })
-        })
+        this.getAdminList()
     }
     deleteAdminCallback = (admin: IAdmin) => {
         this.setState({
@@ -130,9 +122,22 @@ class AdminList extends Component<any, IAdminListState> {
                 }
             })
         }
-        console.log(admin)
     }
     saveFailed = () => {
+    }
+    getAdminList = (page: number = 1) => {
+        getAdminList(page).then(response => {
+            const { data: { currentPage, data, total, perPage } } = response.data
+            this.setState({
+                page: currentPage,
+                adminList: data,
+                total: total,
+                perPage: perPage
+            })
+        })
+    }
+    onChange = (page: number) => {
+        this.getAdminList(page)
     }
     render() {
         return (
@@ -202,6 +207,14 @@ class AdminList extends Component<any, IAdminListState> {
                 }
 
                 <Table
+                    pagination={{
+                        position: ['bottomCenter'],
+                        total: this.state.total,
+                        defaultCurrent: this.state.page,
+                        defaultPageSize: this.state.perPage,
+                        showSizeChanger: false,
+                        onChange: this.onChange
+                    }}
                     dataSource={this.state.adminList}
                     rowKey='id'
                 >
