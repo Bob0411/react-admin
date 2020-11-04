@@ -10,29 +10,17 @@ interface IRoute {
     exact?: boolean
     path: string
     title: string
+    isMenu: number
     component?: ReactNode,
     extend?: boolean
     routes?: IRoute[]
 }
-export const unAuthRoute: IRoute[] = [
-    {
-        id: '1-0',
-        path: '/login',
-        title: '登录',
-        component: <Login />
-    },
-    {
-        id: '2-0',
-        path: '*',
-        title: '404',
-        component: <Page404 />
-    }
-]
 export const authRoutes: IRoute[] = [
     {
         id: '1-0',
         path: '/login',
         title: '登录',
+        isMenu: 1,
         component: <Login />
     },
     {
@@ -40,21 +28,23 @@ export const authRoutes: IRoute[] = [
         exact: true,
         path: '/',
         title: '首页',
+        isMenu: 1,
         extend: true,
         component: <Index />
     },
     {
         id: '3-0',
         path: '/admin',
-        title: 'admin',
+        title: '管理员管理',
         extend: true,
-        component: <AdminList />,
+        isMenu: 1,
         routes: [
             {
                 id: '3-1',
                 path: '/admin/list',
-                title: '',
-                component: <>/admin/list</>
+                title: '管理员列表',
+                isMenu: 0,
+                component: <AdminList />
             }
         ]
     },
@@ -63,12 +53,13 @@ export const authRoutes: IRoute[] = [
         path: '/role',
         title: '角色管理',
         extend: true,
-        component: <RoleList />,
+        isMenu: 1,
         routes: [
             {
-                id: '3-1',
+                id: '4-1',
                 path: '/role/list',
-                title: '',
+                title: '角色列表',
+                isMenu: 0,
                 component: <RoleList />
             }
         ]
@@ -77,12 +68,14 @@ export const authRoutes: IRoute[] = [
         id: '55555555555555555-0',
         path: '/403',
         title: '403',
+        isMenu: 0,
         component: <Page403 />
     },
     {
         id: '6666666666666666-0',
         path: '*',
         title: '404',
+        isMenu: 0,
         component: <Page404 />
     }
 ]

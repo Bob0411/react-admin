@@ -9,10 +9,12 @@ import {
 import { authRoutes } from '../router';
 interface ILeftBarState {
     defaultKeys: string[]
+    defaultOpenKeys: string[]
 }
 class LeftBar extends Component<any, ILeftBarState>{
     state: ILeftBarState = {
-        defaultKeys: []
+        defaultKeys: [],
+        defaultOpenKeys: []
     }
     componentDidMount() {
         let path = this.props.history.location.pathname
@@ -38,7 +40,8 @@ class LeftBar extends Component<any, ILeftBarState>{
                     })
                     if (match1 !== null) {
                         this.setState({
-                            defaultKeys: [r.id]
+                            defaultKeys: [r.id],
+                            defaultOpenKeys: [route.id]
                         })
                     }
                 })
@@ -51,17 +54,48 @@ class LeftBar extends Component<any, ILeftBarState>{
                 <div className="logo" />
                 {
                     this.state.defaultKeys.length > 0 ?
-                        < Menu theme="dark" mode="inline" defaultSelectedKeys={this.state.defaultKeys}>
+                        < Menu
+                            theme="dark"
+                            mode="inline"
+                            defaultSelectedKeys={this.state.defaultKeys}
+                            defaultOpenKeys={this.state.defaultOpenKeys}
+                        >
                             {
                                 authRoutes.filter((route) => route.path !== '*')
                                     .filter((route) => route.path !== '/login')
                                     .filter((route) => route.path !== '/403')
-                                    .map((route) => (
-                                        <Menu.Item key={route.id} icon={<UserOutlined />}>
-                                            <NavLink to={route.path}>{route.title}</NavLink>
-                                        </Menu.Item>
-                                    ))
+                                    .map((route) => {
+                                        if (route.routes) {
+                                            return (
+                                                <Menu.SubMenu
+                                                    key={route.id}
+                                                    title={
+                                                        <span>
+                                                            <UserOutlined />
+                                                            <span>{route.title}</span>
+                                                        </span>
+                                                    }
+                                                >
+                                                    {
+                                                        route.routes.map((r) => (
+                                                            <Menu.Item key={r.id}>
+                                                                <NavLink to={r.path}>{r.title}</NavLink>
+                                                            </Menu.Item>)
+                                                        )
+                                                    }
+                                                </Menu.SubMenu>
+                                            )
+                                        } else {
+                                            return (
+                                                <Menu.Item key={route.id} icon={<UserOutlined />}>
+                                                    <NavLink to={route.path}>{route.title}</NavLink>
+                                                </Menu.Item>
+                                            )
+                                        }
+                                    })
                             }
+
+
                         </Menu>
                         :
                         ''
