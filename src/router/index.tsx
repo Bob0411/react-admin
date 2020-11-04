@@ -5,8 +5,12 @@ import Login from "../pages/Login"
 import Page404 from "../pages/Page404"
 import Page403 from "../pages/Page403"
 import RoleList from '../pages/RoleList'
+import {
+    DashboardTwoTone
+} from '@ant-design/icons';
 interface IRoute {
     id: string,
+    icon?: ReactNode
     exact?: boolean
     path: string
     title: string
@@ -25,6 +29,7 @@ export const authRoutes: IRoute[] = [
     },
     {
         id: '2-0',
+        icon: < DashboardTwoTone />,
         exact: true,
         path: '/',
         title: '首页',
@@ -34,6 +39,7 @@ export const authRoutes: IRoute[] = [
     },
     {
         id: '3-0',
+        icon: < DashboardTwoTone />,
         path: '/admin',
         title: '管理员管理',
         extend: true,
@@ -41,6 +47,7 @@ export const authRoutes: IRoute[] = [
         routes: [
             {
                 id: '3-1',
+                icon: < DashboardTwoTone />,
                 path: '/admin/list',
                 title: '管理员列表',
                 isMenu: 0,
@@ -50,6 +57,7 @@ export const authRoutes: IRoute[] = [
     },
     {
         id: '4-0',
+        icon: < DashboardTwoTone />,
         path: '/role',
         title: '角色管理',
         extend: true,
@@ -57,6 +65,7 @@ export const authRoutes: IRoute[] = [
         routes: [
             {
                 id: '4-1',
+                icon: < DashboardTwoTone />,
                 path: '/role/list',
                 title: '角色列表',
                 isMenu: 0,

@@ -71,14 +71,14 @@ class LeftBar extends Component<any, ILeftBarState>{
                                                     key={route.id}
                                                     title={
                                                         <span>
-                                                            <UserOutlined />
+                                                            {route.icon}
                                                             <span>{route.title}</span>
                                                         </span>
                                                     }
                                                 >
                                                     {
                                                         route.routes.map((r) => (
-                                                            <Menu.Item key={r.id}>
+                                                            <Menu.Item key={r.id} icon={r.icon}>
                                                                 <NavLink to={r.path}>{r.title}</NavLink>
                                                             </Menu.Item>)
                                                         )
@@ -87,7 +87,7 @@ class LeftBar extends Component<any, ILeftBarState>{
                                             )
                                         } else {
                                             return (
-                                                <Menu.Item key={route.id} icon={<UserOutlined />}>
+                                                <Menu.Item key={route.id} icon={route.icon}>
                                                     <NavLink to={route.path}>{route.title}</NavLink>
                                                 </Menu.Item>
                                             )
