@@ -2,10 +2,6 @@ import React, { Component } from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
 import { Menu } from 'antd';
 import { matchPath } from "react-router";
-
-import {
-    UserOutlined
-} from '@ant-design/icons';
 import { authRoutes } from '../router';
 interface ILeftBarState {
     defaultKeys: string[]

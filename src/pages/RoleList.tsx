@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { Space, Table, Button, message, Popconfirm } from 'antd';
 import { deleteRole, getRoleList } from "../api/role";
 import Permission from "./Permission";
-
+import { default as PermissionCheck } from '../components/Permission'
 
 interface IRole {
     id: number,
@@ -116,18 +116,21 @@ class RoleList extends Component<any, IState> {
                 key: 'action',
                 render: (role: IRole) => (
                     <Space>
-                        <DeleteRole
-                            {...role}
-                            refresh={() => {
-                                this.getRoleList(this.state.page)
-                            }}
-                        />
-                        <Button type='primary' onClick={() => {
-                            this.setState({
-                                role: role,
-                                showP: true
-                            })
-                        }}>编辑</Button>
+                        <PermissionCheck path='deleteRole' children={
+                            <DeleteRole
+                                {...role}
+                                refresh={() => {
+                                    this.getRoleList(this.state.page)
+                                }} />
+                        } />
+                        <PermissionCheck path='editRole' children={
+                            <Button type='primary' onClick={() => {
+                                this.setState({
+                                    role: role,
+                                    showP: true
+                                })
+                            }}>编辑</Button>
+                        } />
                     </Space>
                 ),
             },
