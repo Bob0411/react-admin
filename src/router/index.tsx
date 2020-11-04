@@ -4,7 +4,7 @@ import Index from "../pages/Index"
 import Login from "../pages/Login"
 import Page404 from "../pages/Page404"
 import Page403 from "../pages/Page403"
-
+import RoleList from '../pages/RoleList'
 interface IRoute {
     id: string,
     exact?: boolean
@@ -55,6 +55,21 @@ export const authRoutes: IRoute[] = [
                 path: '/admin/list',
                 title: '',
                 component: <>/admin/list</>
+            }
+        ]
+    },
+    {
+        id: '4-0',
+        path: '/role',
+        title: '角色管理',
+        extend: true,
+        component: <RoleList />,
+        routes: [
+            {
+                id: '3-1',
+                path: '/role/list',
+                title: '',
+                component: <RoleList />
             }
         ]
     },

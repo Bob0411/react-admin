@@ -5,3 +5,25 @@ export const getRoleList = () => {
         method: 'GET'
     })
 }
+export const deleteRole = (roleId: number) => {
+    return request({
+        url: '/admin/role/' + roleId,
+        method: 'delete'
+    })
+}
+
+export const getRoleDetail = (roleId: number) => {
+    return request({
+        url: '/admin/role/' + roleId
+    })
+}
+export const saveRole = (roleId: number, roleName: string, permissionList: number[]) => {
+    return request({
+        url: '/admin/role/' + roleId,
+        method: 'post',
+        data: {
+            roleName: roleName,
+            permissionList: permissionList
+        }
+    })
+}
