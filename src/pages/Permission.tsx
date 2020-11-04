@@ -41,10 +41,6 @@ class Permission extends Component<IProps, IPermissionState> {
     loadPermission = () => {
         getRoleDetail(this.props.roleId).then(response => {
             const { permissionList, permissionAll } = response.data.data
-            let permissions = permissionList.map((permission: IPermission) => {
-                return permission.id
-            })
-
             let permissionMap = new Map()
             permissionAll.filter((permission: IPermission) => {
                 permission.key = permission.id
@@ -76,10 +72,17 @@ class Permission extends Component<IProps, IPermissionState> {
                 return permission
             })
 
+            let permissions = permissionList.map((permission: IPermission) => {
+                return permission.id
+            })
+
+            let defaultExpandedKeys = permissionList.map((permission: IPermission) => {
+                return permission.parentId
+            })
             this.setState({
                 nodeList: nodeList,
                 defaultCheckedKeys: permissions,
-                defaultExpandedKeys: [],
+                defaultExpandedKeys: defaultExpandedKeys,
                 defaultSelectedKeys: []
             })
 
