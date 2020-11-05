@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Modal } from 'antd';
+import {message, Modal} from 'antd';
 import NProgress from 'nprogress'
 import { get } from "./storage";
 // create an axios instance
@@ -27,6 +27,11 @@ service.interceptors.response.use(
     response => {
         NProgress.done();
         if (response.status === 200) {
+            const {code}=response.data
+            if (code === 4003) {
+                message.warning('你的登录状态已经丢失，请退出后重新登录！')
+                return  Promise.reject('请登录')
+            }
             return response;
         } else {
             Modal.error({

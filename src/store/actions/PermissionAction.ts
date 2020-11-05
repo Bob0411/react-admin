@@ -15,18 +15,11 @@ export const getPermissionList = (dispatch: Dispatch) => {
             data: {permissionList: [], loading: true}
         });
         getAdminInfo().then(response => {
-            const {code,data:{permissionList} } = response.data
-            if (code === 4003) {
-                dispatch({
-                    type: PermissionType.SET,
-                    data: {permissionList: [], loading: false}
-                });
-            } else {
-                dispatch({
-                    type: PermissionType.SET,
-                    data: {permissionList: permissionList, loading: false}
-                });
-            }
+            const {permissionList} = response.data.data
+            dispatch({
+                type: PermissionType.SET,
+                data: {permissionList: permissionList, loading: false}
+            });
         })
     }else {
         dispatch({
