@@ -32,6 +32,10 @@ class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
         if (nextProps.loading) {
             return null
         }
+        if (nextProps.permissionList.length === 0) {
+            nextProps.history.push('/login')
+            return { auth: false }
+        }
         let path = nextProps.location.pathname
         let res = nextProps.permissionList.filter((p: any) => {
             const match = matchPath(path, {
@@ -90,6 +94,9 @@ interface IStoreState {
 const mapStateToProps = (state: IStoreState): PermissionState => {
     if (state.permission.loading) {
         return { loading: true, permissionList: [] }
+    }
+    if (state.permission.permissionList === undefined) {
+        return { loading: false, permissionList: [] }
     }
     return { ...state.permission };
 }
