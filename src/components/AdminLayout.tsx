@@ -43,11 +43,12 @@ class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
         })
         if (res.length <= 0) {
             nextProps.history.push('/403')
+            return { auth: false }
         }
         return { auth: true }
     }
     render() {
-        if (this.props.loading) {
+        if (!this.state.auth) {
             return (
                 <div className='loading'>
                     <Spin tip='玩命加载中。。。' />
