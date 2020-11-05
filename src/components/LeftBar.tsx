@@ -1,16 +1,22 @@
 import React, { Component } from 'react'
-import { NavLink, withRouter } from 'react-router-dom'
+import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom'
 import { Menu } from 'antd';
 import { matchPath } from "react-router";
 import { authRoutes } from '../router';
+import { IRoute } from '../store/states/PermissionState';
 interface ILeftBarState {
     defaultKeys: string[]
     defaultOpenKeys: string[]
+    permissionSet: Set<String>
 }
-class LeftBar extends Component<any, ILeftBarState>{
+interface IProps extends RouteComponentProps {
+    permissionList: IRoute[]
+}
+class LeftBar extends Component<IProps, ILeftBarState>{
     state: ILeftBarState = {
         defaultKeys: [],
-        defaultOpenKeys: []
+        defaultOpenKeys: [],
+        permissionSet: new Set<String>()
     }
     componentDidMount() {
         let path = this.props.history.location.pathname
@@ -43,6 +49,11 @@ class LeftBar extends Component<any, ILeftBarState>{
                 })
             }
         })
+        let permissionSet: Set<string> = new Set<string>()
+        this.props.permissionList.forEach((p: IRoute) => permissionSet.add(p.path))
+        this.setState({
+            permissionSet: permissionSet
+        })
     }
     render() {
         return (
@@ -60,6 +71,7 @@ class LeftBar extends Component<any, ILeftBarState>{
                                 authRoutes.filter((route) => route.path !== '*')
                                     .filter((route) => route.path !== '/login')
                                     .filter((route) => route.path !== '/403')
+                                    .filter((route) => this.state.permissionSet.has(route.path))
                                     .map((route) => {
                                         if (route.routes) {
                                             return (
@@ -73,11 +85,13 @@ class LeftBar extends Component<any, ILeftBarState>{
                                                     }
                                                 >
                                                     {
-                                                        route.routes.map((r) => (
-                                                            <Menu.Item key={r.id} icon={r.icon}>
-                                                                <NavLink to={r.path}>{r.title}</NavLink>
-                                                            </Menu.Item>)
-                                                        )
+                                                        route.routes
+                                                            .filter((route) => this.state.permissionSet.has(route.path))
+                                                            .map((r) => (
+                                                                <Menu.Item key={r.id} icon={r.icon}>
+                                                                    <NavLink to={r.path}>{r.title}</NavLink>
+                                                                </Menu.Item>)
+                                                            )
                                                     }
                                                 </Menu.SubMenu>
                                             )

@@ -34,8 +34,8 @@ interface IStoreState {
     permission: PermissionState
 }
 const mapStateToProps = (state: IStoreState): PermissionState => {
-    if (state.permission.permissionList === undefined) {
-        return { permissionList: [] }
+    if (state.permission.loading) {
+        return { loading: true, permissionList: [] }
     }
     return { ...state.permission };
 }

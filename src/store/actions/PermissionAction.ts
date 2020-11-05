@@ -6,11 +6,15 @@ export interface PermissionAction {
     data?: any
 }
 export const getPermissionList = (dispatch: Dispatch) => {
+    dispatch({
+        type: PermissionType.SET,
+        data: { permissionList: [], loadng: true }
+    })
     getAdminInfo().then(response => {
         const { permissionList } = response.data.data
         dispatch({
             type: PermissionType.SET,
-            data: { permissionList: permissionList }
+            data: { permissionList: permissionList, loading: false }
         })
     })
 }

@@ -1,37 +1,38 @@
-import React, { Component } from 'react'
+import React, { Component, ReactNode } from 'react'
 import { Layout, Spin } from 'antd';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
 } from '@ant-design/icons';
 import LeftBar from './LeftBar';
-import { withRouter, matchPath } from 'react-router-dom'
+import { withRouter, matchPath, RouteComponentProps } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { PermissionState } from '../store/states/PermissionState'
+import { IRoute, PermissionState } from '../store/states/PermissionState'
 const { Header, Sider, Content } = Layout;
 interface IAdminLayoutState {
     collapsed: boolean
+    auth: boolean
 }
-// interface IAdminLayoutProps extends RouteComponentProps {
-
-// }
-class AdminLayout extends Component<any, IAdminLayoutState> {
+interface IAdminLayoutProps extends RouteComponentProps {
+    loading: boolean
+    permissionList: IRoute[]
+    children?: ReactNode
+}
+class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
     state: IAdminLayoutState = {
         collapsed: false,
+        auth: false
     };
     toggle = () => {
         this.setState({
             collapsed: !this.state.collapsed,
         });
     };
-
-    shouldComponentUpdate(nextProps: Readonly<any>, nextState: Readonly<IAdminLayoutState>, nextContext: any): boolean {
-        if (nextProps.permissionList.length <= 0) {
-            this.props.history.push('/login')
-            return false
+    static getDerivedStateFromProps(nextProps: Readonly<IAdminLayoutProps>, nextState: Readonly<IAdminLayoutState>) {
+        if (nextProps.loading) {
+            return null
         }
-        // 请求的页面如果不在权限范围内就跳转到403页面 [403 forbidden]
-        let path = this.props.location.pathname
+        let path = nextProps.location.pathname
         let res = nextProps.permissionList.filter((p: any) => {
             const match = matchPath(path, {
                 path: p.path,
@@ -41,12 +42,12 @@ class AdminLayout extends Component<any, IAdminLayoutState> {
             return match !== null
         })
         if (res.length <= 0) {
-            this.props.history.push('/403')
+            nextProps.history.push('/403')
         }
-        return res.length > 0
+        return { auth: true }
     }
     render() {
-        if (this.props.permissionList.length <= 0) {
+        if (this.props.loading) {
             return (
                 <div className='loading'>
                     <Spin tip='玩命加载中。。。' />
@@ -57,7 +58,7 @@ class AdminLayout extends Component<any, IAdminLayoutState> {
             <>
                 <Layout>
                     <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-                        <LeftBar />
+                        <LeftBar permissionList={this.props.permissionList} />
                     </Sider>
                     <Layout className="site-layout">
                         <Header className="site-layout-background" style={{ padding: 0 }}>
@@ -75,7 +76,6 @@ class AdminLayout extends Component<any, IAdminLayoutState> {
                             }}
                         >
                             {this.props.children}
-
                         </Content>
                     </Layout>
                 </Layout>
@@ -87,8 +87,8 @@ interface IStoreState {
     permission: PermissionState
 }
 const mapStateToProps = (state: IStoreState): PermissionState => {
-    if (state.permission.permissionList === undefined) {
-        return { permissionList: [] }
+    if (state.permission.loading) {
+        return { loading: true, permissionList: [] }
     }
     return { ...state.permission };
 }

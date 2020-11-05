@@ -10,5 +10,6 @@ export interface IRoute {
     routes?: IRoute[]
 }
 export interface PermissionState {
+    loading: boolean
     permissionList: IRoute[]
 }
