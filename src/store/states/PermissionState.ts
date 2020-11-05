@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import {ReactNode} from "react";
 
 export interface IRoute {
     id: string,
@@ -9,6 +9,7 @@ export interface IRoute {
     extend?: boolean
     routes?: IRoute[]
 }
+
 export interface PermissionState {
     loading: boolean
     permissionList: IRoute[]

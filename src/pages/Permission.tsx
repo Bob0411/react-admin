@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Tree, Spin, Modal, Input } from 'antd';
-import { getRoleDetail, saveRole } from "../api/role";
+import React, {Component} from "react";
+import {Tree, Spin, Modal, Input} from 'antd';
+import {getRoleDetail, saveRole} from "../api/role";
 
 
 interface IPermission {
@@ -40,7 +40,7 @@ class Permission extends Component<IProps, IPermissionState> {
 
     loadPermission = () => {
         getRoleDetail(this.props.roleId).then(response => {
-            const { permissionList, permissionAll } = response.data.data
+            const {permissionList, permissionAll} = response.data.data
             let permissionMap = new Map()
             permissionAll.filter((permission: IPermission) => {
                 permission.key = permission.id
@@ -144,7 +144,7 @@ class Permission extends Component<IProps, IPermissionState> {
                                 onCheck={this.onCheck}
                             />
                             :
-                            <Spin size="large" />
+                            <Spin size="large"/>
                     }
                 </Modal>
             </>

@@ -21,7 +21,7 @@ export const getPermissionList = (dispatch: Dispatch) => {
                 data: {permissionList: permissionList, loading: false}
             });
         })
-    }else {
+    } else {
         dispatch({
             type: PermissionType.SET,
             data: {permissionList: [], loading: false}

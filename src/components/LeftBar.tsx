@@ -1,23 +1,27 @@
-import React, { Component } from 'react'
-import { NavLink, RouteComponentProps, withRouter } from 'react-router-dom'
-import { Menu } from 'antd';
-import { matchPath } from "react-router";
-import { authRoutes } from '../router';
-import { IRoute } from '../store/states/PermissionState';
+import React, {Component} from 'react'
+import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
+import {Menu} from 'antd';
+import {matchPath} from "react-router";
+import {authRoutes} from '../router';
+import {IRoute} from '../store/states/PermissionState';
+
 interface ILeftBarState {
     defaultKeys: string[]
     defaultOpenKeys: string[]
     permissionSet: Set<String>
 }
+
 interface IProps extends RouteComponentProps {
     permissionList: IRoute[]
 }
-class LeftBar extends Component<IProps, ILeftBarState>{
+
+class LeftBar extends Component<IProps, ILeftBarState> {
     state: ILeftBarState = {
         defaultKeys: [],
         defaultOpenKeys: [],
         permissionSet: new Set<String>()
     }
+
     componentDidMount() {
         let path = this.props.history.location.pathname
         authRoutes.forEach((route) => {
@@ -55,10 +59,11 @@ class LeftBar extends Component<IProps, ILeftBarState>{
             permissionSet: permissionSet
         })
     }
+
     render() {
         return (
             <div>
-                <div className="logo" />
+                <div className="logo"/>
                 {
                     this.state.defaultKeys.length > 0 ?
                         < Menu
@@ -114,4 +119,5 @@ class LeftBar extends Component<IProps, ILeftBarState>{
         )
     }
 }
+
 export default withRouter(LeftBar)

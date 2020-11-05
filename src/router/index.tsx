@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react"
+import React, {ReactNode} from "react"
 import AdminList from "../pages/AdminList"
 import Index from "../pages/Index"
 import Login from "../pages/Login"
@@ -11,6 +11,7 @@ import {
     TeamOutlined,
     UserOutlined
 } from '@ant-design/icons';
+
 interface IRoute {
     id: string,
     icon?: ReactNode
@@ -22,27 +23,28 @@ interface IRoute {
     extend?: boolean
     routes?: IRoute[]
 }
+
 export const authRoutes: IRoute[] = [
     {
         id: '1-0',
         path: '/login',
         title: '登录',
         isMenu: 1,
-        component: <Login />
+        component: <Login/>
     },
     {
         id: '2-0',
-        icon: <DashboardOutlined />,
+        icon: <DashboardOutlined/>,
         exact: true,
         path: '/',
         title: '首页',
         isMenu: 1,
         extend: true,
-        component: <Index />
+        component: <Index/>
     },
     {
         id: '3-0',
-        icon: <UserOutlined />,
+        icon: <UserOutlined/>,
         path: '/admin',
         title: '管理员管理',
         extend: true,
@@ -50,17 +52,17 @@ export const authRoutes: IRoute[] = [
         routes: [
             {
                 id: '3-1',
-                icon: <UserOutlined />,
+                icon: <UserOutlined/>,
                 path: '/admin/list',
                 title: '管理员列表',
                 isMenu: 0,
-                component: <AdminList />
+                component: <AdminList/>
             }
         ]
     },
     {
         id: '4-0',
-        icon: <TeamOutlined />,
+        icon: <TeamOutlined/>,
         path: '/role',
         title: '角色管理',
         extend: true,
@@ -68,11 +70,11 @@ export const authRoutes: IRoute[] = [
         routes: [
             {
                 id: '4-1',
-                icon: < DashboardTwoTone />,
+                icon: < DashboardTwoTone/>,
                 path: '/role/list',
                 title: '角色列表',
                 isMenu: 0,
-                component: <RoleList />
+                component: <RoleList/>
             }
         ]
     },
@@ -81,13 +83,13 @@ export const authRoutes: IRoute[] = [
         path: '/403',
         title: '403',
         isMenu: 0,
-        component: <Page403 />
+        component: <Page403/>
     },
     {
         id: '6666666666666666-0',
         path: '*',
         title: '404',
         isMenu: 0,
-        component: <Page404 />
+        component: <Page404/>
     }
 ]

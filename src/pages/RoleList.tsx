@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from "react";
-import { Space, Table, Button, message, Popconfirm } from 'antd';
-import { deleteRole, getRoleList } from "../api/role";
+import React, {Component, Fragment} from "react";
+import {Space, Table, Button, message, Popconfirm} from 'antd';
+import {deleteRole, getRoleList} from "../api/role";
 import Permission from "./Permission";
-import { default as PermissionCheck } from '../components/Permission'
+import {default as PermissionCheck} from '../components/Permission'
 
 interface IRole {
     id: number,
@@ -19,7 +19,7 @@ interface IDeleteRoleProps extends IRole {
 class DeleteRole extends Component<IDeleteRoleProps, any> {
     deleteRole = () => {
         deleteRole(this.props.id).then(response => {
-            const { code, msg } = response.data
+            const {code, msg} = response.data
             if (code === 1) {
                 message.error(msg)
             } else {
@@ -60,7 +60,7 @@ interface IState {
 class RoleList extends Component<any, IState> {
     constructor(props: any, context: any) {
         super(props, context);
-        this.state = { page: 1, roleList: [], total: 0, perPage: 15, showP: false }
+        this.state = {page: 1, roleList: [], total: 0, perPage: 15, showP: false}
     }
 
     onChange = (page: number) => {
@@ -69,7 +69,7 @@ class RoleList extends Component<any, IState> {
 
     getRoleList(page: number = 1) {
         getRoleList().then(response => {
-            const { data } = response.data
+            const {data} = response.data
             data.map((role: IRole) => (
                 role.key = role.id
             ))
@@ -121,8 +121,8 @@ class RoleList extends Component<any, IState> {
                                 {...role}
                                 refresh={() => {
                                     this.getRoleList(this.state.page)
-                                }} />
-                        } />
+                                }}/>
+                        }/>
                         <PermissionCheck path='editRole' children={
                             <Button type='primary' onClick={() => {
                                 this.setState({
@@ -130,7 +130,7 @@ class RoleList extends Component<any, IState> {
                                     showP: true
                                 })
                             }}>编辑</Button>
-                        } />
+                        }/>
                     </Space>
                 ),
             },
@@ -143,7 +143,7 @@ class RoleList extends Component<any, IState> {
                         <Permission
                             roleId={this.state.role.id}
                             roleName={this.state.role.roleName}
-                            callback={this.editRoleCallback} /> : ''
+                            callback={this.editRoleCallback}/> : ''
                 }
 
                 <Table

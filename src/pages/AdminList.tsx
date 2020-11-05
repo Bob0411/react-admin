@@ -1,15 +1,18 @@
-import React, { Component } from 'react'
-import { Button, Space, Table, Popconfirm, message, Modal, Form, Input, Select } from 'antd'
-import { deleteAdmin, getAdminList, updateAdmin } from '../api/admin'
+import React, {Component} from 'react'
+import {Button, Space, Table, Popconfirm, message, Modal, Form, Input, Select} from 'antd'
+import {deleteAdmin, getAdminList, updateAdmin} from '../api/admin'
 import Permission from '../components/Permission'
-import { getRoleList } from '../api/role'
+import {getRoleList} from '../api/role'
+
 interface IDeleteAdminPropos {
     admin: IAdmin
     callback: (admin: IAdmin) => void
 }
+
 interface IDeleteAdminState {
     visibleDelete: boolean
 }
+
 class DeleteAdmin extends Component<IDeleteAdminPropos, IDeleteAdminState> {
     state: IDeleteAdminState = {
         visibleDelete: false
@@ -25,7 +28,7 @@ class DeleteAdmin extends Component<IDeleteAdminPropos, IDeleteAdminState> {
         })
         if (this.props.admin) {
             deleteAdmin(this.props.admin.id).then(response => {
-                const { code, msg } = response.data
+                const {code, msg} = response.data
                 if (code === 0) {
                     message.success('删除成功！')
                     this.props.callback(this.props.admin)
@@ -41,16 +44,17 @@ class DeleteAdmin extends Component<IDeleteAdminPropos, IDeleteAdminState> {
         })
         message.info('你取消了删除！')
     }
+
     render() {
         return (
             <div>
                 <Popconfirm title='你确定要删除管理员吗？删除后不可以恢复！'
-                    visible={this.state.visibleDelete}
-                    okText="删除"
-                    placement="topRight"
-                    onConfirm={this.confirm}
-                    onCancel={this.cancel}
-                    cancelText="取消"
+                            visible={this.state.visibleDelete}
+                            okText="删除"
+                            placement="topRight"
+                            onConfirm={this.confirm}
+                            onCancel={this.cancel}
+                            cancelText="取消"
                 >
                     <Button type='primary' onClick={this.deleteAdmin} danger>删除</Button>
                 </Popconfirm>
@@ -58,10 +62,12 @@ class DeleteAdmin extends Component<IDeleteAdminPropos, IDeleteAdminState> {
         )
     }
 }
+
 interface IRole {
     id: number
     roleName: string
 }
+
 interface IAdminListState {
     adminList: IAdmin[]
     roleList: IRole[]
@@ -71,19 +77,22 @@ interface IAdminListState {
     total: number
     visible: boolean
 }
+
 interface IAdmin {
     id: number
     roleId: number
     name: string
     password: string
 }
+
 const layout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 16 },
+    labelCol: {span: 4},
+    wrapperCol: {span: 16},
 };
 const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
+    wrapperCol: {offset: 8, span: 16},
 };
+
 class AdminList extends Component<any, IAdminListState> {
     state: IAdminListState = {
         adminList: [],
@@ -93,17 +102,20 @@ class AdminList extends Component<any, IAdminListState> {
         total: 0,
         visible: false
     }
+
     componentDidMount() {
         this.getAdminList()
     }
+
     getRoleList() {
         getRoleList().then(response => {
-            const { data } = response.data
+            const {data} = response.data
             this.setState({
                 roleList: data
             })
         })
     }
+
     deleteAdminCallback = (admin: IAdmin) => {
         this.setState({
             adminList: this.state.adminList.filter(a => a.id !== admin.id)
@@ -135,7 +147,7 @@ class AdminList extends Component<any, IAdminListState> {
                 delete admin.password
             }
             updateAdmin(this.state.admin?.id, admin).then(response => {
-                const { code, msg } = response.data
+                const {code, msg} = response.data
                 if (code === 0) {
                     message.success(msg)
                     this.setState({
@@ -151,7 +163,7 @@ class AdminList extends Component<any, IAdminListState> {
     }
     getAdminList = (page: number = 1) => {
         getAdminList(page).then(response => {
-            const { data: { currentPage, data, total, perPage } } = response.data
+            const {data: {currentPage, data, total, perPage}} = response.data
             this.setState({
                 page: currentPage,
                 adminList: data,
@@ -165,9 +177,10 @@ class AdminList extends Component<any, IAdminListState> {
     }
     changeForm = (value: any) => {
         this.setState({
-            admin: { ...this.state.admin, ...value }
+            admin: {...this.state.admin, ...value}
         })
     }
+
     render() {
         return (
             <div>
@@ -185,7 +198,11 @@ class AdminList extends Component<any, IAdminListState> {
                             <Form
                                 {...layout}
                                 name="basic"
-                                initialValues={{ name: this.state.admin?.name, password: '', roleId: this.state.admin.roleId }}
+                                initialValues={{
+                                    name: this.state.admin?.name,
+                                    password: '',
+                                    roleId: this.state.admin.roleId
+                                }}
                                 onFinish={this.saveAdmin}
                                 onValuesChange={this.changeForm}
                                 onFinishFailed={this.saveFailed}
@@ -193,9 +210,9 @@ class AdminList extends Component<any, IAdminListState> {
                                 <Form.Item
                                     label="名称"
                                     name="name"
-                                    rules={[{ required: true, message: '请输入管理员名称' }]}
+                                    rules={[{required: true, message: '请输入管理员名称'}]}
                                 >
-                                    <Input />
+                                    <Input/>
                                 </Form.Item>
 
                                 <Form.Item
@@ -216,7 +233,7 @@ class AdminList extends Component<any, IAdminListState> {
                                         }
                                     }]}
                                 >
-                                    <Input.Password />
+                                    <Input.Password/>
                                 </Form.Item>
                                 <Form.Item
                                     label='角色'
@@ -227,7 +244,8 @@ class AdminList extends Component<any, IAdminListState> {
                                         showSearch
                                     >
                                         {
-                                            this.state.roleList.map((role) => (<Select.Option value={role.id} key={role.id}>{role.roleName}</Select.Option>))
+                                            this.state.roleList.map((role) => (<Select.Option value={role.id}
+                                                                                              key={role.id}>{role.roleName}</Select.Option>))
                                         }
                                     </Select>
                                 </Form.Item>
@@ -269,11 +287,13 @@ class AdminList extends Component<any, IAdminListState> {
                         render={(admin: IAdmin) => (
                             <Space size="middle">
                                 <Permission path='editAdmin'
-                                    children={<Button onClick={() => { this.editAdmin(admin) }} type='primary'>编辑</Button>}
+                                            children={<Button onClick={() => {
+                                                this.editAdmin(admin)
+                                            }} type='primary'>编辑</Button>}
                                 />
                                 <Permission
                                     path='deleteAdmin'
-                                    children={<DeleteAdmin admin={admin} callback={this.deleteAdminCallback} />}
+                                    children={<DeleteAdmin admin={admin} callback={this.deleteAdminCallback}/>}
                                 />
                             </Space>
                         )}
@@ -284,4 +304,5 @@ class AdminList extends Component<any, IAdminListState> {
         )
     }
 }
+
 export default AdminList

@@ -1,59 +1,64 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import 'antd/dist/antd.css';
 import './App.css';
 import AuthView from './components/AuthView';
-import { Spin } from 'antd';
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
-import { syncAdminInfo } from './store/actions/AdminAction';
-import { AdminState } from './store/states/AdminState';
-import { getPermissionList } from './store/actions/PermissionAction';
+import {Spin} from 'antd';
+import {connect} from 'react-redux'
+import {Dispatch} from 'redux'
+import {syncAdminInfo} from './store/actions/AdminAction';
+import {AdminState} from './store/states/AdminState';
+import {getPermissionList} from './store/actions/PermissionAction';
+
 interface IAppState {
-  loading: boolean
+    loading: boolean
 }
+
 interface IProps extends AdminState {
-  getAdminInfo: () => void
-  getPermissionList: () => void
+    getAdminInfo: () => void
+    getPermissionList: () => void
 
 }
+
 class App extends Component<IProps, IAppState> {
-  state: IAppState = {
-    loading: true
-  }
-  componentDidMount() {
-    this.props.getAdminInfo()
-    this.props.getPermissionList()
-  }
-  render() {
-    if (this.props.loading) {
-      return (
-        <div className='loading'>
-          <Spin tip='玩命加载中。。。' />
-        </div>
-      )
+    state: IAppState = {
+        loading: true
     }
-    return (
-      <div>
-        <AuthView />
-      </div>
-    )
-  }
+
+    componentDidMount() {
+        this.props.getAdminInfo()
+        this.props.getPermissionList()
+    }
+
+    render() {
+        if (this.props.loading) {
+            return (
+                <div className='loading'>
+                    <Spin tip='玩命加载中。。。'/>
+                </div>
+            )
+        }
+        return (
+            <div>
+                <AuthView/>
+            </div>
+        )
+    }
 }
 
 interface IStoreState {
-  admin: AdminState
+    admin: AdminState
 }
 
 const mapStateToProps = (state: IStoreState): AdminState => {
-  return { ...state.admin };
+    return {...state.admin};
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getAdminInfo: () => {
-    syncAdminInfo(dispatch)
-  },
-  getPermissionList: () => {
-    getPermissionList(dispatch)
-  }
+    getAdminInfo: () => {
+        syncAdminInfo(dispatch)
+    },
+    getPermissionList: () => {
+        getPermissionList(dispatch)
+    }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(App);

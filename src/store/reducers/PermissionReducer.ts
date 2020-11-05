@@ -1,6 +1,7 @@
-import { PermissionType } from '../types/PermissionType';
-import { PermissionAction } from '../actions/PermissionAction';
-import { PermissionState } from '../states/PermissionState';
+import {PermissionType} from '../types/PermissionType';
+import {PermissionAction} from '../actions/PermissionAction';
+import {PermissionState} from '../states/PermissionState';
+
 const initPermissionState: PermissionState = {
     loading: true,
     permissionList: []
@@ -8,9 +9,9 @@ const initPermissionState: PermissionState = {
 const permission = (state: PermissionState = initPermissionState, action: PermissionAction) => {
     switch (action.type) {
         case PermissionType.GET:
-            return { ...state }
+            return {...state}
         case PermissionType.SET:
-            return { ...state, ...action.data }
+            return {...state, ...action.data}
         default:
             return state
     }
