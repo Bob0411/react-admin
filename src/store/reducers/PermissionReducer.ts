@@ -1,6 +1,6 @@
 import { PermissionType } from '../types/PermissionType';
-import { PermissionAction } from './../actions/PermissionAction';
-import { PermissionState } from './../states/PermissionState';
+import { PermissionAction } from '../actions/PermissionAction';
+import { PermissionState } from '../states/PermissionState';
 const initPermissionState: PermissionState = {
     loading: true,
     permissionList: []

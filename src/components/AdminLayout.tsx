@@ -92,12 +92,6 @@ interface IStoreState {
     permission: PermissionState
 }
 const mapStateToProps = (state: IStoreState): PermissionState => {
-    if (state.permission.loading) {
-        return { loading: true, permissionList: [] }
-    }
-    if (state.permission.permissionList === undefined) {
-        return { loading: false, permissionList: [] }
-    }
     return { ...state.permission };
 }
 export default connect(mapStateToProps)(withRouter(AdminLayout))

@@ -1,6 +1,6 @@
 import { AdminType } from './../types/AdminType';
-import { AdminAction } from './../actions/AdminAction';
-import { AdminState } from './../states/AdminState';
+import { AdminAction } from '../actions/AdminAction';
+import { AdminState } from '../states/AdminState';
 const initAdminState: AdminState = {
     loading: true,
     id: 0,
