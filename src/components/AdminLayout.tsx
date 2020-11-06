@@ -76,13 +76,9 @@ class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
                             <LeftBar permissionList={this.props.permissionList}/>
                         </Sider>
                         <Layout className="site-layout">
-                            {/*{React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {*/}
-                            {/*    className: 'trigger',*/}
-                            {/*    onClick: this.toggle,*/}
-                            {/*})}*/}
                             <span className={'trigger'} onClick={this.toggle}>
                                 {
-                                    this.state.collapsed?
+                                    this.state.collapsed ?
                                         <MenuUnfoldOutlined/>
                                         :
                                         <MenuFoldOutlined/>

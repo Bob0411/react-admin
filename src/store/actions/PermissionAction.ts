@@ -1,5 +1,5 @@
-import {PermissionType} from './../types/PermissionType';
-import {getAdminInfo} from './../../api/index';
+import {PermissionType} from '../types/PermissionType';
+import {getAdminInfo} from '../../api';
 import {Dispatch} from 'redux'
 import {get} from "../../utils/storage";
 

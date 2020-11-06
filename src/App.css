@@ -38,3 +38,15 @@
     margin: 16px 24px 16px 0;
     background: rgba(255, 255, 255, 0.3);
 }
+
+.admin {
+    color: white;
+    float: right;
+    width: auto;
+    height: 100%;
+    margin: 0 auto;
+}
+.admin .admin-name{
+    margin-left: 2px;
+    margin-right: 2px;
+}
