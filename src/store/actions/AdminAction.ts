@@ -1,6 +1,6 @@
-import {getAdminInfo} from './../../api/index';
-import {get, rm, set} from './../../utils/storage';
-import {AdminType} from './../types/AdminType';
+import {getAdminInfo} from '../../api';
+import {get, rm} from '../../utils/storage';
+import {AdminType} from '../types/AdminType';
 import {Dispatch} from 'redux'
 
 export interface AdminAction {
@@ -8,9 +8,7 @@ export interface AdminAction {
     data?: any
 }
 
-export const doLogin = (dispatch: Dispatch, data: any) => {
-    const {accessToken, admin} = data
-    set('token', accessToken)
+export const doLogin = (dispatch: Dispatch, admin: any) => {
     dispatch({type: AdminType.LOGIN, data: admin})
 }
 export const logout = (dispatch: Dispatch) => {

@@ -6,6 +6,7 @@ import {Dispatch} from 'redux'
 import {doLogin, syncAdminInfo} from '../store/actions/AdminAction';
 import {RouteComponentProps, withRouter} from "react-router";
 import {getPermissionList} from '../store/actions/PermissionAction';
+import {set} from "../utils/storage";
 
 const layout = {
     labelCol: {span: 8},
@@ -33,7 +34,11 @@ class Login extends Component<IProps, IState> {
     }
     onFinish = (values: IState) => {
         login(values).then(response => {
-            this.props.login(response.data.data)
+            const {accessToken, admin} = response.data.data
+            set('token', accessToken)
+            return admin
+        }).then(admin => {
+            this.props.login(admin)
             this.props.getAdminInfo()
             this.props.getPermissionList()
             this.props.history.replace('/')
