@@ -58,9 +58,11 @@ interface IState {
 }
 
 class RoleList extends Component<any, IState> {
-    constructor(props: any, context: any) {
-        super(props, context);
-        this.state = {page: 1, roleList: [], total: 0, perPage: 15, showP: false}
+    state: IState = {page: 1, roleList: [], total: 0, perPage: 15, showP: false}
+
+    constructor(props: any) {
+        super(props);
+        this.getRoleList()
     }
 
     onChange = (page: number) => {
@@ -77,11 +79,6 @@ class RoleList extends Component<any, IState> {
                 roleList: data,
             })
         })
-    }
-
-
-    componentDidMount() {
-        this.getRoleList()
     }
 
     editRoleCallback = (roleName?: string) => {

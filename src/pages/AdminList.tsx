@@ -103,10 +103,10 @@ class AdminList extends Component<any, IAdminListState> {
         visible: false
     }
 
-    componentDidMount() {
+    constructor(props: any) {
+        super(props);
         this.getAdminList()
     }
-
     getRoleList() {
         getRoleList().then(response => {
             const {data} = response.data

@@ -5,6 +5,7 @@ import {AdminState} from '../states/AdminState';
 const initAdminState: AdminState = {
     loading: true,
     id: 0,
+    avatar: '',
     name: ''
 }
 const admin = (state: AdminState = initAdminState, action: AdminAction): AdminState => {
