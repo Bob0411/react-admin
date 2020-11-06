@@ -80,7 +80,7 @@ class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
                             {/*    className: 'trigger',*/}
                             {/*    onClick: this.toggle,*/}
                             {/*})}*/}
-                            <span className={'trigger'} onClick={this.toggle} style={{marginLeft:'8px',float:"left",height:'100%'}}>
+                            <span className={'trigger'} onClick={this.toggle}>
                                 {
                                     this.state.collapsed?
                                         <MenuUnfoldOutlined/>
@@ -88,7 +88,7 @@ class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
                                         <MenuFoldOutlined/>
                                 }
                             </span>
-                            <Breadcrumb style={{ margin: '8px 16px' }}>
+                            <Breadcrumb className={'bread-crumb'}>
                                 <Breadcrumb.Item>Home</Breadcrumb.Item>
                                 <Breadcrumb.Item>List</Breadcrumb.Item>
                                 <Breadcrumb.Item>App</Breadcrumb.Item>

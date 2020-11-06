@@ -1,16 +1,22 @@
-#components-layout-demo-custom-trigger .trigger {
+.trigger {
     font-size: 18px;
-    line-height: 64px;
-    padding: 0 24px;
     cursor: pointer;
     transition: color 0.3s;
+    position: fixed;
+    float: left;
 }
 
-#components-layout-demo-custom-trigger .trigger:hover {
+.bread-crumb {
+    position: absolute;
+    float: left;
+    margin-left: 26px;
+}
+
+.trigger:hover {
     color: #1890ff;
 }
 
-#components-layout-demo-custom-trigger .logo {
+.logo {
     height: 32px;
     background: rgba(255, 255, 255, 0.3);
     margin: 16px;
@@ -24,6 +30,7 @@
     margin: 0 auto;
     text-align: center;
 }
+
 #components-layout-demo-top-side-2 .logo {
     float: left;
     width: 120px;
