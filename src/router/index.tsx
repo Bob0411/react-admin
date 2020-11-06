@@ -27,16 +27,6 @@ interface IRoute {
 
 export const authRoutes: IRoute[] = [
     {
-        id: '1-0',
-        redirect: '/admin/dashboard',
-        icon: <DashboardOutlined/>,
-        exact: true,
-        path: '/',
-        title: '首页',
-        isMenu: 1,
-        extend: true,
-    },
-    {
         id: '1-1',
         icon: <DashboardOutlined/>,
         exact: true,
