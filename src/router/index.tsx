@@ -14,6 +14,7 @@ import {
 
 interface IRoute {
     id: string,
+    redirect?: string
     icon?: ReactNode
     exact?: boolean
     path: string
@@ -27,25 +28,28 @@ interface IRoute {
 export const authRoutes: IRoute[] = [
     {
         id: '1-0',
-        path: '/login',
-        title: '登录',
-        isMenu: 1,
-        component: <Login/>
-    },
-    {
-        id: '2-0',
+        redirect: '/admin/dashboard',
         icon: <DashboardOutlined/>,
         exact: true,
         path: '/',
         title: '首页',
         isMenu: 1,
         extend: true,
+    },
+    {
+        id: '1-1',
+        icon: <DashboardOutlined/>,
+        exact: true,
+        path: '/admin/dashboard',
+        title: '仪表盘',
+        isMenu: 0,
+        extend: true,
         component: <Index/>
     },
     {
         id: '3-0',
         icon: <UserOutlined/>,
-        path: '/admin',
+        path: '/admin/list',
         title: '管理员管理',
         extend: true,
         isMenu: 1,
@@ -53,7 +57,7 @@ export const authRoutes: IRoute[] = [
             {
                 id: '3-1',
                 icon: <UserOutlined/>,
-                path: '/admin/list',
+                path: '/admin/admin/list',
                 title: '管理员列表',
                 isMenu: 0,
                 component: <AdminList/>
@@ -63,20 +67,29 @@ export const authRoutes: IRoute[] = [
     {
         id: '4-0',
         icon: <TeamOutlined/>,
-        path: '/role',
+        path: '/admin/role',
         title: '角色管理',
         extend: true,
         isMenu: 1,
         routes: [
             {
                 id: '4-1',
-                icon: < DashboardTwoTone/>,
-                path: '/role/list',
+                icon: <DashboardTwoTone/>,
+                path: '/admin/role/list',
                 title: '角色列表',
                 isMenu: 0,
                 component: <RoleList/>
             }
         ]
+    }
+]
+export const unAuthRouters: IRoute[] = [
+    {
+        id: '0-0',
+        path: '/login',
+        title: '登录',
+        isMenu: 1,
+        component: <Login/>
     },
     {
         id: '55555555555555555-0',

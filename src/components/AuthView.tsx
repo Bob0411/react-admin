@@ -1,7 +1,10 @@
 import React, {Component} from 'react'
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
-import {authRoutes} from '../router'
+import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom'
+import {authRoutes, unAuthRouters} from '../router'
 import AdminLayout from './AdminLayout'
+import Page404 from "../pages/Page404";
+import Page403 from "../pages/Page403";
+import Login from "../pages/Login";
 
 class AuthView extends Component {
     render() {
@@ -9,26 +12,48 @@ class AuthView extends Component {
             <div>
                 <Router>
                     <Switch>
-                        {
-                            authRoutes.map((route) => (
-                                <Route path={route.path} key={route.id} exact={route.exact}>
-                                    <Switch>
-                                        {
-                                            route.extend ?
-                                                <AdminLayout>
-                                                    {route.component}
+                        <Route path={'/'} exact>
+                            <Redirect to={'/admin/dashboard'}/>
+                        </Route>
+                        <Route path={'/admin'}>
+                            <Switch>
+                                <AdminLayout>
+                                    {
+                                        authRoutes.map((route) => {
+                                            if (route.routes) {
+                                                return (
+                                                    <div key={route.id}>
+                                                        {
+                                                            route.routes.map((r) => (
+                                                                <Route path={r.path} exact={r.exact} key={r.id}>
+                                                                    {r.component}
+                                                                </Route>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                )
+                                            }
+                                            return (
+                                                <Route path={route.path} exact={route.exact} key={route.id}>
                                                     {
-                                                        route.routes?.map((r) => {
-                                                            return (
-                                                                <Route path={r.path} key={r.id} children={r.component}/>
-                                                            )
-                                                        })
+                                                        route.redirect ?
+                                                            <Redirect to={route.redirect} from={route.path}/>
+                                                            :
+                                                            route.component
                                                     }
-                                                </AdminLayout>
-                                                :
-                                                route.component
-                                        }
-                                    </Switch>
+                                                </Route>
+                                            )
+                                        })
+                                    }
+                                </AdminLayout>
+                            </Switch>
+                        </Route>
+                        {
+                            unAuthRouters.map((route) => (
+                                <Route path={route.path} key={route.id}>
+                                    {
+                                        route.component
+                                    }
                                 </Route>
                             ))
                         }
