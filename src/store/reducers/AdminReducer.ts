@@ -4,9 +4,11 @@ import {AdminState} from '../states/AdminState';
 
 const initAdminState: AdminState = {
     loading: true,
-    id: 0,
-    avatar: '',
-    name: ''
+    admin: {
+        id: 0,
+        avatar: '',
+        name: ''
+    }
 }
 const admin = (state: AdminState = initAdminState, action: AdminAction): AdminState => {
     switch (action.type) {
@@ -17,7 +19,7 @@ const admin = (state: AdminState = initAdminState, action: AdminAction): AdminSt
         case AdminType.SET:
             return {...state, ...action.data}
         case AdminType.LOGIN:
-            return {...state}
+            return {...state, ...action.data}
         default:
             return state
     }

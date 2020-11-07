@@ -38,7 +38,7 @@ class TopHeader extends Component<IProps, any> {
                         <div>
                             <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>
                             <span className={'admin-name'}>
-                            {this.props.name}
+                                {this.props.admin.name}
                             </span>
                             <DownOutlined/>
                         </div>

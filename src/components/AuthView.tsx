@@ -2,9 +2,6 @@ import React, {Component} from 'react'
 import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom'
 import {authRoutes, unAuthRouters} from '../router'
 import AdminLayout from './AdminLayout'
-import Page404 from "../pages/Page404";
-import Page403 from "../pages/Page403";
-import Login from "../pages/Login";
 
 class AuthView extends Component {
     render() {

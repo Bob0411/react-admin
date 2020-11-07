@@ -9,7 +9,7 @@ export interface AdminAction {
 }
 
 export const doLogin = (dispatch: Dispatch, admin: any) => {
-    dispatch({type: AdminType.LOGIN, data: admin})
+    dispatch({type: AdminType.LOGIN, data: {admin, loading: false}})
 }
 export const logout = (dispatch: Dispatch) => {
     rm('token')
@@ -28,7 +28,7 @@ export const syncAdminInfo = (dispatch: Dispatch) => {
             const {admin} = response.data.data
             dispatch({
                 type: AdminType.SET,
-                data: {...admin, loading: false}
+                data: {admin:admin, loading: false}
             })
         });
     } else {

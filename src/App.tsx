@@ -8,10 +8,8 @@ import {Dispatch} from 'redux'
 import {syncAdminInfo} from './store/actions/AdminAction';
 import {AdminState} from './store/states/AdminState';
 import {getPermissionList} from './store/actions/PermissionAction';
+import {PermissionState} from './store/states/PermissionState'
 
-interface IAppState {
-    loading: boolean
-}
 
 interface IProps extends AdminState {
     getAdminInfo: () => void
@@ -19,40 +17,48 @@ interface IProps extends AdminState {
 
 }
 
-class App extends Component<IProps, IAppState> {
-    state: IAppState = {
-        loading: true
+class App extends Component<IProps, any> {
+    constructor(props: IProps) {
+        super(props);
+        if (this.props.loading) {
+            this.props.getAdminInfo();
+            this.props.getPermissionList()
+        }
     }
 
-    componentDidMount() {
-        this.props.getAdminInfo()
-        this.props.getPermissionList()
+    shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<any>, nextContext: any): boolean {
+        return !nextProps.loading;
     }
 
     render() {
         if (this.props.loading) {
             return (
-                <div className='loading'>
-                    <Spin tip='玩命加载中。。。'/>
-                </div>
+                <>
+                    <Spin/>
+                </>
             )
         }
         return (
-            <div>
-                <AuthView/>
-            </div>
-        )
+            <AuthView/>
+        );
     }
+
 }
 
 interface IStoreState {
     admin: AdminState
+    permission: PermissionState
 }
 
-const mapStateToProps = (state: IStoreState): AdminState => {
-    return {...state.admin};
+interface IStateProps extends AdminState, PermissionState {
 }
 
+const mapStateToProps = (state: IStoreState): IStateProps => {
+    if (!state.admin.loading && !state.permission.loading) {
+        return {...state.admin, ...state.permission};
+    }
+    return {...state.admin, ...state.permission, loading: true};
+}
 const mapDispatchToProps = (dispatch: Dispatch) => ({
     getAdminInfo: () => {
         syncAdminInfo(dispatch)

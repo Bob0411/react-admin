@@ -71,7 +71,6 @@ class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
                 <Layout>
                     <TopHeader/>
                     <Layout>
-
                         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
                             <LeftBar permissionList={this.props.permissionList}/>
                         </Sider>
