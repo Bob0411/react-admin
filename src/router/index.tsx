@@ -4,7 +4,7 @@ import Index from "../pages/Index"
 import Login from "../pages/Login"
 import Page404 from "../pages/Page404"
 import Page403 from "../pages/Page403"
-import RoleList from '../pages/RoleList'
+import RoleList from '../pages/RoleList/RoleList'
 import {
     DashboardTwoTone,
     DashboardOutlined,
