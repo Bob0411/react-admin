@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import 'antd/dist/antd.css';
 import './App.css';
-import AuthView from './components/AuthView';
+import View from './components/View';
 import {Spin} from 'antd';
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
@@ -39,7 +39,7 @@ class App extends Component<IProps, any> {
             )
         }
         return (
-            <AuthView/>
+            <View/>
         );
     }
 

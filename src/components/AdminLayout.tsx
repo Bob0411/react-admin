@@ -1,5 +1,5 @@
 import React, {Component, ReactNode} from 'react'
-import {Breadcrumb, Layout, Spin} from 'antd';
+import {Layout, Spin} from 'antd';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
@@ -9,6 +9,7 @@ import {withRouter, matchPath, RouteComponentProps} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {IRoute, PermissionState} from '../store/states/PermissionState'
 import TopHeader from "./TopHeader";
+import Bread from "./Bread";
 
 const {Sider, Content} = Layout;
 
@@ -52,7 +53,7 @@ class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
             return match !== null
         })
         if (res.length <= 0) {
-            // nextProps.history.push('/403')
+            nextProps.history.push('/403')
             return {auth: false}
         }
         return {auth: true}
@@ -83,11 +84,7 @@ class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
                                         <MenuFoldOutlined/>
                                 }
                             </span>
-                            <Breadcrumb className={'bread-crumb'}>
-                                <Breadcrumb.Item>Home</Breadcrumb.Item>
-                                <Breadcrumb.Item>List</Breadcrumb.Item>
-                                <Breadcrumb.Item>App</Breadcrumb.Item>
-                            </Breadcrumb>
+                            <Bread/>
                             <Content
                                 className="site-layout-background"
                                 style={{

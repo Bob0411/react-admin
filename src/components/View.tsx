@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom
 import {authRoutes, unAuthRouters} from '../router'
 import AdminLayout from './AdminLayout'
 
-class AuthView extends Component {
+class View extends Component {
     render() {
         return (
             <div>
@@ -61,4 +61,4 @@ class AuthView extends Component {
     }
 }
 
-export default AuthView
+export default View
