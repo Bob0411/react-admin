@@ -7,7 +7,9 @@ const initAdminState: AdminState = {
     admin: {
         id: 0,
         avatar: '',
-        name: ''
+        name: '',
+        roleId: 0,
+        password: ''
     }
 }
 const admin = (state: AdminState = initAdminState, action: AdminAction): AdminState => {

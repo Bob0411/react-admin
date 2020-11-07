@@ -1,67 +1,10 @@
 import React, {Component} from 'react'
 import {Button, Space, Table, Popconfirm, message, Modal, Form, Input, Select} from 'antd'
-import {deleteAdmin, getAdminList, updateAdmin} from '../api/admin'
-import Permission from '../components/Permission'
-import {getRoleList} from '../api/role'
-
-interface IDeleteAdminPropos {
-    admin: IAdmin
-    callback: (admin: IAdmin) => void
-}
-
-interface IDeleteAdminState {
-    visibleDelete: boolean
-}
-
-class DeleteAdmin extends Component<IDeleteAdminPropos, IDeleteAdminState> {
-    state: IDeleteAdminState = {
-        visibleDelete: false
-    }
-    deleteAdmin = () => {
-        this.setState({
-            visibleDelete: true
-        })
-    }
-    confirm = () => {
-        this.setState({
-            visibleDelete: false
-        })
-        if (this.props.admin) {
-            deleteAdmin(this.props.admin.id).then(response => {
-                const {code, msg} = response.data
-                if (code === 0) {
-                    message.success('删除成功！')
-                    this.props.callback(this.props.admin)
-                } else {
-                    message.warn(msg)
-                }
-            })
-        }
-    }
-    cancel = () => {
-        this.setState({
-            visibleDelete: false
-        })
-        message.info('你取消了删除！')
-    }
-
-    render() {
-        return (
-            <div>
-                <Popconfirm title='你确定要删除管理员吗？删除后不可以恢复！'
-                            visible={this.state.visibleDelete}
-                            okText="删除"
-                            placement="topRight"
-                            onConfirm={this.confirm}
-                            onCancel={this.cancel}
-                            cancelText="取消"
-                >
-                    <Button type='primary' onClick={this.deleteAdmin} danger>删除</Button>
-                </Popconfirm>
-            </div>
-        )
-    }
-}
+import {getAdminList, updateAdmin} from '../../api/admin'
+import Permission from '../../components/Permission'
+import {getRoleList} from '../../api/role'
+import DeleteAdmin from "./DeleteAdmin";
+import {IAdmin} from "../../store/states/AdminState";
 
 interface IRole {
     id: number
@@ -76,13 +19,6 @@ interface IAdminListState {
     perPage: number
     total: number
     visible: boolean
-}
-
-interface IAdmin {
-    id: number
-    roleId: number
-    name: string
-    password: string
 }
 
 const layout = {
@@ -107,6 +43,7 @@ class AdminList extends Component<any, IAdminListState> {
         super(props);
         this.getAdminList()
     }
+
     getRoleList() {
         getRoleList().then(response => {
             const {data} = response.data
