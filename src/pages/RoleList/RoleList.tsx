@@ -68,6 +68,10 @@ class RoleList extends Component<any, IState> {
                             callback={this.editRoleCallback}/> : ''
                 }
                 <Table
+                    pagination={{
+                        position: ['bottomCenter'],
+                        hideOnSinglePage: true
+                    }}
                     rowKey={'id'}
                     dataSource={this.state.roleList}
                 >

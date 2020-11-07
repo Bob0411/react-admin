@@ -98,6 +98,7 @@ class AdminList extends Component<any, IAdminListState> {
                     pagination={{
                         position: ['bottomCenter'],
                         total: this.state.total,
+                        hideOnSinglePage: true,
                         defaultCurrent: this.state.page,
                         defaultPageSize: this.state.perPage,
                         showSizeChanger: false,
