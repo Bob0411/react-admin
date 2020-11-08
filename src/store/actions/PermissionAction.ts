@@ -1,7 +1,7 @@
 import {PermissionType} from '../types/PermissionType';
-import {getAdminInfo} from '../../api';
 import {Dispatch} from 'redux'
 import {get} from "../../utils/storage";
+import {getAdminPermissionList} from "../../api/admin";
 
 export interface PermissionAction {
     type: PermissionType,
@@ -14,11 +14,11 @@ export const getPermissionList = (dispatch: Dispatch) => {
             type: PermissionType.SET,
             data: {permissionList: [], loading: true}
         });
-        getAdminInfo().then(response => {
-            const {permissionList} = response.data.data
+        getAdminPermissionList().then(response => {
+            const {data} = response.data
             dispatch({
                 type: PermissionType.SET,
-                data: {permissionList: permissionList, loading: false}
+                data: {permissionList: data, loading: false}
             });
         })
     } else {

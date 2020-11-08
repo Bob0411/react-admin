@@ -25,10 +25,10 @@ export const syncAdminInfo = (dispatch: Dispatch) => {
             data: {loading: true}
         })
         getAdminInfo().then(response => {
-            const {admin} = response.data.data
+            const {data} = response.data
             dispatch({
                 type: AdminType.SET,
-                data: {admin:admin, loading: false}
+                data: {admin:data, loading: false}
             })
         });
     } else {

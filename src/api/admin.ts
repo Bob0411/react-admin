@@ -19,3 +19,8 @@ export const updateAdmin = (adminId: number, data: any) => {
         data: data
     })
 }
+export const getAdminPermissionList = () => {
+    return request({
+        url: '/admin/admin/permission'
+    })
+}
