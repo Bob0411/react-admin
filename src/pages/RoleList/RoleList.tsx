@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Space, Table, Button} from 'antd';
+import {Button, Space, Table} from 'antd';
 import {getRoleList} from "../../api/role";
 import Permission from "../Permission";
 import {default as PermissionCheck} from '../../components/Permission'
@@ -38,6 +38,9 @@ class RoleList extends Component<any, IState> {
         })
     }
 
+    refresh = () => {
+        this.getRoleList()
+    }
     editRoleCallback = (roleName?: string) => {
         this.setState({
             showP: false
@@ -68,7 +71,7 @@ class RoleList extends Component<any, IState> {
                             roleName={this.state.role.roleName}
                             callback={this.editRoleCallback}/> : ''
                 }
-                <RoleAdd/>
+                <RoleAdd refresh={this.refresh}/>
                 <Table
                     pagination={{
                         position: ['bottomCenter'],

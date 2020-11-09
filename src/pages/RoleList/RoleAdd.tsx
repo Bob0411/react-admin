@@ -22,12 +22,15 @@ interface IPermissionState {
     visible: boolean
 }
 
+interface IProps {
+    refresh: () => void
+}
 
 const tailLayout = {
     wrapperCol: {offset: 8, span: 16},
 };
 
-class RoleAdd extends Component<any, IPermissionState> {
+class RoleAdd extends Component<IProps, IPermissionState> {
     formRef = React.createRef<FormInstance>();
 
     state = {
@@ -53,14 +56,15 @@ class RoleAdd extends Component<any, IPermissionState> {
     }
     addRole = (values: IRole) => {
         addRole(values).then(response => {
-            const {code,msg}=response.data
+            const {code, msg} = response.data
             if (code === 1) {
                 message.error(msg)
-            }else {
+            } else {
                 message.success(msg)
                 this.setState({
-                    visible:false
+                    visible: false
                 })
+                this.props.refresh()
             }
         })
     }
@@ -73,7 +77,7 @@ class RoleAdd extends Component<any, IPermissionState> {
                 permission.key = permission.id
                 permission.children = data.filter((p: IPermission) => (p.parentId === permission.id))
                     .map((r: IPermission) => {
-                        r.k = r.id
+                        r.key = r.id
                         r.children = data.filter((t: IPermission) => t.parentId === r.id)
                         return r
                     })
@@ -153,7 +157,7 @@ class RoleAdd extends Component<any, IPermissionState> {
                                     type: "array",
                                     min: 1,
                                     required: true,
-                                    validator: (rule,value) => {
+                                    validator: (rule, value) => {
                                         if (value.length <= 0) {
                                             return Promise.reject('至少要选择一个权限！')
                                         }
