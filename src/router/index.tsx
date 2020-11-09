@@ -21,7 +21,6 @@ interface IRoute {
     title: string
     isMenu: number
     component?: ReactNode,
-    extend?: boolean
     routes?: IRoute[]
 }
 
@@ -33,7 +32,6 @@ export const authRoutes: IRoute[] = [
         path: '/admin/dashboard',
         title: '仪表盘',
         isMenu: 0,
-        extend: true,
         component: <Index/>
     },
     {
@@ -41,7 +39,6 @@ export const authRoutes: IRoute[] = [
         icon: <UserOutlined/>,
         path: '/admin/list',
         title: '管理员管理',
-        extend: true,
         isMenu: 1,
         routes: [
             {
@@ -59,7 +56,6 @@ export const authRoutes: IRoute[] = [
         icon: <TeamOutlined/>,
         path: '/admin/role',
         title: '角色管理',
-        extend: true,
         isMenu: 1,
         routes: [
             {

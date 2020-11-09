@@ -59,7 +59,7 @@ class RoleList extends Component<any, IState> {
 
     render() {
         return (
-            <Fragment>
+            <>
                 {
                     this.state.showP && this.state.role ?
                         <Permission
@@ -112,7 +112,7 @@ class RoleList extends Component<any, IState> {
                         }}
                     />
                 </Table>
-            </Fragment>
+            </>
         )
     }
 }
