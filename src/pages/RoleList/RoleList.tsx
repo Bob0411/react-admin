@@ -71,7 +71,9 @@ class RoleList extends Component<any, IState> {
                             roleName={this.state.role.roleName}
                             callback={this.editRoleCallback}/> : ''
                 }
-                <RoleAdd refresh={this.refresh}/>
+                <PermissionCheck path={'roleAdd'}>
+                    <RoleAdd refresh={this.refresh}/>
+                </PermissionCheck>
                 <Table
                     pagination={{
                         position: ['bottomCenter'],
@@ -97,13 +99,6 @@ class RoleList extends Component<any, IState> {
                         render={(role: IRole) => {
                             return (
                                 <Space>
-                                    <PermissionCheck path='deleteRole'>
-                                        <DeleteRole
-                                            {...role}
-                                            role={role}
-                                            deleteRoleCallback={this.deleteRoleCallback}
-                                        />
-                                    </PermissionCheck>
                                     <PermissionCheck path='editRole'>
                                         <Button type='primary' onClick={() => {
                                             this.setState({
@@ -111,6 +106,13 @@ class RoleList extends Component<any, IState> {
                                                 showP: true
                                             })
                                         }}>编辑</Button>
+                                    </PermissionCheck>
+                                    <PermissionCheck path='deleteRole'>
+                                        <DeleteRole
+                                            {...role}
+                                            role={role}
+                                            deleteRoleCallback={this.deleteRoleCallback}
+                                        />
                                     </PermissionCheck>
                                 </Space>
                             )

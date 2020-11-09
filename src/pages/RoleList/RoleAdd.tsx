@@ -64,6 +64,8 @@ class RoleAdd extends Component<IProps, IPermissionState> {
                 this.setState({
                     visible: false
                 })
+                // @ts-ignore
+                this.formRef.current.resetFields()
                 this.props.refresh()
             }
         })
