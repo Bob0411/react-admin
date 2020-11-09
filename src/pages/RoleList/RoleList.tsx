@@ -1,10 +1,11 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import {Space, Table, Button} from 'antd';
 import {getRoleList} from "../../api/role";
 import Permission from "../Permission";
 import {default as PermissionCheck} from '../../components/Permission'
 import {IRole} from "../interfaces/IRole";
 import DeleteRole from "./DeleteRole";
+import RoleAdd from "./RoleAdd";
 
 
 interface IState {
@@ -67,6 +68,7 @@ class RoleList extends Component<any, IState> {
                             roleName={this.state.role.roleName}
                             callback={this.editRoleCallback}/> : ''
                 }
+                <RoleAdd/>
                 <Table
                     pagination={{
                         position: ['bottomCenter'],
