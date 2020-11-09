@@ -1,19 +1,45 @@
 import React, {Component} from "react";
-import {Button, Form, Input, Modal, Space} from "antd";
+import {Button, Form, Input, Modal, Space, Tree} from "antd";
 import {IRole} from "../interfaces/IRole";
 import {RuleObject} from "antd/es/form";
+import {getAllPermission} from "../../api/permission";
+import {FormInstance} from "antd/lib/form";
 
-interface IRoleAddState {
-    visible: boolean
+
+interface IPermission {
+    id: number
+    key: number
+    isMenu: number
+    parentId: number
+    path: string
+    title: string
+    children: IPermission[]
 }
+
+interface IPermissionState {
+    nodeList: IPermission[]
+    defaultCheckedKeys: number[]
+    defaultSelectedKeys: number[]
+    defaultExpandedKeys: number[]
+    visible: boolean
+    roleName: string
+}
+
 
 const tailLayout = {
     wrapperCol: {offset: 8, span: 16},
 };
 
-class RoleAdd extends Component<any, IRoleAddState> {
-    state: IRoleAddState = {
-        visible: true
+class RoleAdd extends Component<any, IPermissionState> {
+    formRef = React.createRef<FormInstance>();
+
+    state = {
+        nodeList: [],
+        defaultCheckedKeys: [],
+        defaultExpandedKeys: [],
+        defaultSelectedKeys: [],
+        visible: true,
+        roleName: this.props.roleName
     }
     showModal = () => {
         this.setState({
@@ -24,6 +50,8 @@ class RoleAdd extends Component<any, IRoleAddState> {
         this.setState({
             visible: false
         })
+        // @ts-ignore
+        this.formRef.current.resetFields()
     }
     ok = () => {
         this.setState({
@@ -35,6 +63,39 @@ class RoleAdd extends Component<any, IRoleAddState> {
     }
     error = (error: any) => {
     }
+    loadpermissionList = () => {
+        getAllPermission().then(response => {
+            const {data} = response.data
+            let nodeList = data.filter((permission: IPermission) => {
+                permission.key = permission.id
+                permission.children = data.filter((p: IPermission) => (p.parentId === permission.id))
+                    .map((r: IPermission) => {
+                        r.k = r.id
+                        r.children = data.filter((t: IPermission) => t.parentId === r.id)
+                        return r
+                    })
+                return permission.isMenu === 1 && permission.parentId === 0
+            })
+            this.setState({
+                nodeList: nodeList
+            })
+        })
+    }
+
+    selectPermission = (checkedKeys: any, info: any) => {
+        this.setState({
+            defaultCheckedKeys: checkedKeys
+        })
+        // @ts-ignore
+        this.formRef.current.setFieldsValue({
+            permissionList: checkedKeys
+        })
+    };
+
+    componentDidMount() {
+        this.loadpermissionList()
+    }
+
 
     render() {
         return (
@@ -48,7 +109,8 @@ class RoleAdd extends Component<any, IRoleAddState> {
                     onOk={this.ok}
                 >
                     <Form
-                        initialValues={{roleName: ''}}
+                        ref={this.formRef}
+                        initialValues={{roleName: '', permissionList: []}}
                         onFinish={this.addRole}
                         onFinishFailed={this.error}
                     >
@@ -57,33 +119,23 @@ class RoleAdd extends Component<any, IRoleAddState> {
                             rules={[
                                 {
                                     min: 2,
+                                    max: 16,
+                                    required: true,
                                     type: "string",
                                     validator: (rule: RuleObject, value) => {
+
+                                        if (value === '') {
+                                            return Promise.reject('角色名称不可以为空');
+                                        }
                                         // @ts-ignore
                                         if (value.length < rule.min) {
                                             return Promise.reject(`管理员名称长度不可以小于${rule.min}位`);
                                         }
-                                        return Promise.resolve()
-                                    }
-                                },
-                                {
-                                    max: 16,
-                                    type: "string",
-                                    validator: (rule: RuleObject, value) => {
                                         // @ts-ignore
                                         if (value.length > rule.max) {
                                             return Promise.reject(`管理员名称长度不可以大于${rule.max}位`);
                                         }
-                                        return Promise.resolve()
-                                    }
-                                },
-                                {
-                                    type: "string",
-                                    required: true,
-                                    validator: (rule: RuleObject, value) => {
-                                        if (value.length <= 0) {
-                                            return Promise.reject('角色名称不可以为空');
-                                        }
+
                                         return Promise.resolve()
                                     }
                                 }
@@ -93,6 +145,32 @@ class RoleAdd extends Component<any, IRoleAddState> {
                         >
                             <Input/>
                         </Form.Item>
+                        <Form.Item
+                            label={'选择权限'}
+                            name='permissionList'
+                            rules={[
+                                {
+                                    type: "array",
+                                    min: 1,
+                                    required: true,
+                                    validator: (rule) => {
+                                        if (this.state.defaultCheckedKeys.length <= 0) {
+                                            return Promise.reject('至少要选择一个权限！')
+                                        }
+                                        return Promise.resolve()
+                                    }
+                                },
+
+                            ]}
+                        >
+                            <Tree
+                                showLine
+                                checkable
+                                onCheck={this.selectPermission}
+                                treeData={this.state.nodeList}
+                            />
+                        </Form.Item>
+
                         <Form.Item {...tailLayout}>
                             <Space>
                                 <Button type={'primary'} htmlType={'submit'}>

@@ -5,8 +5,9 @@ export interface IRoute {
     exact?: boolean
     path: string
     title: string
-    component?: ReactNode,
-    extend?: boolean
+    parentId?: number
+    isMenu?: number
+    component?: ReactNode
     routes?: IRoute[]
 }
 
