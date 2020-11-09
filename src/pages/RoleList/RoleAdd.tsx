@@ -1,9 +1,10 @@
 import React, {Component} from "react";
-import {Button, Form, Input, Modal, Space, Tree} from "antd";
+import {Button, Form, Input, message, Modal, Space, Tree} from "antd";
 import {IRole} from "../interfaces/IRole";
 import {RuleObject} from "antd/es/form";
 import {getAllPermission} from "../../api/permission";
 import {FormInstance} from "antd/lib/form";
+import {addRole} from "../../api/role";
 
 
 interface IPermission {
@@ -18,11 +19,7 @@ interface IPermission {
 
 interface IPermissionState {
     nodeList: IPermission[]
-    defaultCheckedKeys: number[]
-    defaultSelectedKeys: number[]
-    defaultExpandedKeys: number[]
     visible: boolean
-    roleName: string
 }
 
 
@@ -35,11 +32,7 @@ class RoleAdd extends Component<any, IPermissionState> {
 
     state = {
         nodeList: [],
-        defaultCheckedKeys: [],
-        defaultExpandedKeys: [],
-        defaultSelectedKeys: [],
-        visible: true,
-        roleName: this.props.roleName
+        visible: false
     }
     showModal = () => {
         this.setState({
@@ -59,7 +52,17 @@ class RoleAdd extends Component<any, IPermissionState> {
         })
     }
     addRole = (values: IRole) => {
-        console.log(values)
+        addRole(values).then(response => {
+            const {code,msg}=response.data
+            if (code === 1) {
+                message.error(msg)
+            }else {
+                message.success(msg)
+                this.setState({
+                    visible:false
+                })
+            }
+        })
     }
     error = (error: any) => {
     }
@@ -83,9 +86,6 @@ class RoleAdd extends Component<any, IPermissionState> {
     }
 
     selectPermission = (checkedKeys: any, info: any) => {
-        this.setState({
-            defaultCheckedKeys: checkedKeys
-        })
         // @ts-ignore
         this.formRef.current.setFieldsValue({
             permissionList: checkedKeys
@@ -153,8 +153,8 @@ class RoleAdd extends Component<any, IPermissionState> {
                                     type: "array",
                                     min: 1,
                                     required: true,
-                                    validator: (rule) => {
-                                        if (this.state.defaultCheckedKeys.length <= 0) {
+                                    validator: (rule,value) => {
+                                        if (value.length <= 0) {
                                             return Promise.reject('至少要选择一个权限！')
                                         }
                                         return Promise.resolve()

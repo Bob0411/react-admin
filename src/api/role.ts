@@ -21,10 +21,17 @@ export const getRoleDetail = (roleId: number) => {
 export const saveRole = (roleId: number, roleName: string, permissionList: number[]) => {
     return request({
         url: '/admin/role/' + roleId,
-        method: 'post',
+        method: 'put',
         data: {
             roleName: roleName,
             permissionList: permissionList
         }
+    })
+}
+export const addRole = (data: any) => {
+    return request({
+        url: '/admin/role/add',
+        data: data,
+        method: 'post'
     })
 }
