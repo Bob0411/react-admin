@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Form, Input, message, Modal, Space, Tree} from "antd";
+import {Alert, Button, Form, Input, message, Modal, Space, Tree} from "antd";
 import {RuleObject} from "antd/es/form";
 import {getAllPermission} from "../../api/permission";
 import {FormInstance} from "antd/lib/form";
@@ -150,6 +150,12 @@ class RoleAdd extends Component<IProps, IPermissionState> {
                             label={'角色名称'}
                         >
                             <Input/>
+                        </Form.Item>
+                        <Form.Item>
+                            <Alert
+                                showIcon
+                                message="选中子节点的时候一定要手动选中父级节点，否则不会生效"
+                                type="warning"/>
                         </Form.Item>
                         <Form.Item
                             label={'选择权限'}
