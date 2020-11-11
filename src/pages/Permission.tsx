@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Tree, Spin, Modal, Input} from 'antd';
+import {Alert, Input, Modal, Spin, Tree} from 'antd';
 import {getRoleDetail, saveRole} from "../api/role";
 
 
@@ -95,7 +95,7 @@ class Permission extends Component<IProps, IPermissionState> {
 
     onCheck = (checkedKeys: any, info: any) => {
         this.setState({
-            defaultCheckedKeys: checkedKeys
+            defaultCheckedKeys: checkedKeys.checked
         })
     };
 
@@ -132,9 +132,15 @@ class Permission extends Component<IProps, IPermissionState> {
                             })
                         }}
                     />
+                    <Alert
+                        showIcon
+                        message="选中子节点的时候一定要手动选中父级节点，否则不会生效"
+                        type="warning"/>
                     {
                         this.state.nodeList.length > 0 ?
                             <Tree
+                                defaultExpandAll
+                                checkStrictly
                                 showLine
                                 checkable
                                 treeData={this.state.nodeList}
