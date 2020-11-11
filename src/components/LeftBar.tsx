@@ -34,7 +34,6 @@ class LeftBar extends Component<IProps, ILeftBarState> {
                 return
             }
             if (match !== null) {
-                document.title = route.title
                 this.setState({
                     defaultKeys: [route.id]
                 })
@@ -46,7 +45,6 @@ class LeftBar extends Component<IProps, ILeftBarState> {
                         strict: false
                     })
                     if (match1 !== null) {
-                        document.title = r.title
                         this.setState({
                             defaultKeys: [r.id],
                             defaultOpenKeys: [route.id]

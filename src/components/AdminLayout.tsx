@@ -1,11 +1,8 @@
 import React, {Component, ReactNode} from 'react'
 import {Layout, Spin} from 'antd';
-import {
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
-} from '@ant-design/icons';
+import {MenuFoldOutlined, MenuUnfoldOutlined,} from '@ant-design/icons';
 import LeftBar from './LeftBar';
-import {withRouter, matchPath, RouteComponentProps} from 'react-router-dom'
+import {matchPath, RouteComponentProps, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {IRoute, PermissionState} from '../store/states/PermissionState'
 import TopHeader from "./TopHeader";
@@ -56,6 +53,7 @@ class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
             nextProps.history.push('/403')
             return {auth: false}
         }
+        document.title = res[0].title
         return {auth: true}
     }
 
