@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {Button, Form, Input, message, Modal, Space, Tree} from "antd";
-import {IRole} from "../interfaces/IRole";
 import {RuleObject} from "antd/es/form";
 import {getAllPermission} from "../../api/permission";
 import {FormInstance} from "antd/lib/form";
@@ -54,7 +53,8 @@ class RoleAdd extends Component<IProps, IPermissionState> {
             visible: false
         })
     }
-    addRole = (values: IRole) => {
+    addRole = (values: any) => {
+        console.log(values)
         addRole(values).then(response => {
             const {code, msg} = response.data
             if (code === 1) {
@@ -94,7 +94,7 @@ class RoleAdd extends Component<IProps, IPermissionState> {
     selectPermission = (checkedKeys: any, info: any) => {
         // @ts-ignore
         this.formRef.current.setFieldsValue({
-            permissionList: checkedKeys
+            permissionList: checkedKeys.checked
         })
     };
 
@@ -170,6 +170,8 @@ class RoleAdd extends Component<IProps, IPermissionState> {
                             ]}
                         >
                             <Tree
+                                defaultExpandAll
+                                checkStrictly
                                 showLine
                                 checkable
                                 onCheck={this.selectPermission}
