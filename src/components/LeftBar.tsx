@@ -4,7 +4,7 @@ import {Menu} from 'antd';
 import {matchPath} from "react-router";
 import {authRoutes} from '../router';
 import {IRoute} from '../store/states/PermissionState';
-
+import '../static/css/leftBar.css'
 interface ILeftBarState {
     defaultKeys: string[]
     defaultOpenKeys: string[]

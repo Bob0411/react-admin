@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Form, Input, Button} from 'antd'
+import {Button, Form, Input} from 'antd'
 import {login} from '../api';
 import {connect} from 'react-redux'
 import {Dispatch} from 'redux'
@@ -7,9 +7,10 @@ import {doLogin, syncAdminInfo} from '../store/actions/AdminAction';
 import {RouteComponentProps, withRouter} from "react-router";
 import {getPermissionList} from '../store/actions/PermissionAction';
 import {set} from "../utils/storage";
+import '../static/css/login.css'
 
 const layout = {
-    labelCol: {span: 8},
+    labelCol: {span: 4},
     wrapperCol: {span: 16},
 };
 const tailLayout = {
@@ -51,7 +52,7 @@ class Login extends Component<IProps, IState> {
 
     render() {
         return (
-            <div>
+            <div className='login-form'>
                 <Form
                     ref={null}
                     initialValues={this.state}
@@ -62,21 +63,41 @@ class Login extends Component<IProps, IState> {
                     <Form.Item
                         label="用户名"
                         name="name"
-                        rules={[{required: true, message: 'Please input your username!'}]}
+                        rules={[
+                            {
+                                required: true,
+                                message: '用户名不可以为空'
+                            },
+                            {
+                                type: "string",
+                                min: 2,
+                                message: '用户名长度不可以小于2位'
+                            }
+                        ]}
                     >
                         <Input/>
                     </Form.Item>
                     <Form.Item
                         label="密码"
                         name="password"
-                        rules={[{required: true, message: 'Please input your password!'}]}
+                        rules={[
+                            {
+                                required: true,
+                                message: '密码不可以为空'
+                            },
+                            {
+                                type: "string",
+                                min: 2,
+                                message: '密码长度不可以小于2位'
+                            }
+                        ]}
                     >
                         <Input.Password/>
                     </Form.Item>
 
                     <Form.Item {...tailLayout}>
                         <Button type="primary" htmlType="submit">
-                            Submit
+                            登录
                         </Button>
                     </Form.Item>
                 </Form>
