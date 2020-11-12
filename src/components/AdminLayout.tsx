@@ -7,8 +7,10 @@ import {connect} from 'react-redux'
 import {IRoute, PermissionState} from '../store/states/PermissionState'
 import TopHeader from "./TopHeader";
 import Bread from "./Bread";
+import qr from '../static/img/code.jpg'
+import '../static/css/footer.css'
 
-const {Sider, Content} = Layout;
+const {Sider, Content, Footer} = Layout;
 
 interface IAdminLayoutState {
     collapsed: boolean
@@ -93,9 +95,13 @@ class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
                             >
                                 {this.props.children}
                             </Content>
+                            <Footer className='footer'>
+                                <img className='qr' src={qr} alt='乐编码'/>
+                                乐编码 ©2020 Created by hanyun
+                                1355081829@qq.com
+                            </Footer>
                         </Layout>
                     </Layout>
-
                 </Layout>
             </>
         )
