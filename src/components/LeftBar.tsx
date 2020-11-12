@@ -4,11 +4,12 @@ import {Menu} from 'antd';
 import {matchPath} from "react-router";
 import {authRoutes} from '../router';
 import {IRoute} from '../store/states/PermissionState';
-import '../static/css/leftBar.css'
+
 interface ILeftBarState {
     defaultKeys: string[]
     defaultOpenKeys: string[]
     permissionSet: Set<String>
+    height: number
 }
 
 interface IProps extends RouteComponentProps {
@@ -19,7 +20,8 @@ class LeftBar extends Component<IProps, ILeftBarState> {
     state: ILeftBarState = {
         defaultKeys: [],
         defaultOpenKeys: [],
-        permissionSet: new Set<String>()
+        permissionSet: new Set<String>(),
+        height: 0
     }
 
     componentDidMount() {
@@ -56,13 +58,15 @@ class LeftBar extends Component<IProps, ILeftBarState> {
         let permissionSet: Set<string> = new Set<string>()
         this.props.permissionList.forEach((p: IRoute) => permissionSet.add(p.path))
         this.setState({
-            permissionSet: permissionSet
+            permissionSet: permissionSet,
+            height: document.body.clientHeight-62
         })
+
     }
 
     render() {
         return (
-            <div>
+            <div style={{minHeight: this.state.height + 'px'}}>
                 <div className="logo"/>
                 {
                     this.state.defaultKeys.length > 0 ?
