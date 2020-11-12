@@ -5,12 +5,7 @@ import Login from "../pages/Login"
 import Page404 from "../pages/Page404"
 import Page403 from "../pages/Page403"
 import RoleList from '../pages/RoleList/RoleList'
-import {
-    DashboardTwoTone,
-    DashboardOutlined,
-    TeamOutlined,
-    UserOutlined
-} from '@ant-design/icons';
+import {DashboardOutlined, DashboardTwoTone, TeamOutlined, UserOutlined} from '@ant-design/icons';
 
 interface IRoute {
     id: string,
@@ -24,7 +19,7 @@ interface IRoute {
     routes?: IRoute[]
 }
 
-export const authRoutes: IRoute[] = [
+export const leftRoute: IRoute[] = [
     {
         id: '1-1',
         icon: <DashboardOutlined/>,
@@ -68,6 +63,31 @@ export const authRoutes: IRoute[] = [
             }
         ]
     }
+]
+export const topRoute: IRoute[] = [
+    {
+        id: '5-0',
+        icon: <DashboardOutlined/>,
+        exact: true,
+        path: '/admin/top1',
+        title: 'top1',
+        isMenu: 0,
+        component: () => 'top1'
+    },
+    {
+        id: '5-1',
+        icon: <DashboardOutlined/>,
+        exact: true,
+        path: '/admin/top2',
+        title: 'top2',
+        isMenu: 0,
+        component: () => 'top2'
+    }
+]
+
+export const authRoutes: IRoute[] = [
+    ...leftRoute,
+    ...topRoute
 ]
 export const unAuthRouters: IRoute[] = [
     {

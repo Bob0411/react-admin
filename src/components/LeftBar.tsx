@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import {Menu} from 'antd';
 import {matchPath} from "react-router";
-import {authRoutes} from '../router';
+import {authRoutes, leftRoute} from '../router';
 import {IRoute} from '../store/states/PermissionState';
 
 interface ILeftBarState {
@@ -59,7 +59,7 @@ class LeftBar extends Component<IProps, ILeftBarState> {
         this.props.permissionList.forEach((p: IRoute) => permissionSet.add(p.path))
         this.setState({
             permissionSet: permissionSet,
-            height: document.body.clientHeight-62
+            height: document.body.clientHeight - 62
         })
 
     }
@@ -77,10 +77,7 @@ class LeftBar extends Component<IProps, ILeftBarState> {
                             defaultOpenKeys={this.state.defaultOpenKeys}
                         >
                             {
-                                authRoutes.filter((route) => route.path !== '*')
-                                    .filter((route) => route.path !== '/login')
-                                    .filter((route) => route.path !== '/403')
-                                    .filter((route) => this.state.permissionSet.has(route.path))
+                                leftRoute.filter((route) => this.state.permissionSet.has(route.path))
                                     .map((route) => {
                                         if (route.routes) {
                                             return (

@@ -1,21 +1,26 @@
 import React, {Component} from "react";
 import {Avatar, Dropdown, Layout, Menu} from "antd";
-import {
-    DownOutlined
-} from '@ant-design/icons';
+import {DownOutlined} from '@ant-design/icons';
 import {connect} from "react-redux";
-import {RouteComponentProps, withRouter} from "react-router-dom";
+import {NavLink, RouteComponentProps, withRouter} from "react-router-dom";
 import {AdminState} from "../store/states/AdminState";
 import {Dispatch} from "redux";
 import {logout} from "../store/actions/AdminAction";
+import {topRoute} from "../router";
+import {IRoute, PermissionState} from "../store/states/PermissionState";
 
 const {Header} = Layout;
 
 interface IProps extends AdminState, RouteComponentProps {
     logout: () => void
+    permissionList?: IRoute[]
 }
 
-class TopHeader extends Component<IProps, any> {
+interface IState {
+    permissionSet: Set<String>
+}
+
+class TopHeader extends Component<IProps, IState> {
     logout = () => {
         this.props.logout()
         this.props.history.replace('/login')
@@ -36,17 +41,26 @@ class TopHeader extends Component<IProps, any> {
                         className={'admin'}
                     >
                         <div>
-                            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>
+                            <Avatar
+                                src={this.props.admin.avatar}
+                            />
+
                             <span className={'admin-name'}>
                                 {this.props.admin.name}
                             </span>
                             <DownOutlined/>
                         </div>
                     </Dropdown>
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                        <Menu.Item key="1">nav 1</Menu.Item>
-                        <Menu.Item key="2">nav 2</Menu.Item>
-                        <Menu.Item key="3">nav 3</Menu.Item>
+                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['5-0']}>
+                        {
+                            topRoute.map(route => (
+                                <Menu.Item key={route.id}>
+                                    <NavLink to={route.path}>
+                                        {route.title}
+                                    </NavLink>
+                                </Menu.Item>
+                            ))
+                        }
                     </Menu>
                 </Header>
             </>
@@ -56,10 +70,11 @@ class TopHeader extends Component<IProps, any> {
 
 interface IStoreState {
     admin: AdminState
+    permission: PermissionState
 }
 
 const mapStateToProps = (state: IStoreState): AdminState => {
-    return {...state.admin};
+    return {...state.admin, ...state.permission};
 }
 const mapDispatchToProps = (dispatch: Dispatch) => ({
         logout: () => {
