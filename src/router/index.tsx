@@ -72,7 +72,7 @@ export const topRoute: IRoute[] = [
         path: '/admin/top1',
         title: 'top1',
         isMenu: 0,
-        component: () => 'top1'
+        component: <>top1</>
     },
     {
         id: '5-1',
@@ -81,7 +81,7 @@ export const topRoute: IRoute[] = [
         path: '/admin/top2',
         title: 'top2',
         isMenu: 0,
-        component: () => 'top2'
+        component: <>top2</>
     }
 ]
 
