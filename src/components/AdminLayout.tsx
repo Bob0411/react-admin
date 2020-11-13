@@ -52,7 +52,11 @@ class AdminLayout extends Component<IAdminLayoutProps, IAdminLayoutState> {
             return match !== null
         })
         if (res.length <= 0) {
-            nextProps.history.push('/403')
+            if (path.startsWith('/admin')) {
+                nextProps.history.push('/404');
+            } else {
+                nextProps.history.push('/403');
+            }
             return {auth: false}
         }
         document.title = res[0].title
