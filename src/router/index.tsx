@@ -6,6 +6,8 @@ import Page404 from "../pages/Page404"
 import Page403 from "../pages/Page403"
 import RoleList from '../pages/RoleList/RoleList'
 import {DashboardOutlined, DashboardTwoTone, TeamOutlined, UserOutlined} from '@ant-design/icons';
+import CategoryList from "../pages/Catalog/Category/CategoryList";
+import AddCategory from "../pages/Catalog/Category/AddCategory";
 
 interface IRoute {
     id: string,
@@ -62,7 +64,32 @@ export const leftRoute: IRoute[] = [
                 component: <RoleList/>
             }
         ]
-    }
+    },
+    {
+        id: '5-0',
+        icon: <TeamOutlined/>,
+        path: '/admin/catalog',
+        title: '分类管理',
+        isMenu: 1,
+        routes: [
+            {
+                id: '5-1',
+                icon: <DashboardTwoTone/>,
+                path: '/admin/catalog/category/list',
+                title: '分类列表',
+                isMenu: 0,
+                component: <CategoryList/>
+            },
+            {
+                id: '5-2',
+                icon: <DashboardTwoTone/>,
+                path: '/admin/catalog/category/add',
+                title: '新增分类',
+                isMenu: 0,
+                component: <AddCategory/>
+            }
+        ]
+    },
 ]
 export const topRoute: IRoute[] = [
     {
