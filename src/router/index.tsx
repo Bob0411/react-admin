@@ -8,6 +8,8 @@ import RoleList from '../pages/RoleList/RoleList'
 import {DashboardOutlined, DashboardTwoTone, TeamOutlined, UserOutlined} from '@ant-design/icons';
 import CategoryList from "../pages/Catalog/Category/CategoryList";
 import AddCategory from "../pages/Catalog/Category/AddCategory";
+import ProductList from "../pages/Catalog/Product/ProductList";
+import AddProduct from "../pages/Catalog/Product/AddProduct";
 
 interface IRoute {
     id: string,
@@ -18,6 +20,7 @@ interface IRoute {
     title: string
     isMenu: number
     component?: ReactNode,
+    isChildPage?: boolean
     routes?: IRoute[]
 }
 
@@ -86,14 +89,32 @@ export const leftRoute: IRoute[] = [
                 path: '/admin/catalog/category/add',
                 title: '新增分类',
                 isMenu: 0,
+                isChildPage: true,
                 component: <AddCategory/>
-            }
+            },
+            {
+                id: '5-3',
+                icon: <DashboardTwoTone/>,
+                path: '/admin/catalog/product/list',
+                title: '产品列表',
+                isMenu: 0,
+                component: <ProductList/>
+            },
+            {
+                id: '5-4',
+                icon: <DashboardTwoTone/>,
+                path: '/admin/catalog/product/add',
+                title: '新增产品',
+                isMenu: 0,
+                isChildPage: true,
+                component: <AddProduct/>
+            },
         ]
     },
 ]
 export const topRoute: IRoute[] = [
     {
-        id: '5-0',
+        id: '50-0',
         icon: <DashboardOutlined/>,
         exact: true,
         path: '/admin/top1',
@@ -102,7 +123,7 @@ export const topRoute: IRoute[] = [
         component: <>top1</>
     },
     {
-        id: '5-1',
+        id: '50-1',
         icon: <DashboardOutlined/>,
         exact: true,
         path: '/admin/top2',

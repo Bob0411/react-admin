@@ -93,6 +93,7 @@ class LeftBar extends Component<IProps, ILeftBarState> {
                                                     {
                                                         route.routes
                                                             .filter((route) => this.state.permissionSet.has(route.path))
+                                                            .filter((r) => !r.isChildPage)
                                                             .map((r) => (
                                                                 <Menu.Item key={r.id} icon={r.icon}>
                                                                     <NavLink to={r.path}>{r.title}</NavLink>
