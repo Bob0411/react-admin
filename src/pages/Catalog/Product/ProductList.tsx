@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import {Button, Image, Table} from "antd";
+import {Button, Image, Space, Table} from "antd";
 import {Link} from "react-router-dom";
 import {getProductList} from "../../../api/product";
+import DeleteProduct from "./DeleteProduct";
 
 interface IProduct {
     id: number
@@ -95,6 +96,19 @@ class ProductList extends Component<any, IProductListState> {
                     <Table.Column
                         title={'状态'}
                         dataIndex={'status'}
+                    />
+                    <Table.Column
+                        title={'状态'}
+                        render={(product: IProduct) => {
+                            return (
+                                <>
+                                    <Space>
+                                        <Button type='primary'>编辑</Button>
+                                        <DeleteProduct productId={product.id}/>
+                                    </Space>
+                                </>
+                            )
+                        }}
                     />
                 </Table>
             </>
