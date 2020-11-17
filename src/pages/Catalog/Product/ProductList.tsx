@@ -15,18 +15,31 @@ interface IProduct {
 
 interface IProductListState {
     productList: IProduct[]
+    total: number
+    perPage: number
+    currentPage: number
 }
 
 class ProductList extends Component<any, IProductListState> {
     state: IProductListState = {
-        productList: []
+        productList: [],
+        total: 0,
+        perPage: 15,
+        currentPage: 1
     }
 
     componentDidMount() {
-        getProductList().then(response => {
-            const {lastPage, data} = response.data.data
+        this.onChange()
+    }
+
+    onChange = (page: number = 1) => {
+        getProductList(page).then(response => {
+            const {data, total, perPage, currentPage} = response.data.data
             this.setState({
-                productList: data
+                productList: data,
+                total: total,
+                perPage: perPage,
+                currentPage: currentPage
             })
         })
     }
@@ -39,7 +52,11 @@ class ProductList extends Component<any, IProductListState> {
                     rowKey='id'
                     pagination={{
                         position: ['bottomCenter'],
-                        hideOnSinglePage: true
+                        hideOnSinglePage: true,
+                        pageSize: this.state.perPage,
+                        total: this.state.total,
+                        current: this.state.currentPage,
+                        onChange: this.onChange
                     }}
                     dataSource={this.state.productList}
                 >
