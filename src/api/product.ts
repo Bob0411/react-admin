@@ -12,3 +12,10 @@ export const deleteProduct = (productId: number) => {
         method: 'delete'
     })
 }
+export const addProduct = (data: any) => {
+    return request({
+        url: '/admin/product',
+        data: data,
+        method: 'post'
+    })
+}
