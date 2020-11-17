@@ -4,6 +4,7 @@ import {deleteProduct} from "../../../api/product";
 
 interface IProps {
     productId: number
+    callback: (productId: number) => void
 }
 
 class DeleteProduct extends Component<IProps, any> {
@@ -15,6 +16,7 @@ class DeleteProduct extends Component<IProps, any> {
             const {code, msg} = response.data
             if (code === 0) {
                 message.success('删除成功！')
+                this.props.callback(this.props.productId)
             } else {
                 message.error(msg)
             }

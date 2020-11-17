@@ -44,6 +44,11 @@ class ProductList extends Component<any, IProductListState> {
             })
         })
     }
+    deleteProduct = (productId: number) => {
+        this.setState({
+            productList: this.state.productList.filter((p) => p.id !== productId)
+        })
+    }
 
     render() {
         return (
@@ -104,7 +109,7 @@ class ProductList extends Component<any, IProductListState> {
                                 <>
                                     <Space>
                                         <Button type='primary'>编辑</Button>
-                                        <DeleteProduct productId={product.id}/>
+                                        <DeleteProduct productId={product.id} callback={this.deleteProduct}/>
                                     </Space>
                                 </>
                             )
