@@ -10,6 +10,7 @@ import CategoryList from "../pages/Catalog/Category/CategoryList";
 import AddCategory from "../pages/Catalog/Category/AddCategory";
 import ProductList from "../pages/Catalog/Product/ProductList";
 import AddProduct from "../pages/Catalog/Product/AddProduct";
+import EditProduct from "../pages/Catalog/Product/EditProduct";
 
 interface IRoute {
     id: string,
@@ -108,6 +109,15 @@ export const leftRoute: IRoute[] = [
                 isMenu: 0,
                 isChildPage: true,
                 component: <AddProduct/>
+            },
+            {
+                id: '5-5',
+                icon: <DashboardTwoTone/>,
+                path: '/admin/catalog/product/edit/:productId',
+                title: '编辑产品',
+                isMenu: 0,
+                isChildPage: true,
+                component: <EditProduct/>
             },
         ]
     },

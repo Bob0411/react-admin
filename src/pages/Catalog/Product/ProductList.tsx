@@ -108,7 +108,11 @@ class ProductList extends Component<any, IProductListState> {
                             return (
                                 <>
                                     <Space>
-                                        <Button type='primary'>编辑</Button>
+                                        <Button type='primary'>
+                                            <Link to={'/admin/catalog/product/edit/' + product.id}>
+                                                编辑
+                                            </Link>
+                                        </Button>
                                         <DeleteProduct productId={product.id} callback={this.deleteProduct}/>
                                     </Space>
                                 </>

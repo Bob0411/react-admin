@@ -19,3 +19,15 @@ export const addProduct = (data: any) => {
         method: 'post'
     })
 }
+export const getProductDetail = (productId: number) => {
+    return request({
+        url: '/admin/product/' + productId,
+    })
+}
+export const updateProduct = (productId: number, product: any) => {
+    return request({
+        url: '/admin/product/' + productId,
+        method: 'post',
+        data: product
+    })
+}
