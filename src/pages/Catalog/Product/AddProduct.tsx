@@ -23,6 +23,7 @@ interface IProduct {
     model: string
     price: number
     quantity: number
+    imgList: string[]
 }
 
 interface IState {
@@ -35,14 +36,21 @@ class AddProduct extends Component<any, IState> {
         fileList: []
     }
     change = (key: any) => {
-        console.log(key)
     }
     handleChange = (info: UploadChangeParam) => {
+
         this.setState({
             fileList: info.fileList
         });
     }
-    addProduct = (product: any) => {
+    addProduct = (product: IProduct) => {
+        let imgList: string[] = []
+        this.state.fileList.forEach((f) => {
+            if (f.response !== undefined) {
+                imgList.push(f.response.url)
+            }
+        })
+        product.imgList = imgList
         addProduct(product).then(response => {
             const {code, msg} = response.data
             if (code === 0) {
