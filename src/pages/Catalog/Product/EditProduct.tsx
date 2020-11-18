@@ -214,7 +214,7 @@ class EditProduct extends Component<any, IState> {
                                 </TabPane>
                             </Tabs>
                             <Form.Item {...tailLayout}>
-                                <Button type='primary' htmlType="submit">新增</Button>
+                                <Button type='primary' htmlType="submit">更新</Button>
                             </Form.Item>
                         </Form>
                         :
