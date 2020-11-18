@@ -8,7 +8,7 @@ export const getProductCategory = (page: number = 1) => {
 }
 export const deleteCategory = (categoryId: number) => {
     return request({
-        url: '/admin/category/' + categoryId,
+        url: '/admin/product/category/' + categoryId,
         method: 'delete'
     })
 }

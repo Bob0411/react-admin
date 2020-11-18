@@ -8,6 +8,7 @@ interface IState {
 
 interface IProps {
     categoryId: number
+    callback: (categoryId: number) => void
 }
 
 class DeleteCategory extends Component<IProps, IState> {
@@ -23,6 +24,7 @@ class DeleteCategory extends Component<IProps, IState> {
         deleteCategory(this.props.categoryId).then(response => {
             const {code, msg} = response.data
             if (code === 0) {
+                this.props.callback(this.props.categoryId)
                 this.setState({
                     visibleDelete: false
                 })

@@ -40,6 +40,11 @@ class CategoryList extends Component<any, ICategoryState> {
             })
         })
     }
+    deleteCategory = (categoryId: number) => {
+        this.setState({
+            categoryList: this.state.categoryList?.filter(category => category.id !== categoryId)
+        })
+    }
 
     render() {
         return (
@@ -63,7 +68,7 @@ class CategoryList extends Component<any, ICategoryState> {
                             return (
                                 <Space>
                                     <Button type='primary'>编辑</Button>
-                                    <DeleteCategory categoryId={category.id}/>
+                                    <DeleteCategory categoryId={category.id} callback={this.deleteCategory}/>
                                 </Space>
                             )
                         }}
