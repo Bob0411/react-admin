@@ -27,7 +27,7 @@ export const getProductDetail = (productId: number) => {
 export const updateProduct = (productId: number, product: any) => {
     return request({
         url: '/admin/product/' + productId,
-        method: 'post',
+        method: 'put',
         data: product
     })
 }

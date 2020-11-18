@@ -2,8 +2,7 @@ import React, {Component} from "react";
 import {Button, Form, Input, message, Tabs, Upload} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {PlusOutlined} from '@ant-design/icons';
-import {UploadFile} from "antd/es/upload/interface";
-import {UploadChangeParam} from "antd/lib/upload/interface";
+import {UploadChangeParam, UploadFile} from "antd/lib/upload/interface";
 import {get} from "../../../utils/storage";
 import {getProductDetail, updateProduct} from "../../../api/product";
 import {withRouter} from "react-router-dom";
@@ -18,10 +17,6 @@ const tailLayout = {
 };
 const {TabPane} = Tabs;
 
-interface IImg {
-    imgUrl: string
-    id: number
-}
 
 interface IProduct {
     productName: string
@@ -47,15 +42,16 @@ class EditProduct extends Component<any, IState> {
         });
     }
     updateProduct = (product: IProduct) => {
-        console.log(this.props.match.params.productId)
         let imgList: string[] = []
-        if (this.state.fileList) {
-            this.state.fileList.forEach((f) => {
-                if (f.url !== undefined) {
-                    imgList.push(f.url.toString())
+        this.state.fileList.forEach((file) => {
+            if (file.response === undefined) {
+                if (file.url) {
+                    imgList.push(file.url);
                 }
-            })
-        }
+            } else {
+                imgList.push(file.response.url)
+            }
+        })
         product.imgList = imgList
         updateProduct(this.props.match.params.productId, product).then(response => {
             const {code, msg} = response.data
@@ -69,20 +65,22 @@ class EditProduct extends Component<any, IState> {
 
     constructor(props: Readonly<any> | any) {
         super(props);
-        getProductDetail(1).then(response => {
+        getProductDetail(this.props.match.params.productId).then(response => {
             const {data} = response.data
-            const fileList = data.imgList.map((img: IImg) => {
-                return {
-                    uid: img.id + '',
+            let imgList: UploadFile[] = []
+            data.imgList.forEach((img: any) => {
+                imgList.push({
                     size: 1,
-                    name: '',
-                    url: img.imgUrl,
-                    type: 'png'
-                }
+                    type: '',
+                    uid: img.id,
+                    name: 'image.png',
+                    status: 'done',
+                    url: img.imgUrl
+                })
             })
             this.setState({
                 product: data,
-                fileList: fileList
+                fileList: imgList
             })
         })
     }
@@ -96,14 +94,14 @@ class EditProduct extends Component<any, IState> {
                             {...layout}
                             initialValues={{
                                 ...this.state.product,
-                                productName: this.state.product?.productName,
+                                product_name: this.state.product?.productName,
                             }}
                             onFinish={this.updateProduct}
                         >
                             <Tabs defaultActiveKey="3">
                                 <TabPane tab="通用属性" key="1">
                                     <Form.Item
-                                        name='productName'
+                                        name='product_name'
                                         label='名称'
                                         rules={[{
                                             type: "string",
