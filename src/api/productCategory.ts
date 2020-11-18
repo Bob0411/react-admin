@@ -12,3 +12,10 @@ export const deleteCategory = (categoryId: number) => {
         method: 'delete'
     })
 }
+export const addCategory = (category: any) => {
+    return request({
+        url: '/admin/product/category',
+        method: 'post',
+        data: category
+    })
+}
