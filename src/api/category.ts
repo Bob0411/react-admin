@@ -19,3 +19,8 @@ export const addCategory = (category: any) => {
         data: category
     })
 }
+export const getAllCategory = () => {
+    return request({
+        url: '/admin/category/all'
+    })
+}

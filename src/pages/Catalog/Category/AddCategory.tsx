@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Button, Form, Input, message, Switch, Tabs} from 'antd';
 import TextArea from "antd/lib/input/TextArea";
-import {addCategory} from "../../../api/category";
+import {addCategory, getAllCategory} from "../../../api/category";
 import {TreeSelect} from 'antd';
 
 const {TreeNode} = TreeSelect;
@@ -13,7 +13,27 @@ const layout = {
     wrapperCol: {span: 16},
 };
 
-class AddCategory extends Component<any, any> {
+interface ICategory {
+    categoryName: string
+    id: number
+    parentId: number
+    children?: ICategory[]
+}
+
+interface IState {
+    categoryList: []
+}
+
+class AddCategory extends Component<any, IState> {
+    state: IState = {
+        categoryList: []
+    }
+
+    constructor(props: Readonly<any> | any) {
+        super(props);
+        this.getAllCategory()
+    }
+
     addCategory = (category: any) => {
         addCategory(category).then(response => {
             const {code, msg} = response.data
@@ -22,6 +42,14 @@ class AddCategory extends Component<any, any> {
             } else {
                 message.error(msg)
             }
+        })
+    }
+    getAllCategory = () => {
+        getAllCategory().then(response => {
+            const {data} = response.data
+            this.setState({
+                categoryList: data
+            })
         })
     }
 
@@ -68,6 +96,7 @@ class AddCategory extends Component<any, any> {
                                 label='父级分类'
                                 valuePropName='value'
                             >
+
                                 <TreeSelect
                                     showSearch
                                     dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
@@ -75,15 +104,45 @@ class AddCategory extends Component<any, any> {
                                     allowClear
                                     treeDefaultExpandAll
                                 >
-                                    <TreeNode value="parent 1" title="parent 1">
-                                        <TreeNode value="parent 1-0" title="parent 1-0">
-                                            <TreeNode value="leaf1" title="my leaf"/>
-                                            <TreeNode value="leaf2" title="your leaf"/>
-                                        </TreeNode>
-                                        <TreeNode value="parent 1-1" title="parent 1-1">
-                                            <TreeNode value="sss" title={<b style={{color: '#08c'}}>sss</b>}/>
-                                        </TreeNode>
-                                    </TreeNode>
+                                    {
+                                        this.state.categoryList.map((category: ICategory) => {
+                                            return <TreeNode
+                                                value={category.id}
+                                                title={category.categoryName}
+                                                key={`${category.id}-${category.parentId}`}
+                                            >
+                                                {
+                                                    category.children?.map((cate: ICategory) => {
+                                                        if (cate.children) {
+                                                            return (
+                                                                <>
+                                                                    <TreeNode
+                                                                        value={cate.id}
+                                                                        title={cate.categoryName}
+                                                                        key={`${cate.id}-${cate.parentId}`}>
+                                                                        {
+                                                                            cate.children?.map((c: ICategory) => {
+                                                                                return <TreeNode
+                                                                                    value={c.id}
+                                                                                    title={c.categoryName}
+                                                                                    key={`${category.id}-${c.id}-${c.parentId}`}>
+                                                                                </TreeNode>
+                                                                            })
+                                                                        }
+                                                                    </TreeNode>
+                                                                </>
+                                                            )
+                                                        }
+                                                        return <TreeNode
+                                                            value={cate.id}
+                                                            title={cate.categoryName}
+                                                            key={`${cate.id}-${cate.parentId}`}>
+                                                        </TreeNode>;
+                                                    })
+                                                }
+                                            </TreeNode>
+                                        })
+                                    }
                                 </TreeSelect>
                             </Form.Item>
                             <Form.Item
