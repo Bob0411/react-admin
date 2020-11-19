@@ -35,7 +35,11 @@ class ProductList extends Component<any, IProductListState> {
         this.onChange()
     }
 
-    onChange = (page: number = 1, keyword: any = '') => {
+    onChange = (page: number = 1) => {
+        this.getProductList(page)
+    }
+
+    getProductList = (page: number = 1, keyword: any = '') => {
         getProductList(page, keyword).then(response => {
             const {data, total, perPage, currentPage} = response.data.data
             this.setState({
@@ -52,7 +56,7 @@ class ProductList extends Component<any, IProductListState> {
         })
     }
     search = (keyword: any) => {
-        this.onChange(1, keyword)
+        this.getProductList(1, keyword)
     }
 
     render() {
