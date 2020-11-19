@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Button, Form, Input, message, Select, Switch, Tabs} from 'antd';
 import TextArea from "antd/lib/input/TextArea";
-import {addCategory} from "../../../api/productCategory";
+import {addCategory} from "../../../api/category";
 
 const {TabPane} = Tabs;
 

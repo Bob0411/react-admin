@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Button, message, Popconfirm} from "antd";
-import {deleteCategory} from "../../../api/productCategory";
+import {deleteCategory} from "../../../api/category";
 
 interface IState {
     visibleDelete: boolean

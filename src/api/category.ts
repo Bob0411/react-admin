@@ -1,20 +1,20 @@
 import request from '../utils/request'
 
-export const getProductCategory = (page: number = 1, keyword: string = '') => {
+export const getCategory = (page: number = 1, keyword: string = '') => {
     return request({
-        url: '/admin/product/category/list',
+        url: '/admin/category/list',
         params: {page: page, keyword: keyword}
     })
 }
 export const deleteCategory = (categoryId: number) => {
     return request({
-        url: '/admin/product/category/' + categoryId,
+        url: '/admin/category/' + categoryId,
         method: 'delete'
     })
 }
 export const addCategory = (category: any) => {
     return request({
-        url: '/admin/product/category',
+        url: '/admin/category',
         method: 'post',
         data: category
     })

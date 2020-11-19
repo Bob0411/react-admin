@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Button, Input, Row, Space, Table} from "antd";
 import {Link} from "react-router-dom";
-import {getProductCategory} from "../../../api/productCategory";
+import {getCategory} from "../../../api/category";
 import DeleteCategory from "./DeleteCategory";
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
 import Tag from "antd/es/tag";
@@ -34,7 +34,7 @@ class CategoryList extends Component<any, ICategoryState> {
     }
 
     getCategoryList = (page: number = 1, keyword: any = '') => {
-        getProductCategory(page, keyword).then(response => {
+        getCategory(page, keyword).then(response => {
             const {data, total, perPage, currentPage} = response.data.data
             this.setState({
                 categoryList: data,
