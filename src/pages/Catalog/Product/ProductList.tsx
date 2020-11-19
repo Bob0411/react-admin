@@ -1,8 +1,10 @@
 import React, {Component} from "react";
-import {Button, Image, Space, Table} from "antd";
+import {Button, Image, Input, Row, Space, Table} from "antd";
 import {Link} from "react-router-dom";
 import {getProductList} from "../../../api/product";
 import DeleteProduct from "./DeleteProduct";
+import Col from "antd/es/grid/col";
+import {PlusOutlined, SearchOutlined} from "@ant-design/icons";
 
 interface IProduct {
     id: number
@@ -33,8 +35,8 @@ class ProductList extends Component<any, IProductListState> {
         this.onChange()
     }
 
-    onChange = (page: number = 1) => {
-        getProductList(page).then(response => {
+    onChange = (page: number = 1, keyword: any = '') => {
+        getProductList(page, keyword).then(response => {
             const {data, total, perPage, currentPage} = response.data.data
             this.setState({
                 productList: data,
@@ -49,11 +51,32 @@ class ProductList extends Component<any, IProductListState> {
             productList: this.state.productList.filter((p) => p.id !== productId)
         })
     }
+    search = (keyword: any) => {
+        this.onChange(1, keyword)
+    }
 
     render() {
         return (
             <>
-                <Button type='primary'><Link to='/admin/catalog/product/add'> 新增产品</Link></Button>
+                <Row gutter={8}>
+                    <Col span={6}>
+                        <Input.Search
+                            addonBefore='搜索：'
+                            placeholder='输入关键词查询'
+                            allowClear
+                            onSearch={this.search}
+                            enterButton={<SearchOutlined/>}
+                        />
+                    </Col>
+                    <Col span={6}>
+                        <Link to='/admin/catalog/product/add'>
+                            <Button type='primary' icon={<PlusOutlined/>}>
+                                新增产品
+                            </Button>
+                        </Link>
+                    </Col>
+                </Row>
+
                 <Table
                     rowKey='id'
                     pagination={{

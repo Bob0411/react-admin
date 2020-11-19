@@ -1,9 +1,9 @@
 import request from '../utils/request'
 
-export const getProductList = (page: number = 1) => {
+export const getProductList = (page: number = 1, keyword: any = '') => {
     return request({
         url: '/admin/product/list',
-        params: {page: page}
+        params: {page: page, keyword: keyword}
     })
 }
 export const deleteProduct = (productId: number) => {
