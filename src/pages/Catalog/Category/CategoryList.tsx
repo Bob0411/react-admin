@@ -60,7 +60,7 @@ class CategoryList extends Component<any, ICategoryState> {
         return (
             <>
                 <Row gutter={8}>
-                    <Col span={6}>
+                    <Col xs={12} sm={6} md={8} lg={8} xl={4}>
                         <Input.Search
                             addonBefore='搜索：'
                             placeholder='输入关键词查询'
@@ -69,7 +69,7 @@ class CategoryList extends Component<any, ICategoryState> {
                             enterButton={<SearchOutlined/>}
                         />
                     </Col>
-                    <Col span={6}>
+                    <Col xs={12} sm={6} md={8} lg={8} xl={4}>
                         <Link to='/admin/catalog/category/add'>
                             <Button type='primary' icon={<PlusOutlined/>}>
                                 新增分类

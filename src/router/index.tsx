@@ -20,7 +20,7 @@ interface IRoute {
     path: string
     title: string
     isMenu: number
-    component?: ReactNode,
+    component?: ReactNode
     isChildPage?: boolean
     routes?: IRoute[]
 }
