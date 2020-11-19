@@ -31,8 +31,10 @@ class ProductList extends Component<any, IProductListState> {
         currentPage: 1
     }
 
-    componentDidMount() {
-        this.onChange()
+
+    constructor(props: Readonly<any> | any) {
+        super(props);
+        this.getProductList()
     }
 
     onChange = (page: number = 1) => {

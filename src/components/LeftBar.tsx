@@ -8,7 +8,7 @@ import {IRoute} from '../store/states/PermissionState';
 interface ILeftBarState {
     defaultKeys: string[]
     defaultOpenKeys: string[]
-    permissionSet: Set<String>
+    permissionSet: Set<string>
     height: number
 }
 
@@ -20,8 +20,8 @@ class LeftBar extends Component<IProps, ILeftBarState> {
     state: ILeftBarState = {
         defaultKeys: [],
         defaultOpenKeys: [],
-        permissionSet: new Set<String>(),
-        height: 0
+        permissionSet: new Set<string>(),
+        height: document.body.clientHeight - 62
     }
 
     componentDidMount() {
@@ -58,10 +58,8 @@ class LeftBar extends Component<IProps, ILeftBarState> {
         let permissionSet: Set<string> = new Set<string>()
         this.props.permissionList.forEach((p: IRoute) => permissionSet.add(p.path))
         this.setState({
-            permissionSet: permissionSet,
-            height: document.body.clientHeight - 62
+            permissionSet: permissionSet
         })
-
     }
 
     render() {
