@@ -1,8 +1,11 @@
 import React, {Component} from "react";
-import {Button, Space, Table} from "antd";
+import {Button, Input, Row, Space, Table} from "antd";
 import {Link} from "react-router-dom";
 import {getProductCategory} from "../../../api/productCategory";
 import DeleteCategory from "./DeleteCategory";
+import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
+import Tag from "antd/es/tag";
+import Col from "antd/es/grid/col";
 
 interface ICategory {
     id: number
@@ -30,8 +33,8 @@ class CategoryList extends Component<any, ICategoryState> {
         this.getCategoryList()
     }
 
-    getCategoryList = (page: number = 1) => {
-        getProductCategory(page).then(response => {
+    getCategoryList = (page: number = 1, keyword: any = '') => {
+        getProductCategory(page, keyword).then(response => {
             const {data, total, perPage, currentPage} = response.data.data
             this.setState({
                 categoryList: data,
@@ -49,11 +52,33 @@ class CategoryList extends Component<any, ICategoryState> {
     onChange = (page: number = 1) => {
         this.getCategoryList(page)
     }
+    search = (keyword: any) => {
+        this.getCategoryList(1, keyword)
+    }
 
     render() {
         return (
             <>
-                <Button type='primary'><Link to='/admin/catalog/category/add'> 新增分类</Link></Button>
+                <Row gutter={8}>
+                    <Col span={6}>
+                        <Input.Search
+                            addonBefore='搜索：'
+                            placeholder='输入关键词查询'
+                            allowClear
+                            onSearch={this.search}
+                            enterButton={<SearchOutlined/>}
+                        />
+                    </Col>
+                    <Col span={6}>
+                        <Link to='/admin/catalog/category/add'>
+                            <Button type='primary' icon={<PlusOutlined/>}>
+                                新增分类
+                            </Button>
+                        </Link>
+                    </Col>
+                </Row>
+
+
                 <Table
                     dataSource={this.state.categoryList}
 
@@ -82,9 +107,9 @@ class CategoryList extends Component<any, ICategoryState> {
                                 <>
                                     {
                                         category.status === 0 ?
-                                            '不可用'
+                                            <Tag color="success">启用</Tag>
                                             :
-                                            '可用'
+                                            <Tag color="warning">禁用</Tag>
                                     }
                                 </>
                             )

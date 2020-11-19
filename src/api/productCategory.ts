@@ -1,9 +1,9 @@
 import request from '../utils/request'
 
-export const getProductCategory = (page: number = 1) => {
+export const getProductCategory = (page: number = 1, keyword: string = '') => {
     return request({
         url: '/admin/product/category/list',
-        params: {page: page}
+        params: {page: page, keyword: keyword}
     })
 }
 export const deleteCategory = (categoryId: number) => {
