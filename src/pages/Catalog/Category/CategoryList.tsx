@@ -7,6 +7,7 @@ import DeleteCategory from "./DeleteCategory";
 interface ICategory {
     id: number
     categoryName: string
+    status: 0 | 1
 }
 
 interface ICategoryState {
@@ -45,6 +46,9 @@ class CategoryList extends Component<any, ICategoryState> {
             categoryList: this.state.categoryList?.filter(category => category.id !== categoryId)
         })
     }
+    onChange = (page: number = 1) => {
+        this.getCategoryList(page)
+    }
 
     render() {
         return (
@@ -52,6 +56,15 @@ class CategoryList extends Component<any, ICategoryState> {
                 <Button type='primary'><Link to='/admin/catalog/category/add'> 新增分类</Link></Button>
                 <Table
                     dataSource={this.state.categoryList}
+
+                    pagination={{
+                        position: ['bottomCenter'],
+                        hideOnSinglePage: true,
+                        pageSize: this.state.perPage,
+                        total: this.state.total,
+                        current: this.state.currentPage,
+                        onChange: this.onChange
+                    }}
                     rowKey={'id'}
                 >
                     <Table.Column
@@ -61,6 +74,21 @@ class CategoryList extends Component<any, ICategoryState> {
                     <Table.Column
                         title='分类名称'
                         dataIndex={'categoryName'}
+                    />
+                    <Table.Column
+                        title='状态'
+                        render={(category: ICategory) => {
+                            return (
+                                <>
+                                    {
+                                        category.status === 0 ?
+                                            '不可用'
+                                            :
+                                            '可用'
+                                    }
+                                </>
+                            )
+                        }}
                     />
                     <Table.Column
                         title='操作'
