@@ -17,11 +17,14 @@ interface IProps extends RouteComponentProps {
 }
 
 class LeftBar extends Component<IProps, ILeftBarState> {
-    state: ILeftBarState = {
-        defaultKeys: [],
-        defaultOpenKeys: [],
-        permissionSet: new Set<string>(),
-        height: document.body.clientHeight - 62
+    constructor(props: Readonly<IProps> | IProps) {
+        super(props);
+        this.state={
+            defaultKeys: [],
+            defaultOpenKeys: [],
+            permissionSet: new Set<string>(),
+            height: document.body.clientHeight - 62
+        }
     }
 
     componentDidMount() {
