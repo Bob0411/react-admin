@@ -1,7 +1,10 @@
 import React, {Component} from "react";
-import {Button, Form, Input, message, Select, Switch, Tabs} from 'antd';
+import {Button, Form, Input, message, Switch, Tabs} from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import {addCategory} from "../../../api/category";
+import {TreeSelect} from 'antd';
+
+const {TreeNode} = TreeSelect;
 
 const {TabPane} = Tabs;
 
@@ -9,7 +12,6 @@ const layout = {
     labelCol: {span: 4},
     wrapperCol: {span: 16},
 };
-const {Option, OptGroup} = Select;
 
 class AddCategory extends Component<any, any> {
     addCategory = (category: any) => {
@@ -28,7 +30,7 @@ class AddCategory extends Component<any, any> {
             <>
                 <Form
                     onFinish={this.addCategory}
-                    initialValues={{category_name: '', description: '', status: true, parentId: '2'}}
+                    initialValues={{category_name: '', description: '', status: true, parent_id: undefined}}
                     {...layout}
                 >
                     <Tabs defaultActiveKey="2">
@@ -62,19 +64,27 @@ class AddCategory extends Component<any, any> {
                         </TabPane>
                         <TabPane tab="参数" key="2">
                             <Form.Item
-                                name={'parentId'}
+                                name={'parent_id'}
                                 label='父级分类'
-                                valuePropName='defaultValue'
+                                valuePropName='value'
                             >
-                                <Select>
-                                    <OptGroup label="Manager">
-                                        <Option value="1">Jack</Option>
-                                        <Option value="2">Lucy</Option>
-                                    </OptGroup>
-                                    <OptGroup label="Engineer">
-                                        <Option value="3">yiminghe</Option>
-                                    </OptGroup>
-                                </Select>
+                                <TreeSelect
+                                    showSearch
+                                    dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
+                                    placeholder="Please select"
+                                    allowClear
+                                    treeDefaultExpandAll
+                                >
+                                    <TreeNode value="parent 1" title="parent 1">
+                                        <TreeNode value="parent 1-0" title="parent 1-0">
+                                            <TreeNode value="leaf1" title="my leaf"/>
+                                            <TreeNode value="leaf2" title="your leaf"/>
+                                        </TreeNode>
+                                        <TreeNode value="parent 1-1" title="parent 1-1">
+                                            <TreeNode value="sss" title={<b style={{color: '#08c'}}>sss</b>}/>
+                                        </TreeNode>
+                                    </TreeNode>
+                                </TreeSelect>
                             </Form.Item>
                             <Form.Item
                                 label='状态'
