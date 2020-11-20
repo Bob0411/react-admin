@@ -106,7 +106,7 @@ class CategoryList extends Component<any, ICategoryState> {
                             return (
                                 <>
                                     {
-                                        category.status === 0 ?
+                                        category.status === 1 ?
                                             <Tag color="success">启用</Tag>
                                             :
                                             <Tag color="warning">禁用</Tag>
@@ -120,7 +120,9 @@ class CategoryList extends Component<any, ICategoryState> {
                         render={(category: ICategory) => {
                             return (
                                 <Space>
-                                    <Button type='primary'>编辑</Button>
+                                    <Link to={`/admin/catalog/category/edit/${category.id}`}>
+                                        <Button type='primary'>编辑</Button>
+                                    </Link>
                                     <DeleteCategory categoryId={category.id} callback={this.deleteCategory}/>
                                 </Space>
                             )

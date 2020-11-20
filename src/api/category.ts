@@ -24,3 +24,15 @@ export const getAllCategory = () => {
         url: '/admin/category/all'
     })
 }
+export const getCategoryDetail = (categoryId: number) => {
+    return request({
+        url: '/admin/category/' + categoryId
+    })
+}
+export const updateCategory = (categoryId: number, category: any) => {
+    return request({
+        url: '/admin/category/' + categoryId,
+        method: 'put',
+        data: category
+    })
+}
