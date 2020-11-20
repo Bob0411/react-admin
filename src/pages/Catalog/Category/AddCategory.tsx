@@ -51,12 +51,16 @@ class AddCategory extends Component<any, IState> {
             })
         })
     }
+    failed = (e:any) => {
+        console.log(e.errorFields)
+    }
 
     render() {
         return (
             <>
                 <Form
                     onFinish={this.addCategory}
+                    onFinishFailed={this.failed}
                     initialValues={{category_name: '', description: '', status: true, parent_id: undefined}}
                     {...layout}
                 >
