@@ -1,11 +1,13 @@
 import React, {Component} from "react";
-import {Button, Form, Input, message, Tabs, Upload} from "antd";
+import {Button, Form, Input, message, Tabs, TreeSelect, Upload} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {PlusOutlined} from '@ant-design/icons';
 import {UploadChangeParam, UploadFile} from "antd/lib/upload/interface";
 import {get} from "../../../utils/storage";
 import {getProductDetail, updateProduct} from "../../../api/product";
 import {withRouter} from "react-router-dom";
+import {getAllCategory} from "../../../api/category";
+import {TreeNode} from "antd/es/tree-select";
 
 const layout = {
     labelCol: {span: 4},
@@ -25,16 +27,64 @@ interface IProduct {
     price: number
     quantity: number
     imgList: string[]
+    categoryIds: number[]
+}
+
+interface ICategory {
+    categoryName: string
+    description: string
+    id: number
+    status: number
+    parentId: number
+    children?: ICategory[]
 }
 
 interface IState {
     fileList: UploadFile[]
     product?: IProduct
+    categoryList: ICategory[]
+
 }
 
 class EditProduct extends Component<any, IState> {
     state: IState = {
-        fileList: []
+        fileList: [],
+        categoryList: []
+    }
+
+    constructor(props: Readonly<any> | any) {
+        super(props);
+        this.getAllCategory()
+        this.getProductDetail()
+    }
+
+    getProductDetail = () => {
+        getProductDetail(this.props.match.params.productId).then(response => {
+            const {data} = response.data
+            let imgList: UploadFile[] = []
+            data.imgList.forEach((img: any) => {
+                imgList.push({
+                    size: 1,
+                    type: '',
+                    uid: img.id,
+                    name: 'image.png',
+                    status: 'done',
+                    url: img.imgUrl
+                })
+            })
+            this.setState({
+                product: data,
+                fileList: imgList
+            })
+        })
+    }
+    getAllCategory = () => {
+        getAllCategory().then(response => {
+            const {data} = response.data
+            this.setState({
+                categoryList: data
+            })
+        })
     }
     handleChange = (info: UploadChangeParam) => {
         this.setState({
@@ -63,27 +113,6 @@ class EditProduct extends Component<any, IState> {
         })
     }
 
-    constructor(props: Readonly<any> | any) {
-        super(props);
-        getProductDetail(this.props.match.params.productId).then(response => {
-            const {data} = response.data
-            let imgList: UploadFile[] = []
-            data.imgList.forEach((img: any) => {
-                imgList.push({
-                    size: 1,
-                    type: '',
-                    uid: img.id,
-                    name: 'image.png',
-                    status: 'done',
-                    url: img.imgUrl
-                })
-            })
-            this.setState({
-                product: data,
-                fileList: imgList
-            })
-        })
-    }
 
     render() {
         return (
@@ -95,6 +124,7 @@ class EditProduct extends Component<any, IState> {
                             initialValues={{
                                 ...this.state.product,
                                 product_name: this.state.product?.productName,
+                                categoryIds: this.state.product?.categoryIds
                             }}
                             onFinish={this.updateProduct}
                         >
@@ -202,16 +232,53 @@ class EditProduct extends Component<any, IState> {
 
                                     </Form.Item>
                                 </TabPane>
-                                <TabPane tab="属性" key="4">
-                                    <Form.Item label='图片'>
-                                        <Input/>
+                                <TabPane tab="相关信息" key="4">
+                                    <Form.Item
+                                        name={'categoryIds'}
+                                        label='分类'
+                                        valuePropName='value'
+                                    >
+                                        <TreeSelect
+                                            multiple
+                                            showSearch
+                                            placeholder="选择分类"
+                                            allowClear
+                                            treeDefaultExpandAll
+                                        >
+                                            {
+                                                this.state.categoryList.map((category: ICategory) => {
+                                                    return <TreeNode
+                                                        value={category.id}
+                                                        title={category.categoryName}
+                                                        key={category.id}
+                                                    >
+                                                        {
+                                                            category.children?.map((cate: ICategory) => {
+                                                                return (
+                                                                    <TreeNode
+                                                                        value={cate.id}
+                                                                        title={cate.categoryName}
+                                                                        key={cate.id}>
+                                                                        {
+                                                                            cate.children?.map((c: ICategory) => (
+                                                                                <TreeNode
+                                                                                    value={c.id}
+                                                                                    title={c.categoryName}
+                                                                                    key={c.id}>
+                                                                                </TreeNode>
+                                                                            ))
+                                                                        }
+                                                                    </TreeNode>
+                                                                )
+                                                            })
+                                                        }
+                                                    </TreeNode>
+                                                })
+                                            }
+                                        </TreeSelect>
                                     </Form.Item>
                                 </TabPane>
-                                <TabPane tab="相关产品" key="5">
-                                    <Form.Item label='图片'>
-                                        <Input/>
-                                    </Form.Item>
-                                </TabPane>
+
                             </Tabs>
                             <Form.Item {...tailLayout}>
                                 <Button type='primary' htmlType="submit">更新</Button>
