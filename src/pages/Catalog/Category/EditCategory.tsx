@@ -24,7 +24,7 @@ interface ICategory {
 
 
 interface IState {
-    categoryList: []
+    categoryList: ICategory[]
     category?: ICategory
 
 }
@@ -65,6 +65,7 @@ class EditCategory extends Component<any, IState> {
                 const {code, msg} = response.data
                 if (code === 0) {
                     message.success('更新成功')
+                    this.props.history.goBack()
                 } else {
                     message.error(msg)
                 }
@@ -171,7 +172,7 @@ class EditCategory extends Component<any, IState> {
                                 </TabPane>
                             </Tabs>
                             <Form.Item>
-                                <Button type='primary' htmlType='submit'>新增</Button>
+                                <Button type='primary' htmlType='submit'>保存</Button>
                             </Form.Item>
                         </Form>
                         :
