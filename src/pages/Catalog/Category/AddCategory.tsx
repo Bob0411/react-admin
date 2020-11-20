@@ -1,8 +1,7 @@
 import React, {Component} from "react";
-import {Button, Form, Input, message, Switch, Tabs} from 'antd';
+import {Button, Form, Input, message, Switch, Tabs, TreeSelect} from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import {addCategory, getAllCategory} from "../../../api/category";
-import {TreeSelect} from 'antd';
 
 const {TreeNode} = TreeSelect;
 
@@ -61,7 +60,7 @@ class AddCategory extends Component<any, IState> {
                     initialValues={{category_name: '', description: '', status: true, parent_id: undefined}}
                     {...layout}
                 >
-                    <Tabs defaultActiveKey="2">
+                    <Tabs defaultActiveKey="1">
                         <TabPane tab="通用信息" key="1">
                             <Form.Item
                                 name={'category_name'}
@@ -100,7 +99,7 @@ class AddCategory extends Component<any, IState> {
                                 <TreeSelect
                                     showSearch
                                     dropdownStyle={{maxHeight: 400, overflow: 'auto'}}
-                                    placeholder="Please select"
+                                    placeholder="选择分类"
                                     allowClear
                                     treeDefaultExpandAll
                                 >
@@ -109,35 +108,26 @@ class AddCategory extends Component<any, IState> {
                                             return <TreeNode
                                                 value={category.id}
                                                 title={category.categoryName}
-                                                key={`${category.id}-${category.parentId}`}
+                                                key={category.id}
                                             >
                                                 {
                                                     category.children?.map((cate: ICategory) => {
-                                                        if (cate.children) {
-                                                            return (
-                                                                <>
-                                                                    <TreeNode
-                                                                        value={cate.id}
-                                                                        title={cate.categoryName}
-                                                                        key={`${cate.id}-${cate.parentId}`}>
-                                                                        {
-                                                                            cate.children?.map((c: ICategory) => {
-                                                                                return <TreeNode
-                                                                                    value={c.id}
-                                                                                    title={c.categoryName}
-                                                                                    key={`${category.id}-${c.id}-${c.parentId}`}>
-                                                                                </TreeNode>
-                                                                            })
-                                                                        }
-                                                                    </TreeNode>
-                                                                </>
-                                                            )
-                                                        }
-                                                        return <TreeNode
-                                                            value={cate.id}
-                                                            title={cate.categoryName}
-                                                            key={`${cate.id}-${cate.parentId}`}>
-                                                        </TreeNode>;
+                                                        return (
+                                                            <TreeNode
+                                                                value={cate.id}
+                                                                title={cate.categoryName}
+                                                                key={cate.id}>
+                                                                {
+                                                                    cate.children?.map((c: ICategory) => (
+                                                                        <TreeNode
+                                                                            value={c.id}
+                                                                            title={c.categoryName}
+                                                                            key={c.id}>
+                                                                        </TreeNode>
+                                                                    ))
+                                                                }
+                                                            </TreeNode>
+                                                        )
                                                     })
                                                 }
                                             </TreeNode>
