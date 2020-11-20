@@ -107,6 +107,7 @@ class EditProduct extends Component<any, IState> {
             const {code, msg} = response.data
             if (code === 0) {
                 message.success('更新成功！')
+                this.props.history.goBack()
             } else {
                 message.error(msg)
             }
