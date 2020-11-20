@@ -5,6 +5,7 @@ import {getProductList} from "../../../api/product";
 import DeleteProduct from "./DeleteProduct";
 import Col from "antd/es/grid/col";
 import {PlusOutlined, SearchOutlined} from "@ant-design/icons";
+import Tag from "antd/es/tag";
 
 interface IProduct {
     id: number
@@ -129,7 +130,18 @@ class ProductList extends Component<any, IProductListState> {
                     />
                     <Table.Column
                         title={'状态'}
-                        dataIndex={'status'}
+                        render={(product: IProduct) => {
+                            return (
+                                <>
+                                    {
+                                        product.status === 1 ?
+                                            <Tag color="success">启用</Tag>
+                                            :
+                                            <Tag color="warning">禁用</Tag>
+                                    }
+                                </>
+                            )
+                        }}
                     />
                     <Table.Column
                         title={'状态'}
