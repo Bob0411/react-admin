@@ -77,7 +77,8 @@ class OrderList extends Component<any, IState> {
         this.getOrderList(
             1,
             {
-                keyword: search.keyword,
+                orderNumber: search.orderNumber,
+                mobile: search.mobile,
                 ...date
             }
         );
@@ -88,17 +89,24 @@ class OrderList extends Component<any, IState> {
             <>
                 <Form
                     initialValues={{
-                        keyword: '',
+                        orderNumber: '',
+                        mobile: '',
                         date: []
                     }}
                     onFinish={this.search}
                     layout={"inline"}
                 >
                     <Form.Item
-                        name='keyword'
-                        label='搜索'
+                        name='orderNumber'
+                        label='订单号'
                     >
-                        <Input placeholder='输入关键词查询' allowClear/>
+                        <Input placeholder='输入订单号查询' allowClear/>
+                    </Form.Item>
+                    <Form.Item
+                        name='mobile'
+                        label='手机号'
+                    >
+                        <Input placeholder='输入手机号查询' allowClear/>
                     </Form.Item>
                     <Form.Item
                         label='日期'
