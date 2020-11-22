@@ -1,9 +1,7 @@
 import React, {Component} from "react";
-import {Button, DatePicker, Input, Row, Space, Table} from "antd";
+import {Button, DatePicker, Form, Input, Space, Table} from "antd";
 import {getOrderList} from "../../api/order";
-import Col from "antd/es/grid/col";
-import {PlusOutlined, SearchOutlined} from "@ant-design/icons";
-import {Link} from "react-router-dom";
+import moment from "moment";
 
 const {RangePicker} = DatePicker;
 
@@ -50,7 +48,7 @@ class OrderList extends Component<any, IState> {
         this.getOrderList()
     }
 
-    getOrderList = (page: number = 1, keyword: string = '') => {
+    getOrderList = (page: number = 1, keyword: any = {}) => {
         getOrderList(page, keyword).then(response => {
             const {data, total, perPage, currentPage} = response.data.data
             this.setState({
@@ -65,114 +63,147 @@ class OrderList extends Component<any, IState> {
     onChange = (page: number = 1) => {
         this.getOrderList(page)
     }
-    search = (keyword: any) => {
+    search = (search: any) => {
         this.setState({
             loading: true
         })
-        this.getOrderList(1, keyword)
+        let date = {}
+        if (search.date.length === 2) {
+            date = {
+                startDate: search.date[0].format('YYYY-MM-DD'),
+                endDate: search.date[1].format('YYYY-MM-DD'),
+            }
+        }
+        this.getOrderList(
+            1,
+            {
+                keyword: search.keyword,
+                ...date
+            }
+        );
     }
 
     render() {
         return (
             <>
-            <Row gutter={8}>
-                <Col xs={12} sm={6} md={9} lg={8} xl={6}>
-                    <Input.Search
-                        addonBefore='搜索：'
-                        placeholder='输入关键词查询'
-                        allowClear
-                        onSearch={this.search}
-                        enterButton={<SearchOutlined/>}
+                <Form
+                    initialValues={{
+                        keyword: '',
+                        date: []
+                    }}
+                    onFinish={this.search}
+                    layout={"inline"}
+                >
+                    <Form.Item
+                        name='keyword'
+                        label='搜索'
+                    >
+                        <Input placeholder='输入关键词查询' allowClear/>
+                    </Form.Item>
+                    <Form.Item
+                        label='日期'
+                        name='date'
+                        valuePropName='value'
+                    >
+                        <RangePicker/>
+                    </Form.Item>
+                    <Form.Item>
+                        <Button type="primary" htmlType='submit'>搜索</Button>
+                    </Form.Item>
+                </Form>
+                <Table
+                    dataSource={this.state.orderList}
+                    scroll={{x: 1000}} sticky
+                    rowKey='id'
+                    loading={this.state.loading}
+                    pagination={{
+                        position: ['bottomCenter'],
+                        hideOnSinglePage: true,
+                        pageSize: this.state.perPage,
+                        total: this.state.total,
+                        current: this.state.currentPage,
+                        onChange: this.onChange,
+                        showSizeChanger: false
+                    }}
+                >
+                    <Table.Column
+                        title={'ID'}
+                        dataIndex={'id'}
                     />
-                </Col>
-                <Col xs={12} sm={6} md={9} lg={8} xl={6}>
-                    <RangePicker/>
-                </Col>
-            </Row>
-            <Table
-                dataSource={this.state.orderList}
-                scroll={{x: 1000}} sticky
-                rowKey='id'
-                loading={this.state.loading}
-                pagination={{
-                    position: ['bottomCenter'],
-                    hideOnSinglePage: true,
-                    pageSize: this.state.perPage,
-                    total: this.state.total,
-                    current: this.state.currentPage,
-                    onChange: this.onChange,
-                    showSizeChanger: false
-                }}
-            >
-                <Table.Column
-                    title={'ID'}
-                    dataIndex={'id'}
-                />
-                <Table.Column
-                    title={'订单号'}
-                    dataIndex={'orderNumber'}
-                />
-                <Table.Column
-                    title={'订单人姓名'}
-                    dataIndex={'user'}
-                    render={(user: IUser) => {
-                        return (<>{user.name}</>)
-                    }}
-                />
-                <Table.Column
-                    title={'订单人电话'}
-                    dataIndex={'user'}
-                    render={(user: IUser) => {
-                        return (<>{user.mobile}</>)
-                    }}
-                />
-                <Table.Column
-                    title={'收件人姓名'}
-                    dataIndex={'address'}
-                    render={(address: IAddress) => {
-                        return (<>{address.name}</>)
-                    }}
-                />
-                <Table.Column
-                    title={'收件人电话'}
-                    dataIndex={'address'}
-                    render={(address: IAddress) => {
-                        return (<>{address.mobile}</>)
-                    }}
-                />
-                <Table.Column
-                    title={'收件人地址'}
-                    dataIndex={'address'}
-                    render={(address: IAddress) => {
-                        return (<>{address.address}</>)
-                    }}
-                />
-                <Table.Column
-                    title={'原价'}
-                    dataIndex={'originalPrice'}
-                />
-                <Table.Column
-                    title={'成交价'}
-                    dataIndex={'tradePrice'}
-                />
-                <Table.Column
-                    width={220}
-                    fixed={'right'}
-                    title={'管理'}
-                    render={(order: IOrder) => {
-                        return (
-                            <Space>
-                                <Button type='primary'>编辑</Button>
-                                <Button type='default'>详情</Button>
-                                <Button type='primary' danger>删除</Button>
-                            </Space>
-                        )
-                    }}
-            />
-            </Table>
+                    <Table.Column
+                        title={'订单号'}
+                        dataIndex={'orderNumber'}
+                    />
+                    <Table.Column
+                        title={'订单人姓名'}
+                        dataIndex={'user'}
+                        render={(user: IUser) => {
+                            return (<>{user.name}</>)
+                        }}
+                    />
+                    <Table.Column
+                        title={'订单人电话'}
+                        dataIndex={'user'}
+                        render={(user: IUser) => {
+                            return (<>{user.mobile}</>)
+                        }}
+                    />
+                    <Table.Column
+                        title={'收件人姓名'}
+                        dataIndex={'address'}
+                        render={(address: IAddress) => {
+                            return (<>{address.name}</>)
+                        }}
+                    />
+                    <Table.Column
+                        title={'收件人电话'}
+                        dataIndex={'address'}
+                        render={(address: IAddress) => {
+                            return (<>{address.mobile}</>)
+                        }}
+                    />
+                    <Table.Column
+                        title={'收件人地址'}
+                        dataIndex={'address'}
+                        render={(address: IAddress) => {
+                            return (<>{address.address}</>)
+                        }}
+                    />
+                    <Table.Column
+                        title={'创建日期'}
+                        dataIndex={'createdAt'}
+                        render={(createdAt) =>
+                            <>
+                                {moment(createdAt).format('YYYY-MM-DD  HH:MM:SS')}
+                            </>
+                        }
+                    />
+                    <Table.Column
+                        title={'原价'}
+                        dataIndex={'originalPrice'}
+                    />
+                    <Table.Column
+                        title={'成交价'}
+                        dataIndex={'tradePrice'}
+                    />
+                    <Table.Column
+                        width={220}
+                        fixed={'right'}
+                        title={'管理'}
+                        render={(order: IOrder) => {
+                            return (
+                                <Space>
+                                    <Button type='primary'>编辑</Button>
+                                    <Button type='default'>详情</Button>
+                                    <Button type='primary' danger>删除</Button>
+                                </Space>
+                            )
+                        }}
+                    />
+                </Table>
 
-    </>
-    )
+            </>
+        )
     }
 }
 
