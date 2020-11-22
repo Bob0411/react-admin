@@ -18,6 +18,7 @@ interface ICategoryState {
     total: number
     perPage: number
     currentPage: number
+    loading: boolean
 }
 
 class CategoryList extends Component<any, ICategoryState> {
@@ -25,7 +26,8 @@ class CategoryList extends Component<any, ICategoryState> {
         categoryList: [],
         total: 0,
         perPage: 15,
-        currentPage: 1
+        currentPage: 1,
+        loading: true
     }
 
     constructor(props: Readonly<any> | any) {
@@ -40,7 +42,8 @@ class CategoryList extends Component<any, ICategoryState> {
                 categoryList: data,
                 total: total,
                 perPage: perPage,
-                currentPage: currentPage
+                currentPage: currentPage,
+                loading: false
             })
         })
     }
@@ -80,8 +83,9 @@ class CategoryList extends Component<any, ICategoryState> {
 
 
                 <Table
+                    loading={this.state.loading}
+                    scroll={{x: 1500}} sticky
                     dataSource={this.state.categoryList}
-
                     pagination={{
                         position: ['bottomCenter'],
                         hideOnSinglePage: true,

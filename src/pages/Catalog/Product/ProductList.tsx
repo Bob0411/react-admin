@@ -22,6 +22,7 @@ interface IProductListState {
     total: number
     perPage: number
     currentPage: number
+    loading: boolean
 }
 
 class ProductList extends Component<any, IProductListState> {
@@ -29,7 +30,8 @@ class ProductList extends Component<any, IProductListState> {
         productList: [],
         total: 0,
         perPage: 15,
-        currentPage: 1
+        currentPage: 1,
+        loading: true
     }
 
 
@@ -49,7 +51,8 @@ class ProductList extends Component<any, IProductListState> {
                 productList: data,
                 total: total,
                 perPage: perPage,
-                currentPage: currentPage
+                currentPage: currentPage,
+                loading: false
             })
         })
     }
@@ -85,14 +88,17 @@ class ProductList extends Component<any, IProductListState> {
                 </Row>
 
                 <Table
+                    scroll={{x: 1500}} sticky
                     rowKey='id'
+                    loading={this.state.loading}
                     pagination={{
                         position: ['bottomCenter'],
                         hideOnSinglePage: true,
                         pageSize: this.state.perPage,
                         total: this.state.total,
                         current: this.state.currentPage,
-                        onChange: this.onChange
+                        onChange: this.onChange,
+                        showSizeChanger: false
                     }}
                     dataSource={this.state.productList}
                 >
@@ -144,7 +150,8 @@ class ProductList extends Component<any, IProductListState> {
                         }}
                     />
                     <Table.Column
-                        title={'状态'}
+                        fixed={'right'}
+                        title={'管理'}
                         render={(product: IProduct) => {
                             return (
                                 <>
