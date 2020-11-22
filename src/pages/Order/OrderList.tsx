@@ -3,6 +3,7 @@ import {Button, DatePicker, Form, Input, Space, Table, Tag} from "antd";
 import {getOrderList} from "../../api/order";
 import moment from "moment";
 import DeleteOrder from "./DeleteOrder";
+import Permission from "../../components/Permission";
 
 const {RangePicker} = DatePicker;
 
@@ -235,7 +236,9 @@ class OrderList extends Component<any, IState> {
                                 <Space>
                                     <Button type='primary'>编辑</Button>
                                     <Button type='default'>详情</Button>
-                                    <DeleteOrder orderNumber={order.orderNumber} callback={this.deleteOrder}/>
+                                    <Permission path='deleteOrder'>
+                                        <DeleteOrder orderNumber={order.orderNumber} callback={this.deleteOrder}/>
+                                    </Permission>
                                 </Space>
                             )
                         }}
