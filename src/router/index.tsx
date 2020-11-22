@@ -13,6 +13,7 @@ import AddProduct from "../pages/Catalog/Product/AddProduct";
 import EditProduct from "../pages/Catalog/Product/EditProduct";
 import EditCategory from "../pages/Catalog/Category/EditCategory";
 import OrderList from "../pages/Order/OrderList";
+import UserList from "../pages/User/UserList";
 
 interface IRoute {
     id: string,
@@ -146,6 +147,23 @@ export const leftRoute: IRoute[] = [
                 title: '订单列表',
                 isMenu: 0,
                 component: <OrderList/>
+            },
+        ]
+    },
+    {
+        id: '7-0',
+        icon: <DashboardTwoTone/>,
+        path: '/admin/user',
+        title: '用户管理',
+        isMenu: 1,
+        routes: [
+            {
+                id: '7-1',
+                icon: <DashboardTwoTone/>,
+                path: '/admin/user/list',
+                title: '用户列表',
+                isMenu: 0,
+                component: <UserList/>
             },
         ]
     }
