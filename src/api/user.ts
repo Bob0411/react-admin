@@ -1,10 +1,11 @@
 import request from '../utils/request'
 
-export const getUserList = (page: number = 1) => {
+export const getUserList = (page: number = 1, search: any = {}) => {
     return request({
         url: 'admin/user/list',
         params: {
-            page: page
+            page: page,
+            ...search
         }
     })
 }
