@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Button, DatePicker, Form, Input, Space, Table, Tag} from "antd";
 import {getOrderList} from "../../api/order";
 import moment from "moment";
+import DeleteOrder from "./DeleteOrder";
 
 const {RangePicker} = DatePicker;
 
@@ -83,6 +84,11 @@ class OrderList extends Component<any, IState> {
                 ...date
             }
         );
+    }
+    deleteOrder = (orderNumber: string) => {
+        this.setState({
+            orderList: this.state.orderList?.filter((order: IOrder) => order.orderNumber !== orderNumber)
+        })
     }
 
     render() {
@@ -229,7 +235,7 @@ class OrderList extends Component<any, IState> {
                                 <Space>
                                     <Button type='primary'>编辑</Button>
                                     <Button type='default'>详情</Button>
-                                    <Button type='primary' danger>删除</Button>
+                                    <DeleteOrder orderNumber={order.orderNumber} callback={this.deleteOrder}/>
                                 </Space>
                             )
                         }}
