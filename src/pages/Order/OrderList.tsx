@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, DatePicker, Form, Input, Space, Table} from "antd";
+import {Button, DatePicker, Form, Input, Space, Table, Tag} from "antd";
 import {getOrderList} from "../../api/order";
 import moment from "moment";
 
@@ -22,6 +22,7 @@ interface IOrder {
     orderNumber: string
     originalPrice: number
     tradePrice: number
+    payStatus: number
     user: IUser
     address: IAddress
 }
@@ -141,6 +142,31 @@ class OrderList extends Component<any, IState> {
                     <Table.Column
                         title={'订单号'}
                         dataIndex={'orderNumber'}
+                    />
+                    <Table.Column
+                        title={'状态'}
+                        render={(order: IOrder) => {
+                            switch (order.payStatus) {
+                                case 0:
+                                    return (<Tag color="red">取消</Tag>)
+                                case 1:
+                                    return (<Tag color="volcano">新建</Tag>)
+                                case 2:
+                                    return (<Tag color="orange">支付中</Tag>)
+                                case 3:
+                                    return (<Tag color="gold">已经支付</Tag>)
+                                case 4:
+                                    return (<Tag color="lime">买家申请退货</Tag>)
+                                case 5:
+                                    return (<Tag color="green">卖家确认退货申请</Tag>)
+                                case 6:
+                                    return (<Tag color="cyan">卖家拒绝退货申请</Tag>)
+                                case 7:
+                                    return (<Tag color="blue">订单完结</Tag>)
+                                default:
+                                    return null;
+                            }
+                        }}
                     />
                     <Table.Column
                         title={'订单人姓名'}
