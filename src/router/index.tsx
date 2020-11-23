@@ -14,6 +14,8 @@ import EditProduct from "../pages/Catalog/Product/EditProduct";
 import EditCategory from "../pages/Catalog/Category/EditCategory";
 import OrderList from "../pages/Order/OrderList";
 import UserList from "../pages/User/UserList";
+import OptionList from "../pages/Catalog/Option/OptionList";
+import OptionDetail from "../pages/Catalog/Option/OptionDetail";
 
 interface IRoute {
     id: string,
@@ -130,6 +132,24 @@ export const leftRoute: IRoute[] = [
                 isMenu: 0,
                 isChildPage: true,
                 component: <EditCategory/>
+            },
+            {
+                id: '5-7',
+                icon: <DashboardTwoTone/>,
+                path: '/admin/option/list',
+                title: '选项列表',
+                isMenu: 0,
+                isChildPage: false,
+                component: <OptionList/>
+            },
+            {
+                id: '5-8',
+                icon: <DashboardTwoTone/>,
+                path: '/admin/option/detail/:optionId',
+                title: '选项详情',
+                isMenu: 0,
+                isChildPage: true,
+                component: <OptionDetail/>
             },
         ]
     },
