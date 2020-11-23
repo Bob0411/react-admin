@@ -16,6 +16,7 @@ import OrderList from "../pages/Order/OrderList";
 import UserList from "../pages/User/UserList";
 import OptionList from "../pages/Catalog/Option/OptionList";
 import OptionDetail from "../pages/Catalog/Option/OptionDetail";
+import AddOption from "../pages/Catalog/Option/AddOption";
 
 interface IRoute {
     id: string,
@@ -150,6 +151,15 @@ export const leftRoute: IRoute[] = [
                 isMenu: 0,
                 isChildPage: true,
                 component: <OptionDetail/>
+            },
+            {
+                id: '5-9',
+                icon: <DashboardTwoTone/>,
+                path: '/admin/option/add',
+                title: '添加选项',
+                isMenu: 0,
+                isChildPage: true,
+                component: <AddOption/>
             },
         ]
     },
