@@ -4,10 +4,6 @@ import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {getOptionDetail, getOptionTypeList, updateOption} from "../../../api/option";
 import {withRouter} from "react-router-dom";
 
-const layout = {
-    labelCol: {span: 4},
-    wrapperCol: {span: 16},
-};
 
 const tailLayout = {
     wrapperCol: {offset: 8, span: 16},
@@ -55,7 +51,6 @@ class EditOption extends Component<any, IState> {
     }
 
     saveOption = (value: any) => {
-        console.log(value)
         let optionId = this.props.match.params.optionId;
         updateOption(optionId, value).then(response => {
             const {code, msg} = response.data
@@ -100,7 +95,6 @@ class EditOption extends Component<any, IState> {
                 {
                     this.state.option ?
                         <Form
-                            {...layout}
                             initialValues={{
                                 name: this.state.option?.name,
                                 description: this.state.option?.description,
