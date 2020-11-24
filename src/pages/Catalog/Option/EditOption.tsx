@@ -4,6 +4,15 @@ import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {getOptionDetail, getOptionTypeList, updateOption} from "../../../api/option";
 import {withRouter} from "react-router-dom";
 
+const layout = {
+    labelCol: {span: 4},
+    wrapperCol: {span: 16},
+};
+
+const tailLayout = {
+    wrapperCol: {offset: 8, span: 16},
+};
+
 interface IOptionType {
     name: string
     id: number
@@ -91,6 +100,7 @@ class EditOption extends Component<any, IState> {
                 {
                     this.state.option ?
                         <Form
+                            {...layout}
                             initialValues={{
                                 name: this.state.option?.name,
                                 description: this.state.option?.description,
@@ -221,7 +231,9 @@ class EditOption extends Component<any, IState> {
                                     :
                                     null
                             }
-                            <Form.Item>
+                            <Form.Item
+                                {...tailLayout}
+                            >
                                 <Button type='primary' htmlType='submit'>更新</Button>
                             </Form.Item>
                         </Form>

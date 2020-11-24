@@ -4,6 +4,15 @@ import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {addOption, getOptionTypeList} from "../../../api/option";
 import {withRouter} from "react-router-dom";
 
+const layout = {
+    labelCol: {span: 4},
+    wrapperCol: {span: 16},
+};
+
+const tailLayout = {
+    wrapperCol: {offset: 8, span: 16},
+};
+
 interface IOptionType {
     name: string
     id: number
@@ -58,6 +67,7 @@ class AddOption extends Component<any, IState> {
         return (
             <>
                 <Form
+                    {...layout}
                     initialValues={{
                         name: '',
                         description: '',
@@ -187,7 +197,9 @@ class AddOption extends Component<any, IState> {
                             :
                             null
                     }
-                    <Form.Item>
+                    <Form.Item
+                        {...tailLayout}
+                    >
                         <Button type='primary' htmlType='submit'>添加</Button>
                     </Form.Item>
                 </Form>
