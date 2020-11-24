@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Form, Input, Select, Space} from "antd";
+import {Button, Form, Input, message, Select, Space} from "antd";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {getOptionTypeList} from "../../../api/option";
 
@@ -22,6 +22,7 @@ class AddOption extends Component<any, IState> {
         type: ''
     }
     optionType = new Set(['radio', 'select', 'checkbox'])
+
     constructor(props: any, context: any) {
         super(props, context);
         this.getOptionTypeList()
@@ -53,25 +54,46 @@ class AddOption extends Component<any, IState> {
                         name: '',
                         description: '',
                         optionList: [],
-                        type: '',
+                        type: null,
                     }}
                     onFinish={this.addOption}
                 >
                     <Form.Item
                         name='name'
                         label='名称'
+                        rules={[
+                            {
+                                type: "string",
+                                required: true,
+                                message: '名称不可以为空'
+                            }
+                        ]}
                     >
                         <Input/>
                     </Form.Item>
                     <Form.Item
                         name='description'
                         label='描述'
+                        rules={[
+                            {
+                                type: "string",
+                                required: true,
+                                message: '描述不可以为空'
+                            }
+                        ]}
                     >
                         <Input/>
                     </Form.Item>
                     <Form.Item
                         name='type'
                         label='类型'
+                        rules={[
+                            {
+                                type: "string",
+                                required: true,
+                                message: '类型不可以为空'
+                            }
+                        ]}
                         valuePropName='value'
                     >
                         <Select
@@ -93,7 +115,21 @@ class AddOption extends Component<any, IState> {
                     </Form.Item>
                     {
                         this.optionType.has(this.state.type) ?
-                            <Form.List name="optionList">
+                            <Form.List
+                                name="optionList"
+                                rules={[
+                                    {
+                                        validator: (rule, value) => {
+                                            if (value.length === 0) {
+                                                message.warning('至少添加一个选项')
+                                                return Promise.reject('至少添加一个选项');
+                                            } else {
+                                                return Promise.resolve()
+                                            }
+                                        }
+                                    }
+                                ]}
+                            >
                                 {(fields, {add, remove}) => (
                                     <>
                                         {fields.map(field => (
