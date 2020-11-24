@@ -5,7 +5,6 @@ import {addOption, getOptionTypeList} from "../../../api/option";
 import {withRouter} from "react-router-dom";
 
 
-
 const tailLayout = {
     wrapperCol: {offset: 8, span: 16},
 };
@@ -172,8 +171,12 @@ class AddOption extends Component<any, IState> {
                                                         {
                                                             type: "number",
                                                             min: 0,
-                                                            required: true,
-                                                            message: '排序必须为整数'
+                                                            validator: (rule, value) => {
+                                                                if (value >= 0) {
+                                                                    return Promise.resolve()
+                                                                }
+                                                                return Promise.reject('排序必须为大于0的整数');
+                                                            }
                                                         }
                                                     ]}
                                                 >
