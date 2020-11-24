@@ -10,8 +10,15 @@ export const getOptionDetail = (optionId: number) => {
         url: '/admin/option/' + optionId
     })
 }
-export const getOptionTypeList=()=>{
+export const getOptionTypeList = () => {
     return request({
-        url:'/admin/option/type/list'
+        url: '/admin/option/type/list'
+    })
+}
+export const updateOption = (optionId: number, data: any) => {
+    return request({
+        url: '/admin/option/' + optionId,
+        method: 'put',
+        data: data
     })
 }

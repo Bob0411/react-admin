@@ -52,11 +52,19 @@ class OptionList extends Component<any, IState> {
                         dataIndex={'type'}
                     />
                     <Table.Column
+                        title={'名称'}
+                        dataIndex={'name'}
+                    />
+                    <Table.Column
+                        title={'描述'}
+                        dataIndex={'description'}
+                    />
+                    <Table.Column
                         title={'管理'}
                         render={(option: IOption) => {
                             return (
                                 <Space>
-                                    <Link to={`/admin/option/detail/${option.id}`}>
+                                    <Link to={`/admin/option/edit/${option.id}`}>
                                         <Button type='primary'>编辑</Button>
                                     </Link>
                                     <Button type='primary' danger>删除</Button>
