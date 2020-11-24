@@ -22,3 +22,10 @@ export const updateOption = (optionId: number, data: any) => {
         data: data
     })
 }
+export const addOption = (data: any) => {
+    return request({
+        url: '/admin/option',
+        method: 'post',
+        data: data
+    })
+}

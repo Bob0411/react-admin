@@ -48,11 +48,12 @@ class EditOption extends Component<any, IState> {
     saveOption = (value: any) => {
         console.log(value)
         let optionId = this.props.match.params.optionId;
-        updateOption(optionId, value).then(response=>{
-            const {code,msg}=response.data
+        updateOption(optionId, value).then(response => {
+            const {code, msg} = response.data
             if (code === 0) {
                 message.success('更新成功')
-            }else {
+                this.props.history.goBack()
+            } else {
                 message.error(msg)
             }
         })

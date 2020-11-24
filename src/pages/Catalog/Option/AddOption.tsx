@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {Button, Form, Input, message, Select, Space} from "antd";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
-import {getOptionTypeList} from "../../../api/option";
+import {addOption, getOptionTypeList} from "../../../api/option";
+import {withRouter} from "react-router-dom";
 
 interface IOptionType {
     name: string
@@ -29,7 +30,15 @@ class AddOption extends Component<any, IState> {
     }
 
     addOption = (value: any) => {
-        console.log(value)
+        addOption(value).then(response => {
+            const {code, msg} = response.data
+            if (code === 0) {
+                message.success('添加成功')
+                this.props.history.goBack()
+            } else {
+                message.error(msg)
+            }
+        })
     }
     getOptionTypeList = () => {
         getOptionTypeList().then(response => {
@@ -40,7 +49,6 @@ class AddOption extends Component<any, IState> {
         })
     }
     selectChange = (value: any) => {
-        console.log(value)
         this.setState({
             type: value
         })
@@ -53,7 +61,7 @@ class AddOption extends Component<any, IState> {
                     initialValues={{
                         name: '',
                         description: '',
-                        optionList: [],
+                        valueList: [],
                         type: null,
                     }}
                     onFinish={this.addOption}
@@ -116,7 +124,7 @@ class AddOption extends Component<any, IState> {
                     {
                         this.optionType.has(this.state.type) ?
                             <Form.List
-                                name="optionList"
+                                name="valueList"
                                 rules={[
                                     {
                                         validator: (rule, value) => {
@@ -137,19 +145,19 @@ class AddOption extends Component<any, IState> {
                                                    align="baseline">
                                                 <Form.Item
                                                     {...field}
-                                                    label='选项名称'
-                                                    name={[field.name, 'optionName']}
+                                                    label='选项值'
+                                                    name={[field.name, 'value']}
                                                     fieldKey={[field.fieldKey, 'first']}
-                                                    rules={[{required: true, message: '选项名称'}]}
+                                                    rules={[{required: true, message: '选项值'}]}
                                                 >
                                                     <Input placeholder="选项名称" allowClear/>
                                                 </Form.Item>
                                                 <Form.Item
                                                     {...field}
-                                                    label='选项值'
-                                                    name={[field.name, 'optionValue']}
+                                                    label='排序'
+                                                    name={[field.name, 'sortOrder']}
                                                     fieldKey={[field.fieldKey, 'last']}
-                                                    rules={[{required: true, message: '选项值'}]}
+                                                    rules={[{required: true, message: '排序'}]}
                                                 >
                                                     <Input placeholder="选项值" allowClear/>
                                                 </Form.Item>
@@ -176,4 +184,4 @@ class AddOption extends Component<any, IState> {
     }
 }
 
-export default AddOption
+export default withRouter(AddOption)

@@ -41,6 +41,7 @@ class OptionList extends Component<any, IState> {
                     <Button type='primary'>添加选项</Button>
                 </Link>
                 <Table
+                    rowKey={'id'}
                     dataSource={this.state.optionList}
                 >
                     <Table.Column
