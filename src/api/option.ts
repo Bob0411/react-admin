@@ -10,3 +10,8 @@ export const getOptionDetail = (optionId: number) => {
         url: '/admin/option/' + optionId
     })
 }
+export const getOptionTypeList=()=>{
+    return request({
+        url:'/admin/option/type/list'
+    })
+}
