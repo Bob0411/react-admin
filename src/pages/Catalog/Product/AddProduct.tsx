@@ -8,6 +8,7 @@ import {get} from "../../../utils/storage";
 import {addProduct} from "../../../api/product";
 import {getAllCategory} from "../../../api/category";
 import {TreeNode} from "antd/es/tree-select";
+import AddGoods from "./AddGoods";
 
 const layout = {
     labelCol: {span: 4},
@@ -70,6 +71,7 @@ class AddProduct extends Component<any, IState> {
         });
     }
     addProduct = (product: IProduct) => {
+        console.log(product)
         let imgList: string[] = []
         this.state.fileList.forEach((f) => {
             if (f.response !== undefined) {
@@ -98,11 +100,12 @@ class AddProduct extends Component<any, IState> {
                         model: 'model',
                         price: 100,
                         quantity: 100,
-                        categoryIds: []
+                        categoryIds: [],
+                        valueList:[]
                     }}
                     onFinish={this.addProduct}
                 >
-                    <Tabs defaultActiveKey="1" onChange={this.change}>
+                    <Tabs defaultActiveKey="5" onChange={this.change}>
                         <TabPane tab="通用属性" key="1">
                             <Form.Item
                                 name='product_name'
@@ -251,6 +254,9 @@ class AddProduct extends Component<any, IState> {
                                     }
                                 </TreeSelect>
                             </Form.Item>
+                        </TabPane>
+                        <TabPane tab='添加商品' key='5'>
+                            <AddGoods/>
                         </TabPane>
                     </Tabs>
                     <Form.Item {...tailLayout}>
