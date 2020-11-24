@@ -182,7 +182,12 @@ class EditOption extends Component<any, IState> {
                                                             label='选项值'
                                                             name={[field.name, 'value']}
                                                             fieldKey={[field.fieldKey, 'first']}
-                                                            rules={[{required: true, message: '选项值'}]}
+                                                            rules={[
+                                                                {
+                                                                    required: true,
+                                                                    message: '选项值不可以为空'
+                                                                }
+                                                            ]}
                                                         >
                                                             <Input placeholder="选项名称" allowClear/>
                                                         </Form.Item>
@@ -191,7 +196,14 @@ class EditOption extends Component<any, IState> {
                                                             label='排序'
                                                             name={[field.name, 'sortOrder']}
                                                             fieldKey={[field.fieldKey, 'last']}
-                                                            rules={[{required: true, message: '排序'}]}
+                                                            rules={[
+                                                                {
+                                                                    type: "number",
+                                                                    min: 0,
+                                                                    required: true,
+                                                                    message: '排序必须为整数'
+                                                                }
+                                                            ]}
                                                         >
                                                             <Input placeholder="选项值" allowClear/>
                                                         </Form.Item>
