@@ -46,15 +46,23 @@ class AddGoods extends Component<any, IState> {
     }
 
     getOptionDetail = (optionId: number) => {
-        getOptionDetail(optionId).then(response => {
-            const {valueList} = response.data.data
-            let optionMap = this.state.optionMap
-            optionMap.set(optionId + '', valueList)
+        let optionMap = this.state.optionMap
+        if (optionMap.has(optionId + '')) {
             this.setState({
                 key: optionId + '',
-                optionMap: optionMap,
             });
-        })
+        } else {
+            getOptionDetail(optionId).then(response => {
+                const {valueList} = response.data.data
+                optionMap.set(optionId + '', valueList)
+                this.setState({
+                    key: optionId + '',
+                    optionMap: optionMap,
+                });
+            })
+
+        }
+
     }
 
     changeOption = (key: any) => {
@@ -74,7 +82,7 @@ class AddGoods extends Component<any, IState> {
                             <TabPane tab={option.name} key={option.id}>
                                 {
                                     <Form.List
-                                        name={`valueList[${index}]`}
+                                        name={['optionList', index]}
                                         rules={[
                                             {
                                                 validator: (rule, value) => {
@@ -90,7 +98,7 @@ class AddGoods extends Component<any, IState> {
                                     >
                                         {(fields, {add, remove}) => (
                                             <>
-                                                <Row gutter={1}>
+                                                <Row>
                                                     <Col md={4}>
                                                         选项
                                                     </Col>
@@ -108,7 +116,6 @@ class AddGoods extends Component<any, IState> {
                                                 </Row>
                                                 {fields.map(field => (
                                                     <Row
-                                                        gutter={2}
                                                         key={field.key}
                                                     >
                                                         <Col

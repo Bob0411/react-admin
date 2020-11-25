@@ -9,6 +9,7 @@ import {addProduct} from "../../../api/product";
 import {getAllCategory} from "../../../api/category";
 import {TreeNode} from "antd/es/tree-select";
 import AddGoods from "./AddGoods";
+import {FormInstance} from "antd/lib/form";
 
 const layout = {
     labelCol: {span: 4},
@@ -49,6 +50,7 @@ class AddProduct extends Component<any, IState> {
         fileList: [],
         categoryList: []
     }
+    formRef = React.createRef<FormInstance>();
 
     constructor(props: Readonly<any> | any) {
         super(props);
@@ -70,8 +72,15 @@ class AddProduct extends Component<any, IState> {
             fileList: info.fileList
         });
     }
-    addProduct = (product: IProduct) => {
-        console.log(product)
+    addProduct = (product: any) => {
+        let optionList: any[] = [];
+
+        product.optionList?.forEach((v:any)=>{
+            v.forEach((v1:any)=>{
+                optionList.push(v1);
+            })
+        })
+        product.optionList = optionList;
         let imgList: string[] = []
         this.state.fileList.forEach((f) => {
             if (f.response !== undefined) {
@@ -93,6 +102,7 @@ class AddProduct extends Component<any, IState> {
         return (
             <>
                 <Form
+                    ref={this.formRef}
                     {...layout}
                     initialValues={{
                         product_name: 'product',
