@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Col, Form, Input, message, Row, Select, Tabs} from "antd";
+import {Button, Col, Form, InputNumber, message, Row, Select, Tabs} from "antd";
 import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
 import {getOptionDetail, getOptionList} from "../../../api/option";
 
@@ -99,7 +99,7 @@ class AddGoods extends Component<any, IState> {
                                         {(fields, {add, remove}) => (
                                             <>
                                                 <Row>
-                                                    <Col md={4}>
+                                                    <Col md={5}>
                                                         选项
                                                     </Col>
                                                     <Col md={4}>
@@ -111,7 +111,7 @@ class AddGoods extends Component<any, IState> {
                                                     <Col md={4}>
                                                         加价
                                                     </Col>
-                                                    <Col md={4}>
+                                                    <Col>
                                                     </Col>
                                                 </Row>
                                                 {fields.map(field => (
@@ -119,12 +119,12 @@ class AddGoods extends Component<any, IState> {
                                                         key={field.key}
                                                     >
                                                         <Col
-                                                            md={4}
+                                                            md={5}
                                                         >
                                                             <Form.Item
                                                                 {...field}
-                                                                name={[field.name, 'option']}
-                                                                fieldKey={[field.fieldKey, 'option']}
+                                                                name={[field.name, 'option_value_id']}
+                                                                fieldKey={[field.fieldKey, 'option_value_id']}
                                                                 rules={[
                                                                     {
                                                                         required: true,
@@ -162,21 +162,21 @@ class AddGoods extends Component<any, IState> {
                                                                             if (value >= 0) {
                                                                                 return Promise.resolve()
                                                                             }
-                                                                            return Promise.reject('库存需>0');
+                                                                            return Promise.reject('库存需>=0');
                                                                         }
                                                                     }
                                                                 ]}
                                                             >
-                                                                <Input placeholder="库存" allowClear/>
+                                                                <InputNumber min={0} placeholder="库存"/>
                                                             </Form.Item>
                                                         </Col>
                                                         <Col
-                                                            md={5}
+                                                            md={4}
                                                         >
                                                             <Form.Item
                                                                 {...field}
-                                                                name={[field.name, 'delta']}
-                                                                fieldKey={[field.fieldKey, 'delta']}
+                                                                name={[field.name, 'sub_stock']}
+                                                                fieldKey={[field.fieldKey, 'sub_stock']}
                                                                 rules={[
                                                                     {
                                                                         type: "number",
@@ -190,20 +190,17 @@ class AddGoods extends Component<any, IState> {
                                                                     }
                                                                 ]}
                                                             >
-                                                                <Select placeholder='是否减库存'>
-                                                                    <Select.Option value={0}>否</Select.Option>
-                                                                    <Select.Option value={1}>是</Select.Option>
-                                                                </Select>
+                                                                <InputNumber placeholder="减库存数" min={0}/>
                                                             </Form.Item>
                                                         </Col>
 
                                                         <Col
-                                                            md={5}
+                                                            md={4}
                                                         >
                                                             <Form.Item
                                                                 {...field}
-                                                                name={[field.name, 'price']}
-                                                                fieldKey={[field.fieldKey, 'price']}
+                                                                name={[field.name, 'add_price']}
+                                                                fieldKey={[field.fieldKey, 'add_price']}
                                                                 rules={[
                                                                     {
                                                                         type: "number",
@@ -217,7 +214,7 @@ class AddGoods extends Component<any, IState> {
                                                                     }
                                                                 ]}
                                                             >
-                                                                <Input placeholder="是否加减价格" allowClear/>
+                                                                <InputNumber min={0} step={0.01} placeholder="是否加减价格"/>
                                                             </Form.Item>
                                                         </Col>
                                                         <Col
