@@ -10,6 +10,7 @@ import {getAllCategory} from "../../../api/category";
 import {TreeNode} from "antd/es/tree-select";
 import AddGoods from "./AddGoods";
 import {FormInstance} from "antd/lib/form";
+import {withRouter} from "react-router-dom";
 
 const layout = {
     labelCol: {span: 4},
@@ -75,8 +76,8 @@ class AddProduct extends Component<any, IState> {
     addProduct = (product: any) => {
         let optionList: any[] = [];
 
-        product.optionList?.forEach((v:any)=>{
-            v.forEach((v1:any)=>{
+        product.optionList?.forEach((v: any) => {
+            v.forEach((v1: any) => {
                 optionList.push(v1);
             })
         })
@@ -92,6 +93,7 @@ class AddProduct extends Component<any, IState> {
             const {code, msg} = response.data
             if (code === 0) {
                 message.success('添加成功！')
+                this.props.history.goBack()
             } else {
                 message.error(msg)
             }
@@ -111,7 +113,7 @@ class AddProduct extends Component<any, IState> {
                         price: 100,
                         quantity: 100,
                         categoryIds: [],
-                        valueList:[]
+                        valueList: []
                     }}
                     onFinish={this.addProduct}
                 >
@@ -278,4 +280,4 @@ class AddProduct extends Component<any, IState> {
     }
 }
 
-export default AddProduct
+export default withRouter(AddProduct)
