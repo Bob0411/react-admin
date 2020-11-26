@@ -4,11 +4,11 @@ import TextArea from "antd/es/input/TextArea";
 import {PlusOutlined} from '@ant-design/icons';
 import {UploadChangeParam, UploadFile} from "antd/lib/upload/interface";
 import {get} from "../../../utils/storage";
-import {getProductDetail, updateProduct} from "../../../api/product";
+import {getProductDetail, getProductOption, updateProduct} from "../../../api/product";
 import {withRouter} from "react-router-dom";
 import {getAllCategory} from "../../../api/category";
 import {TreeNode} from "antd/es/tree-select";
-import AddGoods from "./AddGoods";
+import EditGoods from "./EditGoods";
 
 const layout = {
     labelCol: {span: 4},
@@ -40,21 +40,32 @@ interface ICategory {
     children?: ICategory[]
 }
 
+// 0: {option_value_id: 3, quantity: 1, sub_stock: 1, add_price: 1}
+
+interface IProductOption {
+    option_value_id: number
+    quantity: number
+    sub_stock: number
+    add_price: number
+}
+
 interface IState {
     fileList: UploadFile[]
     product?: IProduct
     categoryList: ICategory[]
-
+    optionList: IProductOption[]
 }
 
 class EditProduct extends Component<any, IState> {
     state: IState = {
         fileList: [],
-        categoryList: []
+        categoryList: [],
+        optionList: []
     }
 
     constructor(props: Readonly<any> | any) {
         super(props);
+        this.getProductOption()
         this.getAllCategory()
         this.getProductDetail()
     }
@@ -91,6 +102,29 @@ class EditProduct extends Component<any, IState> {
         this.setState({
             fileList: info.fileList
         });
+    }
+    getProductOption = () => {
+        getProductOption(this.props.match.params.productId).then(response => {
+            const {data} = response.data
+            let optionList: any[] = []
+            data.forEach((p: any) => {
+                let d: any[] = []
+                p.forEach((option: any) => {
+                    let tmp: IProductOption = {
+                        option_value_id: option.optionValueId,
+                        quantity: option.quantity,
+                        sub_stock: option.subStock,
+                        add_price: option.addPrice
+                    }
+                    d.push(tmp)
+                })
+                optionList.push(d)
+            })
+            console.log(optionList)
+            this.setState({
+                optionList: optionList
+            })
+        })
     }
     updateProduct = (product: any) => {
         let imgList: string[] = []
@@ -136,11 +170,30 @@ class EditProduct extends Component<any, IState> {
                             initialValues={{
                                 ...this.state.product,
                                 product_name: this.state.product?.productName,
-                                categoryIds: this.state.product?.categoryIds
+                                categoryIds: this.state.product?.categoryIds,
+                                optionList: this.state.optionList
+                                // optionList: [
+                                //     [
+                                //         {
+                                //             option_value_id: 18
+                                //         },
+                                //         {
+                                //             option_value_id: 18
+                                //         },
+                                //     ],
+                                //     [
+                                //         {
+                                //             option_value_id: 5
+                                //         },
+                                //         {
+                                //             option_value_id: 5
+                                //         },
+                                //     ]
+                                // ]
                             }}
                             onFinish={this.updateProduct}
                         >
-                            <Tabs defaultActiveKey="3">
+                            <Tabs defaultActiveKey="1">
                                 <TabPane tab="通用属性" key="1">
                                     <Form.Item
                                         name='product_name'
@@ -290,8 +343,8 @@ class EditProduct extends Component<any, IState> {
                                         </TreeSelect>
                                     </Form.Item>
                                 </TabPane>
-                                <TabPane tab='添加商品' key='5'>
-                                    <AddGoods/>
+                                <TabPane tab='编辑商品' key='5'>
+                                    <EditGoods/>
                                 </TabPane>
                             </Tabs>
                             <Form.Item {...tailLayout}>

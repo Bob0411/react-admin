@@ -31,3 +31,8 @@ export const updateProduct = (productId: number, product: any) => {
         data: product
     })
 }
+export const getProductOption=(productId:number)=>{
+    return request({
+        url:'/admin/product/option/'+productId
+    })
+}
