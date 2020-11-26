@@ -8,6 +8,7 @@ import {getProductDetail, updateProduct} from "../../../api/product";
 import {withRouter} from "react-router-dom";
 import {getAllCategory} from "../../../api/category";
 import {TreeNode} from "antd/es/tree-select";
+import AddGoods from "./AddGoods";
 
 const layout = {
     labelCol: {span: 4},
@@ -91,7 +92,7 @@ class EditProduct extends Component<any, IState> {
             fileList: info.fileList
         });
     }
-    updateProduct = (product: IProduct) => {
+    updateProduct = (product: any) => {
         let imgList: string[] = []
         this.state.fileList.forEach((file) => {
             if (file.response === undefined) {
@@ -103,6 +104,16 @@ class EditProduct extends Component<any, IState> {
             }
         })
         product.imgList = imgList
+
+
+        let optionList: any[] = [];
+        product.optionList?.forEach((v: any) => {
+            v.forEach((v1: any) => {
+                optionList.push(v1);
+            })
+        })
+        product.optionList = optionList;
+
         updateProduct(this.props.match.params.productId, product).then(response => {
             const {code, msg} = response.data
             if (code === 0) {
@@ -279,7 +290,9 @@ class EditProduct extends Component<any, IState> {
                                         </TreeSelect>
                                     </Form.Item>
                                 </TabPane>
-
+                                <TabPane tab='添加商品' key='5'>
+                                    <AddGoods/>
+                                </TabPane>
                             </Tabs>
                             <Form.Item {...tailLayout}>
                                 <Button type='primary' htmlType="submit">更新</Button>
