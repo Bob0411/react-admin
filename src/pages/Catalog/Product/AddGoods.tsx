@@ -106,10 +106,10 @@ class AddGoods extends Component<any, IState> {
                                                         库存
                                                     </Col>
                                                     <Col md={4}>
-                                                        减库存
+                                                        减库存数
                                                     </Col>
                                                     <Col md={4}>
-                                                        加价
+                                                        加价金额
                                                     </Col>
                                                     <Col>
                                                     </Col>
@@ -159,8 +159,11 @@ class AddGoods extends Component<any, IState> {
                                                                         type: "number",
                                                                         min: 0,
                                                                         validator: (rule, value) => {
+                                                                            if (value === null) {
+                                                                                return Promise.reject('库存需>=0');
+                                                                            }
                                                                             if (value >= 0) {
-                                                                                return Promise.resolve()
+                                                                                return Promise.resolve();
                                                                             }
                                                                             return Promise.reject('库存需>=0');
                                                                         }
@@ -182,10 +185,13 @@ class AddGoods extends Component<any, IState> {
                                                                         type: "number",
                                                                         min: 0,
                                                                         validator: (rule, value) => {
-                                                                            if (value >= 0) {
-                                                                                return Promise.resolve()
+                                                                            if (value === null) {
+                                                                                return Promise.reject('减库存数>=0');
                                                                             }
-                                                                            return Promise.reject('输入值要大于等于0');
+                                                                            if (value >= 0) {
+                                                                                return Promise.resolve();
+                                                                            }
+                                                                            return Promise.reject('减库存数>=0');
                                                                         }
                                                                     }
                                                                 ]}
@@ -206,10 +212,13 @@ class AddGoods extends Component<any, IState> {
                                                                         type: "number",
                                                                         min: 0,
                                                                         validator: (rule, value) => {
-                                                                            if (value >= 0) {
-                                                                                return Promise.resolve()
+                                                                            if (value === null) {
+                                                                                return Promise.reject('加价金额>=0');
                                                                             }
-                                                                            return Promise.reject('库存必须为大于0的整数');
+                                                                            if (value >= 0) {
+                                                                                return Promise.resolve();
+                                                                            }
+                                                                            return Promise.reject('加价金额>=0');
                                                                         }
                                                                     }
                                                                 ]}

@@ -113,11 +113,12 @@ class AddProduct extends Component<any, IState> {
                         price: 100,
                         quantity: 100,
                         categoryIds: [],
-                        valueList: []
+                        valueList: [],
+                        optionList: []
                     }}
                     onFinish={this.addProduct}
                 >
-                    <Tabs defaultActiveKey="5" onChange={this.change}>
+                    <Tabs defaultActiveKey="1" onChange={this.change}>
                         <TabPane tab="通用属性" key="1">
                             <Form.Item
                                 name='product_name'
