@@ -147,10 +147,12 @@ class OrderList extends Component<any, IState> {
                     <Table.Column
                         fixed='left'
                         title={'ID'}
+                        width={68}
                         dataIndex={'id'}
                     />
                     <Table.Column
                         fixed='left'
+                        width={168}
                         title={'订单号'}
                         dataIndex={'orderNumber'}
                     />
@@ -183,6 +185,7 @@ class OrderList extends Component<any, IState> {
                     <Table.Column
                         title={'订单人姓名'}
                         ellipsis
+                        width={168}
                         dataIndex={'user'}
                         render={(user: IUser) => {
                             return (<>{user.name}</>)
@@ -191,6 +194,7 @@ class OrderList extends Component<any, IState> {
                     <Table.Column
                         title={'订单人电话'}
                         ellipsis
+                        width={168}
                         dataIndex={'user'}
                         render={(user: IUser) => {
                             return (<>{user.mobile}</>)
@@ -198,6 +202,7 @@ class OrderList extends Component<any, IState> {
                     />
                     <Table.Column
                         title={'收件人姓名'}
+                        width={168}
                         dataIndex={'address'}
                         render={(address: IAddress) => {
                             return (<>{address.name}</>)
@@ -205,6 +210,7 @@ class OrderList extends Component<any, IState> {
                     />
                     <Table.Column
                         title={'收件人电话'}
+                        width={168}
                         dataIndex={'address'}
                         render={(address: IAddress) => {
                             return (<>{address.mobile}</>)
@@ -212,6 +218,8 @@ class OrderList extends Component<any, IState> {
                     />
                     <Table.Column
                         title={'收件人地址'}
+                        width={168}
+                        ellipsis
                         dataIndex={'address'}
                         render={(address: IAddress) => {
                             return (<>{address.address}</>)
@@ -219,8 +227,8 @@ class OrderList extends Component<any, IState> {
                     />
                     <Table.Column
                         title={'创建日期'}
+                        width={188}
                         dataIndex={'createdAt'}
-                        responsive={['md']}
                         ellipsis
                         render={(createdAt) =>
                             <>
@@ -230,10 +238,12 @@ class OrderList extends Component<any, IState> {
                     />
                     <Table.Column
                         title={'原价'}
+                        width={168}
                         dataIndex={'originalPrice'}
                     />
                     <Table.Column
                         title={'成交价'}
+                        width={168}
                         dataIndex={'tradePrice'}
                     />
                     <Table.Column
