@@ -30,10 +30,24 @@ interface IProduct {
     total: number
 }
 
+interface IOrderAddress {
+    name: string
+    mobile: string
+    address: string
+}
+
+interface IUser {
+    id: number
+    name: string
+    mobile: string
+}
+
 interface IState {
     order?: IOrder
     productList?: IProduct[]
     totalMoney: number
+    orderAddress?: IOrderAddress
+    user?: IUser
 }
 
 class OrderDetail extends Component<IProps, IState> {
@@ -50,7 +64,7 @@ class OrderDetail extends Component<IProps, IState> {
         // @ts-ignore
         let orderId = this.props.match.params.orderId
         getOrderDetail(orderId).then(response => {
-            const {order, productList} = response.data.data
+            const {order, productList, orderAddress, user} = response.data.data
             let total = 0
             productList.forEach((product: any) => {
                 total += product.total
@@ -58,6 +72,8 @@ class OrderDetail extends Component<IProps, IState> {
             this.setState({
                 order: order,
                 productList: productList,
+                orderAddress: orderAddress,
+                user: user,
                 totalMoney: total
             })
         })
@@ -89,15 +105,11 @@ class OrderDetail extends Component<IProps, IState> {
                         <Card title="用户信息" hoverable type='inner'>
                             <Row gutter={16}>
                                 <Col span={6}>姓名：</Col>
-                                <Col span={12}>hanyun</Col>
+                                <Col span={12}>{this.state.user?.name}</Col>
                             </Row>
                             <Row gutter={16}>
                                 <Col span={6}>电话：</Col>
-                                <Col span={12}>15701308875</Col>
-                            </Row>
-                            <Row gutter={16}>
-                                <Col span={6}>余额：</Col>
-                                <Col span={12}>2000.00</Col>
+                                <Col span={12}>{this.state.user?.mobile}</Col>
                             </Row>
                         </Card>
                     </Col>
@@ -105,15 +117,15 @@ class OrderDetail extends Component<IProps, IState> {
                         <Card title="收件人信息" hoverable type='inner'>
                             <Row gutter={16}>
                                 <Col span={6}>姓名：</Col>
-                                <Col span={12}>hanyun</Col>
+                                <Col span={12}>{this.state.orderAddress?.name}</Col>
                             </Row>
                             <Row gutter={16}>
                                 <Col span={6}>电话：</Col>
-                                <Col span={12}>15701308875</Col>
+                                <Col span={12}>{this.state.orderAddress?.mobile}</Col>
                             </Row>
                             <Row gutter={16}>
                                 <Col span={6}>地址：</Col>
-                                <Col span={12}>XXXXXXXXXXXXXXXXXXXXX</Col>
+                                <Col span={12}>{this.state.orderAddress?.address}</Col>
                             </Row>
                         </Card>
                     </Col>
