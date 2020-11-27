@@ -15,3 +15,8 @@ export const deleteOrder = (orderNumber: string) => {
         method: 'delete'
     })
 }
+export const getOrderDetail = (orderId: number) => {
+    return request({
+        url: '/admin/order/detail/' + orderId
+    })
+}
