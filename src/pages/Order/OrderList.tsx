@@ -4,6 +4,7 @@ import {getOrderList} from "../../api/order";
 import moment from "moment";
 import DeleteOrder from "./DeleteOrder";
 import Permission from "../../components/Permission";
+import {Link} from "react-router-dom";
 
 const {RangePicker} = DatePicker;
 
@@ -129,7 +130,8 @@ class OrderList extends Component<any, IState> {
                 </Form>
                 <Table
                     dataSource={this.state.orderList}
-                    scroll={{x: 1000}} sticky
+                    scroll={{x: 1500}}
+                    sticky
                     rowKey='id'
                     loading={this.state.loading}
                     pagination={{
@@ -143,14 +145,17 @@ class OrderList extends Component<any, IState> {
                     }}
                 >
                     <Table.Column
+                        fixed='left'
                         title={'ID'}
                         dataIndex={'id'}
                     />
                     <Table.Column
+                        fixed='left'
                         title={'订单号'}
                         dataIndex={'orderNumber'}
                     />
                     <Table.Column
+                        ellipsis
                         title={'状态'}
                         render={(order: IOrder) => {
                             switch (order.payStatus) {
@@ -177,6 +182,7 @@ class OrderList extends Component<any, IState> {
                     />
                     <Table.Column
                         title={'订单人姓名'}
+                        ellipsis
                         dataIndex={'user'}
                         render={(user: IUser) => {
                             return (<>{user.name}</>)
@@ -184,6 +190,7 @@ class OrderList extends Component<any, IState> {
                     />
                     <Table.Column
                         title={'订单人电话'}
+                        ellipsis
                         dataIndex={'user'}
                         render={(user: IUser) => {
                             return (<>{user.mobile}</>)
@@ -213,6 +220,8 @@ class OrderList extends Component<any, IState> {
                     <Table.Column
                         title={'创建日期'}
                         dataIndex={'createdAt'}
+                        responsive={['md']}
+                        ellipsis
                         render={(createdAt) =>
                             <>
                                 {moment(createdAt).format('YYYY-MM-DD  HH:MM:SS')}
@@ -235,7 +244,9 @@ class OrderList extends Component<any, IState> {
                             return (
                                 <Space>
                                     <Button type='primary'>编辑</Button>
-                                    <Button type='default'>详情</Button>
+                                    <Link to={`/admin/order/detail/${order.id}`}>
+                                        <Button type='default'>详情</Button>
+                                    </Link>
                                     <Permission path='deleteOrder'>
                                         <DeleteOrder orderNumber={order.orderNumber} callback={this.deleteOrder}/>
                                     </Permission>
