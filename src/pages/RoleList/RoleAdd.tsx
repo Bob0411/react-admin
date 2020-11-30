@@ -76,6 +76,7 @@ class RoleAdd extends Component<IProps, IPermissionState> {
         let pl: IPermission[] = []
         permissionList.forEach((permission: IPermission) => {
             if (permission.parentId === parentId) {
+                permission.key = permission.id
                 permission.children = this.generatePermissionList(permissionList, permission.id)
                 pl.push(permission)
             }
