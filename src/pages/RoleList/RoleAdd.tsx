@@ -72,21 +72,21 @@ class RoleAdd extends Component<IProps, IPermissionState> {
     }
     error = (error: any) => {
     }
-    loadpermissionList = () => {
+    generatePermissionList = (permissionList: IPermission[], parentId: number = 0): IPermission[] => {
+        let pl: IPermission[] = []
+        permissionList.forEach((permission: IPermission) => {
+            if (permission.parentId === parentId) {
+                permission.children = this.generatePermissionList(permissionList, permission.id)
+                pl.push(permission)
+            }
+        })
+        return pl
+    }
+    loadPermissionList = () => {
         getAllPermission().then(response => {
             const {data} = response.data
-            let nodeList = data.filter((permission: IPermission) => {
-                permission.key = permission.id
-                permission.children = data.filter((p: IPermission) => (p.parentId === permission.id))
-                    .map((r: IPermission) => {
-                        r.key = r.id
-                        r.children = data.filter((t: IPermission) => t.parentId === r.id)
-                        return r
-                    })
-                return permission.isMenu === 1 && permission.parentId === 0
-            })
             this.setState({
-                nodeList: nodeList
+                nodeList: this.generatePermissionList(data)
             })
         })
     }
@@ -99,7 +99,7 @@ class RoleAdd extends Component<IProps, IPermissionState> {
     };
 
     componentDidMount() {
-        this.loadpermissionList()
+        this.loadPermissionList()
     }
 
 
