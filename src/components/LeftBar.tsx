@@ -1,4 +1,4 @@
-import React, {Component, ReactNode} from 'react'
+import React, {Component} from 'react'
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import {Menu} from 'antd';
 import {matchPath} from "react-router";
@@ -23,48 +23,43 @@ class LeftBar extends Component<IProps, ILeftBarState> {
         permissionSet: new Set<String>(),
         height: 0
     }
-
-    componentDidMount() {
+    highLightMenu = (authRoutes?: IRoute[], route?: IRoute) => {
         let path = this.props.history.location.pathname
-        authRoutes.forEach((route) => {
+        authRoutes?.forEach((r: IRoute) => {
             let match = matchPath(path, {
-                path: route.path,
+                path: r.path,
                 exact: true,
                 strict: false
             })
-            if (route.path === '*') {
-                return
-            }
             if (match !== null) {
-                this.setState({
-                    defaultKeys: [route.id]
-                })
+                if (route) {
+                    this.setState({
+                        defaultKeys: [r.id],
+                        defaultOpenKeys: [route.id]
+                    });
+                } else {
+                    this.setState({
+                        defaultKeys: [r.id]
+                    });
+                }
+                return
             } else {
-                route.routes?.forEach((r) => {
-                    let match1 = matchPath(path, {
-                        path: r.path,
-                        exact: true,
-                        strict: false
-                    })
-                    if (match1 !== null) {
-                        this.setState({
-                            defaultKeys: [r.id],
-                            defaultOpenKeys: [route.id]
-                        })
-                    }
-                })
+                this.highLightMenu(r?.routes, r)
             }
         })
+    }
+
+    componentDidMount() {
         let permissionSet: Set<string> = new Set<string>()
         this.props.permissionList.forEach((p: IRoute) => permissionSet.add(p.path))
+        this.highLightMenu(authRoutes)
         this.setState({
             permissionSet: permissionSet,
             height: document.body.clientHeight - 62
         })
-
     }
 
-    generateMenu = (routerList?: IRoute[]): ReactNode => {
+    generateMenu = (routerList?: IRoute[]) => {
         return (
             <>
                 {

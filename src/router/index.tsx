@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react"
+import React from "react"
 import AdminList from "../pages/AdminList/AdminList"
 import Index from "../pages/Index"
 import Login from "../pages/Login"
