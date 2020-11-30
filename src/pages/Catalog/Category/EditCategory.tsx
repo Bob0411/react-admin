@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, ReactNode} from "react";
 import {withRouter} from "react-router-dom";
 import {getAllCategory, getCategoryDetail, updateCategory} from "../../../api/category";
 import {Button, Form, Input, message, Switch, Tabs, TreeSelect} from "antd";
@@ -72,6 +72,24 @@ class EditCategory extends Component<any, IState> {
             })
         }
     }
+    generateTreeNode = (categoryList?: ICategory[]): ReactNode => {
+        return (
+            <>
+                {
+                    categoryList?.map((category: ICategory) => {
+                        return <TreeNode
+                            value={category.id}
+                            title={category.categoryName}
+                            key={category.id}
+                        >
+                            {this.generateTreeNode(category.children)}
+                        </TreeNode>
+                    })
+                }
+            </>
+        )
+
+    }
 
     render() {
         return (
@@ -130,36 +148,7 @@ class EditCategory extends Component<any, IState> {
                                             allowClear
                                             treeDefaultExpandAll
                                         >
-                                            {
-                                                this.state.categoryList.map((category: ICategory) => {
-                                                    return <TreeNode
-                                                        value={category.id}
-                                                        title={category.categoryName}
-                                                        key={category.id}
-                                                    >
-                                                        {
-                                                            category.children?.map((cate: ICategory) => {
-                                                                return (
-                                                                    <TreeNode
-                                                                        value={cate.id}
-                                                                        title={cate.categoryName}
-                                                                        key={cate.id}>
-                                                                        {
-                                                                            cate.children?.map((c: ICategory) => (
-                                                                                <TreeNode
-                                                                                    value={c.id}
-                                                                                    title={c.categoryName}
-                                                                                    key={c.id}>
-                                                                                </TreeNode>
-                                                                            ))
-                                                                        }
-                                                                    </TreeNode>
-                                                                )
-                                                            })
-                                                        }
-                                                    </TreeNode>
-                                                })
-                                            }
+                                            {this.generateTreeNode(this.state.categoryList)}
                                         </TreeSelect>
                                     </Form.Item>
                                     <Form.Item

@@ -253,7 +253,9 @@ class OrderList extends Component<any, IState> {
                         render={(order: IOrder) => {
                             return (
                                 <Space>
-                                    <Button type='primary'>编辑</Button>
+                                    <Link to={`/admin/order/edit/${order.id}`}>
+                                        <Button type='primary'>编辑</Button>
+                                    </Link>
                                     <Link to={`/admin/order/detail/${order.id}`}>
                                         <Button type='default'>详情</Button>
                                     </Link>

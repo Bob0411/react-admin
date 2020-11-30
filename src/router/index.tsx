@@ -18,6 +18,7 @@ import OptionList from "../pages/Catalog/Option/OptionList";
 import AddOption from "../pages/Catalog/Option/AddOption";
 import EditOption from "../pages/Catalog/Option/EditOption";
 import OrderDetail from "../pages/Order/OrderDetail";
+import EditOrder from "../pages/Order/EditOrder";
 
 interface IRoute {
     id: string,
@@ -187,6 +188,15 @@ export const leftRoute: IRoute[] = [
                 isMenu: 0,
                 isChildPage: true,
                 component: <OrderDetail/>
+            },
+            {
+                id: '6-3',
+                icon: <DashboardTwoTone/>,
+                path: '/admin/order/edit/:orderId',
+                title: '订单详情',
+                isMenu: 0,
+                isChildPage: true,
+                component: <EditOrder/>
             },
         ]
     },
