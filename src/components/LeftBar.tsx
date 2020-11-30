@@ -64,6 +64,7 @@ class LeftBar extends Component<IProps, ILeftBarState> {
             <>
                 {
                     routerList?.filter((route) => this.state.permissionSet.has(route.path))
+                        .filter((route) => !route.isChildPage)
                         .map((route) => {
                             if (route.routes) {
                                 return (
