@@ -6,18 +6,7 @@ import Page404 from "../pages/Page404"
 import Page403 from "../pages/Page403"
 import RoleList from '../pages/RoleList/RoleList'
 import {DashboardOutlined, DashboardTwoTone, TeamOutlined, UserOutlined} from '@ant-design/icons';
-
-interface IRoute {
-    id: string,
-    redirect?: string
-    icon?: ReactNode
-    exact?: boolean
-    path: string
-    title: string
-    isMenu: number
-    component?: ReactNode,
-    routes?: IRoute[]
-}
+import {IRoute} from "../store/states/PermissionState";
 
 export const leftRoute: IRoute[] = [
     {

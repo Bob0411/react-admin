@@ -9,6 +9,8 @@ export interface IRoute {
     isMenu?: number
     component?: ReactNode
     routes?: IRoute[]
+    redirect?: string
+    icon?: ReactNode
 }
 
 export interface PermissionState {

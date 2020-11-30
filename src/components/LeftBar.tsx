@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import React, {Component, ReactNode} from 'react'
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import {Menu} from 'antd';
 import {matchPath} from "react-router";
 import {authRoutes, leftRoute} from '../router';
-import {IRoute} from '../store/states/PermissionState';
+import {IRoute} from "../store/states/PermissionState";
 
 interface ILeftBarState {
     defaultKeys: string[]
@@ -64,6 +64,39 @@ class LeftBar extends Component<IProps, ILeftBarState> {
 
     }
 
+    generateMenu = (routerList?: IRoute[]): ReactNode => {
+        return (
+            <>
+                {
+                    routerList?.filter((route) => this.state.permissionSet.has(route.path))
+                        .map((route) => {
+                            if (route.routes) {
+                                return (
+                                    <Menu.SubMenu
+                                        key={route.id}
+                                        title={
+                                            <span>
+                                                {route.icon}
+                                                <span>{route.title}</span>
+                                            </span>
+                                        }
+                                    >
+                                        {this.generateMenu(route.routes)}
+                                    </Menu.SubMenu>
+                                )
+                            } else {
+                                return (
+                                    <Menu.Item key={route.id} icon={route.icon}>
+                                        <NavLink to={route.path}>{route.title}</NavLink>
+                                    </Menu.Item>
+                                )
+                            }
+                        })
+                }
+            </>
+        )
+    }
+
     render() {
         return (
             <div style={{minHeight: this.state.height + 'px'}}>
@@ -76,45 +109,10 @@ class LeftBar extends Component<IProps, ILeftBarState> {
                             defaultSelectedKeys={this.state.defaultKeys}
                             defaultOpenKeys={this.state.defaultOpenKeys}
                         >
-                            {
-                                leftRoute.filter((route) => this.state.permissionSet.has(route.path))
-                                    .map((route) => {
-                                        if (route.routes) {
-                                            return (
-                                                <Menu.SubMenu
-                                                    key={route.id}
-                                                    title={
-                                                        <span>
-                                                            {route.icon}
-                                                            <span>{route.title}</span>
-                                                        </span>
-                                                    }
-                                                >
-                                                    {
-                                                        route.routes
-                                                            .filter((route) => this.state.permissionSet.has(route.path))
-                                                            .map((r) => (
-                                                                <Menu.Item key={r.id} icon={r.icon}>
-                                                                    <NavLink to={r.path}>{r.title}</NavLink>
-                                                                </Menu.Item>)
-                                                            )
-                                                    }
-                                                </Menu.SubMenu>
-                                            )
-                                        } else {
-                                            return (
-                                                <Menu.Item key={route.id} icon={route.icon}>
-                                                    <NavLink to={route.path}>{route.title}</NavLink>
-                                                </Menu.Item>
-                                            )
-                                        }
-                                    })
-                            }
-
-
+                            {this.generateMenu(leftRoute)}
                         </Menu>
                         :
-                        ''
+                        null
                 }
             </div>
         )
