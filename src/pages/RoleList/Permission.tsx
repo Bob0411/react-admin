@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Alert, Input, Modal, Spin, Tree} from 'antd';
-import {getRoleDetail, saveRole} from "../api/role";
+import {getRoleDetail, saveRole} from "../../api/role";
 
 
 interface IPermission {
@@ -37,53 +37,26 @@ class Permission extends Component<IProps, IPermissionState> {
         visible: true,
         roleName: this.props.roleName
     }
-
+    generatePermissionList = (permissionList: IPermission[], parentId: number = 0): IPermission[] => {
+        let pl: IPermission[] = []
+        permissionList.forEach((permission: IPermission) => {
+            if (permission.parentId === parentId) {
+                permission.key = permission.id
+                permission.children = this.generatePermissionList(permissionList, permission.id)
+                pl.push(permission)
+            }
+        })
+        return pl
+    }
     loadPermission = () => {
         getRoleDetail(this.props.roleId).then(response => {
             const {permissionList, permissionAll} = response.data.data
-            let permissionMap = new Map()
-            permissionAll.filter((permission: IPermission) => {
-                permission.key = permission.id
-                permission.children = permissionAll.filter((p: IPermission) => (p.parentId === permission.id))
-                return permission.isMenu === 1 && permission.parentId > 0
-            }).forEach((permission: IPermission) => {
-                permission.key = permission.id
-                if (permissionMap.has(permission.parentId)) {
-                    let permissionList: IPermission[] = permissionMap.get(permission.parentId)
-                    permissionList.push(permission)
-                    permissionMap.set(permission.parentId, permissionList)
-                } else {
-                    let permissionList: IPermission[] = []
-                    permissionList.push(permission)
-                    permissionMap.set(permission.parentId, permissionList)
-                }
-            })
-
-
-            let nodeList = permissionAll.filter((permission: IPermission) => {
-                return permission.isMenu === 1 && permission.parentId === 0
-            }).map((permission: IPermission) => {
-                permission.key = permission.id
-                if (permissionMap.has(permission.id)) {
-                    permission.children = permissionMap.get(permission.id)
-                } else {
-                    permission.children = []
-                }
-                return permission
-            })
-
             let permissions = permissionList.map((permission: IPermission) => {
                 return permission.id
             })
-
-            let defaultExpandedKeys = permissionList.map((permission: IPermission) => {
-                return permission.parentId
-            })
             this.setState({
-                nodeList: nodeList,
+                nodeList: this.generatePermissionList(permissionAll),
                 defaultCheckedKeys: permissions,
-                defaultExpandedKeys: defaultExpandedKeys,
-                defaultSelectedKeys: []
             })
 
         })
@@ -144,8 +117,6 @@ class Permission extends Component<IProps, IPermissionState> {
                                 showLine
                                 checkable
                                 treeData={this.state.nodeList}
-                                defaultExpandedKeys={this.state.defaultExpandedKeys}
-                                defaultSelectedKeys={this.state.defaultSelectedKeys}
                                 defaultCheckedKeys={this.state.defaultCheckedKeys}
                                 onCheck={this.onCheck}
                             />
