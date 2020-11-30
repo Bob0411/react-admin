@@ -1,4 +1,4 @@
-import React, {ReactNode} from "react"
+import React from "react"
 import AdminList from "../pages/AdminList/AdminList"
 import Index from "../pages/Index"
 import Login from "../pages/Login"
@@ -19,19 +19,7 @@ import AddOption from "../pages/Catalog/Option/AddOption";
 import EditOption from "../pages/Catalog/Option/EditOption";
 import OrderDetail from "../pages/Order/OrderDetail";
 import EditOrder from "../pages/Order/EditOrder";
-
-interface IRoute {
-    id: string,
-    redirect?: string
-    icon?: ReactNode
-    exact?: boolean
-    path: string
-    title: string
-    isMenu: number
-    component?: ReactNode
-    isChildPage?: boolean
-    routes?: IRoute[]
-}
+import {IRoute} from "../store/states/PermissionState";
 
 export const leftRoute: IRoute[] = [
     {

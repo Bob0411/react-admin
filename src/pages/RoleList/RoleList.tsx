@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Button, Space, Table} from 'antd';
 import {getRoleList} from "../../api/role";
-import Permission from "../Permission";
+import Permission from "./Permission";
 import {default as PermissionCheck} from '../../components/Permission'
 import {IRole} from "../interfaces/IRole";
 import DeleteRole from "./DeleteRole";

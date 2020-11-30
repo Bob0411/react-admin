@@ -3,12 +3,12 @@ import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import {Menu} from 'antd';
 import {matchPath} from "react-router";
 import {authRoutes, leftRoute} from '../router';
-import {IRoute} from '../store/states/PermissionState';
+import {IRoute} from "../store/states/PermissionState";
 
 interface ILeftBarState {
     defaultKeys: string[]
     defaultOpenKeys: string[]
-    permissionSet: Set<string>
+    permissionSet: Set<String>
     height: number
 }
 
@@ -17,52 +17,79 @@ interface IProps extends RouteComponentProps {
 }
 
 class LeftBar extends Component<IProps, ILeftBarState> {
-    constructor(props: Readonly<IProps> | IProps) {
-        super(props);
-        this.state={
-            defaultKeys: [],
-            defaultOpenKeys: [],
-            permissionSet: new Set<string>(),
-            height: document.body.clientHeight - 62
-        }
+    state: ILeftBarState = {
+        defaultKeys: [],
+        defaultOpenKeys: [],
+        permissionSet: new Set<String>(),
+        height: 0
     }
-
-    componentDidMount() {
+    highLightMenu = (authRoutes?: IRoute[], route?: IRoute) => {
         let path = this.props.history.location.pathname
-        authRoutes.forEach((route) => {
+        authRoutes?.forEach((r: IRoute) => {
             let match = matchPath(path, {
-                path: route.path,
+                path: r.path,
                 exact: true,
                 strict: false
             })
-            if (route.path === '*') {
-                return
-            }
             if (match !== null) {
-                this.setState({
-                    defaultKeys: [route.id]
-                })
+                if (route) {
+                    this.setState({
+                        defaultKeys: [r.id],
+                        defaultOpenKeys: [route.id]
+                    });
+                } else {
+                    this.setState({
+                        defaultKeys: [r.id]
+                    });
+                }
+                return
             } else {
-                route.routes?.forEach((r) => {
-                    let match1 = matchPath(path, {
-                        path: r.path,
-                        exact: true,
-                        strict: false
-                    })
-                    if (match1 !== null) {
-                        this.setState({
-                            defaultKeys: [r.id],
-                            defaultOpenKeys: [route.id]
-                        })
-                    }
-                })
+                this.highLightMenu(r?.routes, r)
             }
         })
+    }
+
+    componentDidMount() {
         let permissionSet: Set<string> = new Set<string>()
         this.props.permissionList.forEach((p: IRoute) => permissionSet.add(p.path))
+        this.highLightMenu(authRoutes)
         this.setState({
-            permissionSet: permissionSet
+            permissionSet: permissionSet,
+            height: document.body.clientHeight - 62
         })
+    }
+
+    generateMenu = (routerList?: IRoute[]) => {
+        return (
+            <>
+                {
+                    routerList?.filter((route) => this.state.permissionSet.has(route.path))
+                        .map((route) => {
+                            if (route.routes) {
+                                return (
+                                    <Menu.SubMenu
+                                        key={route.id}
+                                        title={
+                                            <span>
+                                                {route.icon}
+                                                <span>{route.title}</span>
+                                            </span>
+                                        }
+                                    >
+                                        {this.generateMenu(route.routes)}
+                                    </Menu.SubMenu>
+                                )
+                            } else {
+                                return (
+                                    <Menu.Item key={route.id} icon={route.icon}>
+                                        <NavLink to={route.path}>{route.title}</NavLink>
+                                    </Menu.Item>
+                                )
+                            }
+                        })
+                }
+            </>
+        )
     }
 
     render() {
@@ -77,46 +104,10 @@ class LeftBar extends Component<IProps, ILeftBarState> {
                             defaultSelectedKeys={this.state.defaultKeys}
                             defaultOpenKeys={this.state.defaultOpenKeys}
                         >
-                            {
-                                leftRoute.filter((route) => this.state.permissionSet.has(route.path))
-                                    .map((route) => {
-                                        if (route.routes) {
-                                            return (
-                                                <Menu.SubMenu
-                                                    key={route.id}
-                                                    title={
-                                                        <span>
-                                                            {route.icon}
-                                                            <span>{route.title}</span>
-                                                        </span>
-                                                    }
-                                                >
-                                                    {
-                                                        route.routes
-                                                            .filter((route) => this.state.permissionSet.has(route.path))
-                                                            .filter((r) => !r.isChildPage)
-                                                            .map((r) => (
-                                                                <Menu.Item key={r.id} icon={r.icon}>
-                                                                    <NavLink to={r.path}>{r.title}</NavLink>
-                                                                </Menu.Item>)
-                                                            )
-                                                    }
-                                                </Menu.SubMenu>
-                                            )
-                                        } else {
-                                            return (
-                                                <Menu.Item key={route.id} icon={route.icon}>
-                                                    <NavLink to={route.path}>{route.title}</NavLink>
-                                                </Menu.Item>
-                                            )
-                                        }
-                                    })
-                            }
-
-
+                            {this.generateMenu(leftRoute)}
                         </Menu>
                         :
-                        ''
+                        null
                 }
             </div>
         )
