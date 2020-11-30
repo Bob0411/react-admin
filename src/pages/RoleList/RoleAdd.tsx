@@ -54,7 +54,6 @@ class RoleAdd extends Component<IProps, IPermissionState> {
         })
     }
     addRole = (values: any) => {
-        console.log(values)
         addRole(values).then(response => {
             const {code, msg} = response.data
             if (code === 1) {
