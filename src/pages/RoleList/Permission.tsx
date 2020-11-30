@@ -1,7 +1,12 @@
 import React, {Component} from "react";
-import {Alert, Input, Modal, Spin, Tree} from 'antd';
+import {Alert, Button, Form, Input, Modal, Space, Tree} from 'antd';
 import {getRoleDetail, saveRole} from "../../api/role";
+import {FormInstance} from "antd/lib/form";
 
+
+const tailLayout = {
+    wrapperCol: {offset: 8, span: 16},
+};
 
 interface IPermission {
     id: number
@@ -37,6 +42,8 @@ class Permission extends Component<IProps, IPermissionState> {
         visible: true,
         roleName: this.props.roleName
     }
+    formRef = React.createRef<FormInstance>();
+
     generatePermissionList = (permissionList: IPermission[], parentId: number = 0): IPermission[] => {
         let pl: IPermission[] = []
         permissionList.forEach((permission: IPermission) => {
@@ -58,22 +65,28 @@ class Permission extends Component<IProps, IPermissionState> {
                 nodeList: this.generatePermissionList(permissionAll),
                 defaultCheckedKeys: permissions,
             })
+            // @ts-ignore
+            this.formRef.current.setFieldsValue({
+                permissionList: permissions
+            })
 
         })
     }
 
-    componentDidMount() {
+    constructor(props: IProps, context: any) {
+        super(props, context);
         this.loadPermission()
     }
 
     onCheck = (checkedKeys: any, info: any) => {
-        this.setState({
-            defaultCheckedKeys: checkedKeys.checked
+        // @ts-ignore
+        this.formRef.current.setFieldsValue({
+            permissionList: checkedKeys.checked
         })
     };
 
-    handleOk = () => {
-        saveRole(this.props.roleId, this.state.roleName, this.state.defaultCheckedKeys)
+    handleOk = (value: any) => {
+        saveRole(this.props.roleId, value.roleName, value.permissionList)
         this.setState({
             visible: false
         })
@@ -89,40 +102,80 @@ class Permission extends Component<IProps, IPermissionState> {
         return (
             <>
                 <Modal
+                    footer={null}
                     afterClose={this.props.callback}
                     okText='确认'
                     cancelText='取消'
                     title={`修改角色`}
                     visible={this.state.visible}
-                    onOk={this.handleOk}
                     onCancel={this.handleCancel}
                 >
-                    <Input
-                        defaultValue={this.props.roleName}
-                        onChange={(e) => {
-                            this.setState({
-                                roleName: e.target.value
-                            })
+                    <Form
+                        onFinish={this.handleOk}
+                        ref={this.formRef}
+                        initialValues={{
+                            roleName: this.props.roleName,
+                            permissionList: this.state.defaultCheckedKeys
                         }}
-                    />
-                    <Alert
-                        showIcon
-                        message="选中子节点的时候一定要手动选中父级节点，否则不会生效"
-                        type="warning"/>
-                    {
-                        this.state.nodeList.length > 0 ?
-                            <Tree
-                                defaultExpandAll
-                                checkStrictly
-                                showLine
-                                checkable
-                                treeData={this.state.nodeList}
-                                defaultCheckedKeys={this.state.defaultCheckedKeys}
-                                onCheck={this.onCheck}
-                            />
-                            :
-                            <Spin size="large"/>
-                    }
+                    >
+                        <Form.Item
+                            label='角色名称'
+                            name='roleName'
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '角色名称不可以为空'
+                                }
+                            ]}
+                        >
+                            <Input/>
+                        </Form.Item>
+                        <Form.Item>
+                            <Alert
+                                showIcon
+                                message="选中子节点的时候一定要手动选中父级节点，否则不会生效"
+                                type="warning"/>
+                        </Form.Item>
+                        {
+                            this.state.nodeList.length > 0 ?
+                                <Form.Item
+                                    name='permissionList'
+                                    label='选择权限'
+                                    rules={[
+                                        {
+                                            type: "array",
+                                            min: 1,
+                                            required: true,
+                                            validator: (rule, value) => {
+                                                if (value.length <= 0) {
+                                                    return Promise.reject('至少要选择一个权限！')
+                                                }
+                                                return Promise.resolve()
+                                            }
+                                        },
+
+                                    ]}
+                                >
+                                    <Tree
+                                        defaultExpandAll
+                                        checkStrictly
+                                        showLine
+                                        checkable
+                                        treeData={this.state.nodeList}
+                                        defaultCheckedKeys={this.state.defaultCheckedKeys}
+                                        onCheck={this.onCheck}
+                                    />
+                                </Form.Item>
+                                :
+                                null
+                        }
+
+                        <Form.Item {...tailLayout}>
+                            <Space>
+                                <Button type='primary' htmlType='submit'>保存</Button>
+                            </Space>
+                        </Form.Item>
+                    </Form>
                 </Modal>
             </>
         );
