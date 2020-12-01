@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, DatePicker, Form, Input, Space, Table, Tag} from "antd";
+import {Button, DatePicker, Form, Input, Select, Space, Table, Tag} from "antd";
 import {getOrderList} from "../../api/order";
 import moment from "moment";
 import DeleteOrder from "./DeleteOrder";
@@ -46,6 +46,48 @@ class OrderList extends Component<any, IState> {
         loading: true,
         orderList: []
     }
+    payStatusList = [
+        {
+            payStatus: 0,
+            status: '取消',
+            color: 'red'
+        },
+        {
+            payStatus: 1,
+            status: '新建',
+            color: 'yellow'
+        },
+        {
+            payStatus: 2,
+            status: '支付中',
+            color: 'gold'
+        },
+        {
+            payStatus: 3,
+            status: '已经支付',
+            color: 'gold'
+        },
+        {
+            payStatus: 4,
+            status: '买家申请退货',
+            color: 'red'
+        },
+        {
+            payStatus: 5,
+            status: '卖家确认退货申请',
+            color: 'red'
+        },
+        {
+            payStatus: 6,
+            status: '卖家拒绝退货申请',
+            color: 'red'
+        },
+        {
+            payStatus: 7,
+            status: '订单完结',
+            color: 'blue'
+        },
+    ]
 
     constructor(props: any) {
         super(props);
@@ -118,6 +160,21 @@ class OrderList extends Component<any, IState> {
                         <Input placeholder='输入手机号查询' allowClear/>
                     </Form.Item>
                     <Form.Item
+                        name='pay_status'
+                        label='订单状态'
+                        valuePropName='value'
+                    >
+                        <Select placeholder='选择订单状态查询' allowClear>
+                            {
+                                this.payStatusList.map((payStatus, i) => (
+                                    <Select.Option value={payStatus.payStatus}
+                                                   key={i}>{payStatus.status}
+                                    </Select.Option>
+                                ))
+                            }
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
                         label='日期'
                         name='date'
                         valuePropName='value'
@@ -157,29 +214,20 @@ class OrderList extends Component<any, IState> {
                         dataIndex={'orderNumber'}
                     />
                     <Table.Column
-                        ellipsis
                         title={'状态'}
+                        width={168}
                         render={(order: IOrder) => {
-                            switch (order.payStatus) {
-                                case 0:
-                                    return (<Tag color="red">取消</Tag>)
-                                case 1:
-                                    return (<Tag color="volcano">新建</Tag>)
-                                case 2:
-                                    return (<Tag color="orange">支付中</Tag>)
-                                case 3:
-                                    return (<Tag color="gold">已经支付</Tag>)
-                                case 4:
-                                    return (<Tag color="lime">买家申请退货</Tag>)
-                                case 5:
-                                    return (<Tag color="green">卖家确认退货申请</Tag>)
-                                case 6:
-                                    return (<Tag color="cyan">卖家拒绝退货申请</Tag>)
-                                case 7:
-                                    return (<Tag color="blue">订单完结</Tag>)
-                                default:
-                                    return null;
-                            }
+                            return (
+                                <>
+                                    {
+                                        this.payStatusList.map((status, i) => {
+                                            if (status.payStatus === order.payStatus) {
+                                                return <Tag key={i} color={status.color}>{status.status}</Tag>
+                                            }
+                                        })
+                                    }
+                                </>
+                            )
                         }}
                     />
                     <Table.Column
