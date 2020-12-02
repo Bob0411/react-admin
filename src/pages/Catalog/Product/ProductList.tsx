@@ -88,7 +88,7 @@ class ProductList extends Component<any, IProductListState> {
                 </Row>
 
                 <Table
-                    scroll={{x: 1500}} sticky
+                    scroll={{x: 1500}}
                     rowKey='id'
                     loading={this.state.loading}
                     pagination={{
@@ -103,11 +103,15 @@ class ProductList extends Component<any, IProductListState> {
                     dataSource={this.state.productList}
                 >
                     <Table.Column
+                        fixed='left'
                         title={'ID'}
+                        width={68}
                         dataIndex={'id'}
                     />
                     <Table.Column
+                        fixed='left'
                         title={'产品名称'}
+                        width={168}
                         dataIndex={'productName'}
                     />
                     <Table.Column
